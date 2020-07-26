@@ -196,16 +196,6 @@ export default {
         progressColor: '#FF0000',
       },
       registerBtn: false,
-
-      registerForm: {
-        username: '',
-
-        password: '',
-
-        repassword: '',
-
-        email: '',
-      },
     }
   },
   computed: {
@@ -287,10 +277,9 @@ export default {
       validateFields({ force: true }, (err, values) => {
         if (!err) {
           state.passwordLevelChecked = false
-
-          console.log(values)
-
+          
           // 请求接口注册
+          this.onRegister(values)
 
           // $router.push({ name: 'registerResult', params: { ...values } })
         } else {
@@ -351,6 +340,18 @@ export default {
         duration: 4,
       })
       this.registerBtn = false
+    },
+
+    // 注册
+    async onRegister({ username, password, email, nickname }) {
+      const res = await this.$api.User.register({
+        username,
+        password,
+        email,
+        nickname,
+      })
+
+      console.log(res)
     },
   },
   watch: {

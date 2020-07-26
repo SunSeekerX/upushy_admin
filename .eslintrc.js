@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-26 17:49:41
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-07-26 18:15:43
+ * @LastEditTime: 2020-07-26 18:49:03
  */
 module.exports = {
   root: true,
@@ -46,7 +46,7 @@ module.exports = {
       }
     ],
     semi: [
-      2,
+      1,
       'never',
       {
         beforeStatementContinuationChars: 'never'
