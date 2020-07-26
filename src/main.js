@@ -1,3 +1,10 @@
+/**
+ * @name: 
+ * @author: SunSeekerX
+ * @Date: 2020-07-26 17:49:41
+ * @LastEditors: SunSeekerX
+ * @LastEditTime: 2020-07-26 18:34:11
+ */
 // with polyfills
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
@@ -13,7 +20,7 @@ import themePluginConfig from '../config/themePluginConfig'
 
 // mock
 // WARNING: `mockjs` NOT SUPPORT `IE` PLEASE DO NOT USE IN `production` ENV.
-import './mock'
+// import './mock'
 
 import bootstrap from './core/bootstrap'
 import './core/lazy_use'
