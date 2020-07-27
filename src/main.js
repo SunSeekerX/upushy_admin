@@ -1,11 +1,10 @@
 /**
- * @name: 
+ * @name:
  * @author: SunSeekerX
  * @Date: 2020-07-26 17:49:41
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-07-26 18:46:36
+ * @LastEditTime: 2020-07-27 15:10:25
  */
-
 
 /**
  * @name 引入依赖库
@@ -26,11 +25,12 @@ import { VueAxios } from './utils/request'
 import ProLayout, { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
 import themePluginConfig from '../config/themePluginConfig'
 import * as api from './api/index'
+// import * as handleError from '@/utils/handle-error'
+import HandleError from './utils/handle-error/index'
 
 // mock
 // WARNING: `mockjs` NOT SUPPORT `IE` PLEASE DO NOT USE IN `production` ENV.
-// import './mock'
-
+import './mock'
 import bootstrap from './core/bootstrap'
 import './core/lazy_use'
 import './permission' // permission control
@@ -47,6 +47,7 @@ Vue.config.productionTip = false
  */
 // mount axios to `Vue.$http` and `this.$http`
 Vue.use(VueAxios)
+Vue.use(HandleError)
 Vue.component('pro-layout', ProLayout)
 Vue.component('page-header-wrapper', PageHeaderWrapper)
 
@@ -62,5 +63,5 @@ new Vue({
   store,
   i18n,
   created: bootstrap,
-  render: h => h(App)
+  render: h => h(App),
 }).$mount('#app')

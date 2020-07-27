@@ -146,9 +146,9 @@
           type="primary"
           htmlType="submit"
           class="register-button"
-          :loading="registerBtn"
+          :loading="state.isRegisterBtnLoading"
           @click.stop.prevent="handleSubmit"
-          :disabled="registerBtn"
+          :disabled="state.isRegisterBtnLoading"
         >注册</a-button>
         <router-link class="login" :to="{ name: 'login' }">使用已有账户登录</router-link>
       </a-form-item>
@@ -194,8 +194,9 @@ export default {
         passwordLevelChecked: false,
         percent: 10,
         progressColor: '#FF0000',
+
+        isRegisterBtnLoading: false,
       },
-      registerBtn: false,
     }
   },
   computed: {
@@ -242,7 +243,6 @@ export default {
 
     handlePasswordCheck(rule, value, callback) {
       const password = this.form.getFieldValue('password')
-      console.log('value', value)
       if (value === undefined) {
         callback(new Error('请输入密码'))
       }
@@ -277,7 +277,7 @@ export default {
       validateFields({ force: true }, (err, values) => {
         if (!err) {
           state.passwordLevelChecked = false
-          
+
           // 请求接口注册
           this.onRegister(values)
 
@@ -339,24 +339,36 @@ export default {
           '请求出现错误，请稍后再试',
         duration: 4,
       })
-      this.registerBtn = false
+      this.state.isRegisterBtnLoading = false
     },
 
     // 注册
     async onRegister({ username, password, email, nickname }) {
-      const res = await this.$api.User.register({
-        username,
-        password,
-        email,
-        nickname,
-      })
+      try {
+        this.state.isRegisterBtnLoading = true
 
-      console.log(res)
-    },
-  },
-  watch: {
-    'state.passwordLevel'(val) {
-      console.log(val)
+        const res = await this.$api.Auth.register({
+          username,
+          password,
+          email,
+          nickname,
+        })
+
+        if (res.success) {
+          this.$notification.success({
+            message: '成功',
+            description: res.message,
+          })
+        } else {
+          this.$handleError.handleRequestFail(res.message)
+        }
+
+        console.log(res)
+      } catch (error) {
+        this.$handleError.handleApiRequestException(error)
+      } finally {
+        this.state.isRegisterBtnLoading = false
+      }
     },
   },
 }
