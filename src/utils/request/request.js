@@ -3,7 +3,7 @@
  * @author SunSeekerX
  * @time 2019-08-13 10:29:11
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-07-27 17:33:44
+ * @LastEditTime: 2020-07-28 11:42:51
  */
 
 import axios from 'axios'
@@ -23,7 +23,7 @@ export default function createRequest(options) {
   const instance = axios.create(
     Object.assign(
       {
-        baseURL: process.env.VUE_APP_BASE_API,
+        baseURL: process.env.VUE_APP_API_BASE_URL,
         withCredentials: false,
         timeout: 15000,
       },

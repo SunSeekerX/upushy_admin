@@ -104,7 +104,33 @@ export const asyncRouterMap = [
             path: '/project/projects',
             name: 'BasicProject',
             component: () => import('@/views/project/Projects'),
-            meta: { title: '所有项目', keepAlive: true, permission: ['project'] },
+            meta: {
+              title: '所有项目',
+              keepAlive: true,
+              permission: ['project'],
+            },
+          },
+        ],
+      },
+
+      // source
+      {
+        path: '/source',
+        name: 'source',
+        hidden: true,
+        component: RouteView,
+        redirect: '/source/sources',
+        meta: { title: '资源', icon: 'table', permission: ['source'] },
+        children: [
+          {
+            path: '/source/sources/:id([1-9]\\d*)?',
+            name: 'BasicSource',
+            component: () => import('@/views/source/Sources'),
+            meta: {
+              title: '所有资源',
+              keepAlive: true,
+              permission: ['source'],
+            },
           },
         ],
       },
@@ -408,11 +434,11 @@ export const asyncRouterMap = [
     ],
   },
 
-  {
-    path: '*',
-    redirect: '/404',
-    hidden: true,
-  },
+  // {
+  //   path: '*',
+  //   redirect: '/404',
+  //   hidden: true,
+  // },
 ]
 
 /**

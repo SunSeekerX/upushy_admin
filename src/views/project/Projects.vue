@@ -5,7 +5,13 @@
         <a-button type="primary" icon="plus" @click="state.isCreateShow = true">新建</a-button>
       </div>
 
-      <a-table :columns="columns" :data-source="data" :loading="state.loading" rowKey="id"></a-table>
+      <a-table :columns="columns" :data-source="data" :loading="state.loading" rowKey="id">
+        <span slot="action" slot-scope="{id}">
+          <router-link :to="{ path: `/source/sources/${id}`}">
+            <a-button type="primary">查看资源</a-button>
+          </router-link>
+        </span>
+      </a-table>
 
       <a-modal
         title="新建项目"
@@ -75,6 +81,13 @@ export default {
           title: 'UpdatedTime',
           dataIndex: 'updatedTime',
           key: 'updatedTime',
+        },
+        {
+          // dataIndex: 'name',
+          key: 'action',
+          title: 'Action',
+          // slots: { title: 'customTitle' },
+          scopedSlots: { customRender: 'action' },
         },
         // {
         //   dataIndex: 'name',
@@ -164,6 +177,7 @@ export default {
       }
     },
 
+    // 创建项目确认
     onConfirm() {
       this.state.isCreateLoading = true
       console.log(this.$refs)
