@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-28 09:28:09
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-07-28 18:18:53
+ * @LastEditTime: 2020-07-29 17:28:59
 -->
 
 <template>
@@ -13,6 +13,7 @@
         <a-button type="primary" icon="plus" @click="state.isCreateShow = true">新建</a-button>
       </div>
 
+      <!-- 资源表格 -->
       <a-table
         :columns="tableColumns"
         :data-source="tableData"
@@ -20,17 +21,28 @@
         rowKey="id"
       >
         <!-- url -->
-        <a-tag slot="url" slot-scope="url" color="blue">{{ onFormatUrl(url) }}</a-tag>
+        <!-- <a-tag slot="url" slot-scope="url" color="blue">{{ onFormatUrl(url) }}</a-tag> -->
+        <span slot="url" slot-scope="url">{{ onFormatUrl(url) }}</span>
+
+        <!-- 整包更新 -->
+        <span slot="isFullUpdated" slot-scope="isFullUpdated">{{ isFullUpdated === 0 ? '否' : '是' }}</span>
 
         <!-- 强制更新 -->
-        <span slot="isFullUpdated" slot-scope="isFullUpdated">{{ isFullUpdated === 0 ? '否' : '是' }}</span>
+        <span slot="isForceUpdate" slot-scope="isForceUpdate">{{ isForceUpdate === 0 ? '否' : '是' }}</span>
 
         <!-- 操作 -->
         <!-- <a-button slot="action" type="primary">查看资源</a-button> -->
         <template slot="action" slot-scope="text, record,index">
           <a-button @click="onEdit(record)">编辑</a-button>
 
-          <a-button @click="onDelete(record, index)" type="danger">删除</a-button>
+          <a-popconfirm
+            title="确定删除该资源?"
+            ok-text="确定"
+            cancel-text="取消"
+            @confirm="onDelete(record, index)"
+          >
+            <a-button type="danger">删除</a-button>
+          </a-popconfirm>
         </template>
       </a-table>
 
@@ -88,7 +100,7 @@
                 e => (e.target.value = e.target.value.replace(/\D/g, ''))
               "
               v-decorator="[
-                'versionNum',
+                'versionCode',
                 {
                   rules: [
                     {
@@ -117,6 +129,26 @@
           </a-form-item>
 
           <a-form-item label="是否强制更新">
+            <a-radio-group
+              v-decorator="[
+                'isForceUpdate',
+                {
+                  initialValue: 0,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请选择是否强制更新！',
+                    },
+                  ],
+                },
+              ]"
+            >
+              <a-radio :value="0">否</a-radio>
+              <a-radio :value="1">是</a-radio>
+            </a-radio-group>
+          </a-form-item>
+
+          <a-form-item label="是否整包更新">
             <a-radio-group
               v-decorator="[
                 'isFullUpdated',
@@ -190,15 +222,22 @@
             <a-input v-model="editForm.version" />
           </a-form-model-item>
 
-          <a-form-model-item label="版本号" prop="versionNum">
-            <a-input v-model="editForm.versionNum" />
+          <a-form-model-item label="版本号" prop="versionCode">
+            <a-input v-model="editForm.versionCode" />
           </a-form-model-item>
 
           <a-form-model-item label="备注" prop="remark">
             <a-textarea v-model="editForm.remark" />
           </a-form-model-item>
 
-          <a-form-item label="是否强制更新" prop="isFullUpdated">
+          <a-form-item label="是否强制更新" prop="isForceUpdate">
+            <a-radio-group v-model="editForm.isForceUpdate">
+              <a-radio :value="0">否</a-radio>
+              <a-radio :value="1">是</a-radio>
+            </a-radio-group>
+          </a-form-item>
+
+          <a-form-item label="是否整包更新" prop="isFullUpdated">
             <a-radio-group v-model="editForm.isFullUpdated">
               <a-radio :value="0">否</a-radio>
               <a-radio :value="1">是</a-radio>
@@ -264,17 +303,25 @@ export default {
         // 版本号
         {
           title: '版本号',
-          dataIndex: 'versionNum',
+          dataIndex: 'versionCode',
         },
         // 下载地址
         {
           title: '下载地址',
           dataIndex: 'url',
           scopedSlots: { customRender: 'url' },
+          width: 200,
+          // ellipsis: true,
         },
         // 强制更新
         {
           title: '强制更新',
+          dataIndex: 'isForceUpdate',
+          scopedSlots: { customRender: 'isForceUpdate' },
+        },
+        // 强制更新
+        {
+          title: '整包更新',
           dataIndex: 'isFullUpdated',
           scopedSlots: { customRender: 'isFullUpdated' },
         },
@@ -357,8 +404,9 @@ export default {
     async onCreateSource({
       projectId,
       version,
-      versionNum,
+      versionCode,
       url,
+      isForceUpdate,
       isFullUpdated,
       remark,
     }) {
@@ -366,8 +414,9 @@ export default {
         const res = await this.$api.Source.createSource({
           projectId,
           version,
-          versionNum,
+          versionCode,
           url,
+          isForceUpdate,
           isFullUpdated,
           remark,
         })
@@ -390,12 +439,10 @@ export default {
       }
     },
 
+    // 新建资源确认
     onConfirm() {
-      // this.state.isCreateLoading = true
-      console.log(this.$refs)
       this.form.validateFields((errors, values) => {
         if (!errors) {
-          console.log(values)
           this.onCreateSource(values)
         } else {
           this.state.isCreateLoading = false
@@ -405,7 +452,7 @@ export default {
 
     normFile(e) {
       if (e.fileList.length && e.fileList[0].response) {
-        return e.fileList[0].response.data.originalname
+        return e.fileList[0].response.data.customName
       } else {
         return ''
       }

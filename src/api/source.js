@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-28 09:52:25
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-07-28 18:11:26
+ * @LastEditTime: 2020-07-29 17:22:32
  */
 
 import { request } from '@/utils/request/index'
@@ -21,20 +21,52 @@ export default {
   },
 
   // 新建资源
-  createSource({ projectId, version, versionNum, url, isFullUpdated, remark }) {
+  createSource({
+    projectId,
+    version,
+    versionCode,
+    url,
+    isFullUpdated,
+    isForceUpdate,
+    remark,
+  }) {
     return request({
       url: '/api/source',
       method: 'POST',
-      data: { projectId, version, versionNum, url, isFullUpdated, remark },
+      data: {
+        projectId,
+        version,
+        versionCode,
+        url,
+        isFullUpdated,
+        isForceUpdate,
+        remark,
+      },
     })
   },
 
   // 修改资源
-  updateSource({ id, version, versionNum, url, isFullUpdated, remark }) {
+  updateSource({
+    id,
+    version,
+    versionCode,
+    url,
+    isFullUpdated,
+    isForceUpdate,
+    remark,
+  }) {
     return request({
       url: '/api/source',
       method: 'PUT',
-      data: { id, version, versionNum, url, isFullUpdated, remark },
+      data: {
+        id,
+        version,
+        versionCode,
+        url,
+        isFullUpdated,
+        isForceUpdate,
+        remark,
+      },
     })
   },
 
