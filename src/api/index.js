@@ -10,5 +10,6 @@ import Auth from './auth'
 import Project from './project'
 import Source from './source'
 import Common from './common'
+import Dict from './dict'
 
-export { Auth, Project, Source, Common }
+export { Auth, Project, Source, Common, Dict }

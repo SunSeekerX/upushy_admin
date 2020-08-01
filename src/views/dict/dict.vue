@@ -68,9 +68,19 @@ export default {
           key: 'name',
         },
         {
-          title: 'Describe',
-          dataIndex: 'describe',
-          key: 'describe',
+          title: 'Remark',
+          dataIndex: 'remark',
+          key: 'remark',
+        },
+        {
+          title: 'Status',
+          dataIndex: 'status',
+          key: 'status',
+        },
+        {
+          title: 'Type',
+          dataIndex: 'type',
+          key: 'type',
         },
         {
           title: 'CreatedTime',
@@ -82,13 +92,13 @@ export default {
           dataIndex: 'updatedTime',
           key: 'updatedTime',
         },
-        {
-          // dataIndex: 'name',
-          key: 'action',
-          title: 'Action',
-          // slots: { title: 'customTitle' },
-          scopedSlots: { customRender: 'action' },
-        },
+        // {
+        //   // dataIndex: 'name',
+        //   key: 'action',
+        //   title: 'Action',
+        //   // slots: { title: 'customTitle' },
+        //   scopedSlots: { customRender: 'action' },
+        // },
         // {
         //   dataIndex: 'name',
         //   key: 'name',
@@ -136,14 +146,18 @@ export default {
     async onGetProjects() {
       try {
         this.state.loading = true
-        const res = await this.$api.Project.projects()
+        const res = await this.$api.Dict.getDictList({
+          pageNum:1,
+          pageSize:10
+        })
         if (res.success) {
+          console.log(res);
           this.$notification.success({
             message: '成功',
             description: res.message,
           })
 
-          this.data = res.data
+          this.data = res.data.records
         } else {
           this.$handleError.handleRequestFail(res.message)
         }

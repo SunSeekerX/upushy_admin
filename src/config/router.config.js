@@ -202,8 +202,8 @@ export const asyncRouterMap = [
         children: [
           {
             path: '/dict/center',
-            name: 'dict',
-            component: () => import('@/views/dict/index'),
+            name: 'dictHome',
+            component: () => import('@/views/dict/dict.vue'),
             meta: { title: '字典首页', permission: ['user'] },
           },
         ],
