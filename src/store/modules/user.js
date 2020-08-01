@@ -34,14 +34,14 @@ const user = {
       state.info = info
     },
 
-    LOGIN_OUT(state){
+    LOGIN_OUT(state) {
       state.token = ''
       state.roles = []
       storage.remove(ACCESS_TOKEN)
 
       // 重置路由
       resetRouter()
-    }
+    },
   },
 
   actions: {
@@ -50,9 +50,13 @@ const user = {
       return new Promise((resolve, reject) => {
         Auth.login(userInfo)
           .then(res => {
-            storage.set(ACCESS_TOKEN, res.data.token, 7 * 24 * 60 * 60 * 1000)
-            commit('SET_TOKEN', res.data.token)
-            resolve(res)
+            if (res.success) {
+              storage.set(ACCESS_TOKEN, res.data.token, 7 * 24 * 60 * 60 * 1000)
+              commit('SET_TOKEN', res.data.token)
+              resolve(res)
+            } else {
+              reject(res)
+            }
           })
           .catch(error => {
             reject(error)
