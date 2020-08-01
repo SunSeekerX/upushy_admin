@@ -188,6 +188,26 @@ export const asyncRouterMap = [
           },
         ],
       },
+      // dict
+      {
+        path: '/dict',
+        component: RouteView,
+        redirect: '/dict/center',
+        name: 'dict',
+        meta: {
+          title: '数据字典',
+          icon: 'user',
+          permission: ['user'],
+        },
+        children: [
+          {
+            path: '/dict/center',
+            name: 'dict',
+            component: () => import('@/views/dict/index'),
+            meta: { title: '字典首页', permission: ['user'] },
+          },
+        ],
+      },
     ],
   },
 
