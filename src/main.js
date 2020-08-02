@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-26 17:49:41
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-07-27 15:10:25
+ * @LastEditTime: 2020-08-02 18:31:47
  */
 
 /**
@@ -30,7 +30,7 @@ import HandleError from './utils/handle-error/index'
 
 // mock
 // WARNING: `mockjs` NOT SUPPORT `IE` PLEASE DO NOT USE IN `production` ENV.
-import './mock'
+// import './mock'
 import bootstrap from './core/bootstrap'
 import './core/lazy_use'
 import './permission' // permission control

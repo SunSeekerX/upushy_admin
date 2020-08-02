@@ -7,9 +7,8 @@
 
       <a-table :columns="columns" :data-source="data" :loading="state.loading" rowKey="id">
         <span slot="action" slot-scope="{id}">
-          <router-link :to="{ path: `/source/sources/${id}`}">
-            <a-button type="primary">查看资源</a-button>
-          </router-link>
+          <a-button @click="onUpdate(id)"  type="primary">修改数据</a-button>
+          <a-button @click="onDelete(id)" type="danger">删除</a-button>
         </span>
       </a-table>
 
@@ -46,7 +45,8 @@
 
 <script>
 export default {
-  name: 'BasicProject',
+  name: 'SystemDict',
+
   data() {
     return {
       state: {
@@ -57,75 +57,62 @@ export default {
         isCreateLoading: false,
       },
       columns: [
+        // ID
         {
           title: 'ID',
           dataIndex: 'id',
           key: 'id',
         },
+
+        // Name
         {
           title: 'Name',
           dataIndex: 'name',
           key: 'name',
         },
-        {
-          title: 'Remark',
-          dataIndex: 'remark',
-          key: 'remark',
-        },
-        {
-          title: 'Status',
-          dataIndex: 'status',
-          key: 'status',
-        },
+
+        // Type
         {
           title: 'Type',
           dataIndex: 'type',
           key: 'type',
         },
+        
+        // Status
+        {
+          title: 'Status',
+          dataIndex: 'status',
+          key: 'status',
+        },
+
+        // Remark
+        {
+          title: 'Remark',
+          dataIndex: 'remark',
+          key: 'remark',
+        },
+        
+        // CreatedTime
         {
           title: 'CreatedTime',
           dataIndex: 'createdTime',
           key: 'createdTime',
         },
+
+        // UpdatedTime
         {
           title: 'UpdatedTime',
           dataIndex: 'updatedTime',
           key: 'updatedTime',
         },
-        // {
-        //   // dataIndex: 'name',
-        //   key: 'action',
-        //   title: 'Action',
-        //   // slots: { title: 'customTitle' },
-        //   scopedSlots: { customRender: 'action' },
-        // },
-        // {
-        //   dataIndex: 'name',
-        //   key: 'name',
-        //   slots: { title: 'customTitle' },
-        //   scopedSlots: { customRender: 'name' },
-        // },
-        // {
-        //   title: 'Age',
-        //   dataIndex: 'age',
-        //   key: 'age',
-        // },
-        // {
-        //   title: 'Address',
-        //   dataIndex: 'address',
-        //   key: 'address',
-        // },
-        // {
-        //   title: 'Tags',
-        //   key: 'tags',
-        //   dataIndex: 'tags',
-        //   scopedSlots: { customRender: 'tags' },
-        // },
-        // {
-        //   title: 'Action',
-        //   key: 'action',
-        //   scopedSlots: { customRender: 'action' },
-        // },
+
+        // Action
+        {
+          title: 'Action',
+          key: 'action',
+          fixed: 'right',
+          scopedSlots: { customRender: 'action' },
+        },
       ],
       data: [],
       formLayout: {
@@ -141,17 +128,19 @@ export default {
       form: this.$form.createForm(this),
     }
   },
+
   methods: {
-    // 获取项目列表
-    async onGetProjects() {
+    // 获取字典类型列表
+    async onGetList() {
       try {
         this.state.loading = true
         const res = await this.$api.Dict.getDictList({
-          pageNum:1,
-          pageSize:10
+          pageNum: 1,
+          pageSize: 10,
         })
+
         if (res.success) {
-          console.log(res);
+          console.log(res)
           this.$notification.success({
             message: '成功',
             description: res.message,
@@ -203,10 +192,21 @@ export default {
         }
       })
     },
+
+    // 删除字典类型
+    onDelete(){
+      console.log('删除');
+    },
+
+    // 修改字典类型
+    onUpdate(){
+      console.log('修改');
+    }
   },
+
   mounted() {
-    // 获取项目列表
-    this.onGetProjects()
+    // 获取字典类型列表
+    this.onGetList()
   },
 }
 </script>
