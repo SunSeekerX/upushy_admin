@@ -5,7 +5,14 @@
         <a-button type="primary" icon="plus" @click="state.isCreateShow = true">新建</a-button>
       </div>
 
-      <a-table :columns="columns" :data-source="data" :loading="state.loading" rowKey="id">
+      <a-table
+        :columns="columns"
+        :data-source="data"
+        :loading="state.loading"
+        rowKey="id"
+        :pagination="pagination"
+        @change="pageChange"
+      >
         <span slot="action" slot-scope="{ id }">
           <a-button @click="onUpdate(id)" type="primary">修改数据</a-button>
           <a-button @click="onDelete(id)" type="danger">删除</a-button>
@@ -128,6 +135,12 @@ export default {
         },
       ],
       data: [],
+      pagination: {
+        total: 0,
+        pageSize: 10,
+        defaultCurrent: 1,
+        pageNum: 1,
+      },
       labelCol: {
         xs: { span: 24 },
         sm: { span: 7 },
@@ -213,8 +226,8 @@ export default {
       try {
         this.state.loading = true
         const res = await this.$api.Dict.getDictList({
-          pageNum: 1,
-          pageSize: 10,
+          pageNum: this.pagination.pageNum,
+          pageSize: this.pagination.pageSize,
         })
 
         if (res.success) {
@@ -224,6 +237,7 @@ export default {
           })
 
           this.data = res.data.records
+          this.pagination.total = res.data.total
         } else {
           this.$handleError.handleRequestFail(res.message)
         }
@@ -233,7 +247,10 @@ export default {
         this.state.loading = false
       }
     },
-
+    pageChange(e) {
+      this.pagination.pageNum = e.current
+      this.onGetList()
+    },
     // 创建项目
     async onCreate() {
       try {
@@ -245,7 +262,7 @@ export default {
           })
 
           // 添加数据
-          
+
           // this.data.push(res.data)
         } else {
           this.$handleError.handleRequestFail(res.message)

@@ -6,7 +6,7 @@ export default {
     return request({
       url: '/api/dict/type',
       method: 'GET',
-      data: {
+      params: {
         pageNum,
         pageSize,
       },
