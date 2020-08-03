@@ -3,14 +3,15 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 18:56:42
+ * @LastEditTime: 2020-08-03 19:35:04
 -->
+
 <template>
-  <!-- <a-config-provider :locale="locale"> -->
-  <div id="app">
-    <router-view />
-  </div>
-  <!-- </a-config-provider> -->
+  <a-config-provider :locale="locale">
+    <div id="app">
+      <router-view />
+    </div>
+  </a-config-provider>
 </template>
 
 <script>
