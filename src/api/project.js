@@ -32,4 +32,24 @@ export default {
       },
     })
   },
+  deleteProject({ id }) {
+    return request({
+      url: '/api/project',
+      method: 'DELETE',
+      data: {
+        id
+      },
+    })
+  },
+  updateProject({ id,name,describe }) {
+    return request({
+      url: '/api/project',
+      method: 'PUT',
+      data: {
+        id,
+        name,
+        describe
+      },
+    })
+  },
 }
