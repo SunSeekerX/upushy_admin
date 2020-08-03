@@ -1,6 +1,5 @@
 import Vue from 'vue'
 
-// base library
 import {
   ConfigProvider,
   Layout,
@@ -48,9 +47,7 @@ import {
   notification
 } from 'ant-design-vue'
 
-// ext library
 import Dialog from '@/components/Dialog'
-// import MultiTab from '@/components/MultiTab'
 
 Vue.use(ConfigProvider)
 Vue.use(Layout)
@@ -103,7 +100,4 @@ Vue.prototype.$success = Modal.success
 Vue.prototype.$error = Modal.error
 Vue.prototype.$warning = Modal.warning
 
-// Vue.use(Viser)
 Vue.use(Dialog)
-
-process.env.NODE_ENV !== 'production' && console.warn('[antd-pro] NOTICE: Antd use lazy-load.')

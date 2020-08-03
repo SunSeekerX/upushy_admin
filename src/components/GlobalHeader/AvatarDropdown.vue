@@ -3,27 +3,21 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 22:50:36
+ * @LastEditTime: 2020-08-03 23:49:55
 --> 
 <template>
-  <a-dropdown v-if="currentUser && currentUser.name" placement="bottomRight">
+  <a-dropdown v-if="currentUser && currentUser.nickname" placement="bottomRight">
     <span class="ant-pro-account-avatar">
       <a-avatar
         size="small"
         src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"
         class="antd-pro-global-header-index-avatar"
       />
-      <span>{{ currentUser.name }}</span>
+      <span>{{ currentUser.nickname }}</span>
     </span>
+
     <template v-slot:overlay>
       <a-menu class="ant-pro-drop-down menu" :selected-keys="[]">
-        <!-- <a-menu-item v-if="menu" key="center" @click="handleToCenter">
-          <a-icon type="user" />个人中心
-        </a-menu-item>
-        <a-menu-item v-if="menu" key="settings" @click="handleToSettings">
-          <a-icon type="setting" />个人设置
-        </a-menu-item>
-        <a-menu-divider v-if="menu" /> -->
         <a-menu-item key="logout" @click="handleLogout">
           <a-icon type="logout" />退出登录
         </a-menu-item>
@@ -51,16 +45,10 @@ export default {
     },
   },
   methods: {
-    handleToCenter() {
-      this.$router.push({ path: '/account/center' })
-    },
-    handleToSettings() {
-      this.$router.push({ path: '/account/settings' })
-    },
     handleLogout(e) {
       Modal.confirm({
-        title: this.$t('layouts.usermenu.dialog.title'),
-        content: this.$t('layouts.usermenu.dialog.content'),
+        title: '提示',
+        content: '确定退出登录吗？',
         onOk: () => {
           this.$store.commit('LOGIN_OUT')
 

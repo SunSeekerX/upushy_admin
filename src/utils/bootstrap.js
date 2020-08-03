@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 23:10:28
+ * @LastEditTime: 2020-08-03 23:45:49
  */
 
 import storage from 'store'
@@ -11,6 +11,7 @@ import storage from 'store'
 import store from '@/store'
 import {
   ACCESS_TOKEN,
+  USER_INFO,
   APP_LANGUAGE,
   TOGGLE_CONTENT_WIDTH,
   TOGGLE_FIXED_HEADER,
@@ -35,6 +36,7 @@ export default function Initializer() {
   store.commit(TOGGLE_COLOR, storage.get(TOGGLE_COLOR, defaultSettings.primaryColor))
   store.commit(TOGGLE_MULTI_TAB, storage.get(TOGGLE_MULTI_TAB, defaultSettings.multiTab))
   store.commit('SET_TOKEN', storage.get(ACCESS_TOKEN))
+  store.commit('SET_INFO', storage.get(USER_INFO))
 
   store.dispatch('setLang', storage.get(APP_LANGUAGE, 'en-US'))
 }

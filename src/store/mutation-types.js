@@ -3,10 +3,12 @@
  * @author: SunSeekerX
  * @Date: 2020-07-26 17:49:41
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 23:07:28
+ * @LastEditTime: 2020-08-03 23:45:13
  */
 
 export const ACCESS_TOKEN = 'Access-Token'
+export const USER_INFO = 'User-info'
+
 
 export const SIDEBAR_TYPE = 'sidebar_type'
 export const TOGGLE_MOBILE_TYPE = 'is_mobile'

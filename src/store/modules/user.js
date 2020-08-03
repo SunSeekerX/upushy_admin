@@ -3,19 +3,18 @@
  * @author: SunSeekerX
  * @Date: 2020-07-26 17:49:41
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 23:02:31
+ * @LastEditTime: 2020-08-03 23:49:40
  */
 import storage from 'store'
 
 import { Auth } from '@/api/index'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { ACCESS_TOKEN, USER_INFO } from '@/store/mutation-types'
 import { resetRouter } from '@/router/index'
 
 const user = {
   state: {
     token: '',
-    name: '',
-    avatar: '',
+
     info: {},
   },
 
@@ -23,13 +22,8 @@ const user = {
     SET_TOKEN: (state, token) => {
       state.token = token
     },
-    SET_AVATAR: (state, avatar) => {
-      state.avatar = avatar
-    },
-    SET_ROLES: (state, roles) => {
-      state.roles = roles
-    },
-    SET_INFO: (state, info) => {
+
+    SET_INFO(state, info) {
       state.info = info
     },
 
@@ -50,7 +44,9 @@ const user = {
           .then(res => {
             if (res.success) {
               storage.set(ACCESS_TOKEN, res.data.token, 7 * 24 * 60 * 60 * 1000)
+              storage.set(USER_INFO, res.data.userInfo)
               commit('SET_TOKEN', res.data.token)
+              commit('SET_INFO', res.data.userInfo)
               resolve(res)
             } else {
               reject(res)
