@@ -101,13 +101,14 @@
           :label-col="labelCol"
           :wrapper-col="wrapperCol"
         >
-          <a-form-model-item ref="name" label="字典名" prop="name">
-            <a-input v-model="editForm.name" />
+          <a-form-model-item ref="label" label="字典标签" prop="label">
+            <a-input v-model="editForm.label" />
           </a-form-model-item>
 
-          <a-form-model-item ref="type" label="字典类型" prop="type">
-            <a-input disabled="disabled" v-model="editForm.type" />
+          <a-form-model-item ref="value" label="字典键值" prop="value">
+            <a-input v-model="editForm.value" />
           </a-form-model-item>
+        
 
           <a-form-model-item label="状态" prop="status">
             <a-radio-group v-model="editForm.status">
@@ -116,13 +117,20 @@
             </a-radio-group>
           </a-form-model-item>
 
+          <a-form-model-item label="是否默认" prop="isDefault">
+            <a-radio-group v-model="form.isDefault">
+              <a-radio :value="0">正常</a-radio>
+              <a-radio :value="1">停用</a-radio>
+            </a-radio-group>
+          </a-form-model-item>
+
+          <a-form-model-item ref="sort" label="字典排序" prop="sort">
+            <a-input v-model="editForm.sort" type="tel" />
+          </a-form-model-item>
+
           <a-form-model-item label="备注" prop="remark">
             <a-input v-model="editForm.remark" type="textarea" />
           </a-form-model-item>
-
-          <!-- <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
-            <a-button style="margin-left: 10px;" @click="resetEditForm">重置</a-button>
-          </a-form-model-item>-->
         </a-form-model>
       </a-modal>
     </a-card>
@@ -151,20 +159,20 @@ export default {
       columns: [
         // ID
         {
-          title: 'ID',
+          title: '字典编码',
           dataIndex: 'id',
           key: 'id',
         },
 
         // Name
         {
-          title: '标签',
+          title: '字典标签',
           dataIndex: 'label',
         },
 
         // Type
         {
-          title: '键值',
+          title: '字典键值',
           dataIndex: 'value',
         },
 
@@ -261,12 +269,16 @@ export default {
       editForm: {
         // ID
         id: '',
+        // 字典标签
+        label: '',
         // 字典类型名
-        name: '',
-        // 字典类型名
-        type: '',
+        value: '',
         // 状态（0正常 1停用
         status: 0,
+        // 是否默认（0是 1否）
+        isDefault: 0,
+        // 字典排序
+        sort: 0,
         // 备注
         remark: '',
       },
@@ -389,7 +401,6 @@ export default {
         } else {
           this.$handleError.handleRequestFail(res.message)
         }
-        console.log(res)
       } catch (error) {
         this.$handleError.handleApiRequestException(error)
       } finally {
@@ -413,7 +424,7 @@ export default {
     // 修改项目
     async onEdit() {
       try {
-        const res = await this.$api.Dict.editDictType(this.editForm)
+        const res = await this.$api.Dict.editDictData(this.editForm)
         if (res.success) {
           this.$notification.success({
             message: '成功',
@@ -425,7 +436,6 @@ export default {
         } else {
           this.$handleError.handleRequestFail(res.message)
         }
-        console.log(res)
       } catch (error) {
         this.$handleError.handleApiRequestException(error)
       } finally {
@@ -451,7 +461,6 @@ export default {
         } else {
           this.$handleError.handleRequestFail(res.message)
         }
-        console.log(res)
       } catch (error) {
         this.$handleError.handleApiRequestException(error)
       } finally {

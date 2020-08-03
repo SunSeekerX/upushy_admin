@@ -69,5 +69,15 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ],
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
   }
 }
