@@ -14,7 +14,7 @@ export default {
   },
 
   // 新建字典类型
-  addDict({ type, name, status, remark }) {
+  addDictType({ type, name, status, remark }) {
     return request({
       url: '/api/dict/type',
       method: 'POST',
@@ -28,7 +28,7 @@ export default {
   },
 
   // 删除字典类型
-  removeDict({ id, ids }) {
+  removeDictType({ id, ids }) {
     return request({
       url: '/api/dict/type',
       method: 'DELETE',
@@ -40,7 +40,7 @@ export default {
   },
 
   // 修改字典类型
-  editDict({ id, type, name, status, remark }) {
+  editDictType({ id, type, name, status, remark }) {
     return request({
       url: '/api/dict/type',
       method: 'PUT',
