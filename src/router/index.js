@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 18:49:17
+ * @LastEditTime: 2020-08-03 22:18:24
  */
 
 // eslint-disable-next-line
@@ -26,13 +26,13 @@ export const asyncRouterMap = [
     name: 'index',
     component: BasicLayout,
     meta: { title: 'menu.home' },
-    redirect: '/dashboard/analysis',
+    redirect: '/dashboard/dashboard',
     children: [
       // dashboard
       {
         path: '/dashboard',
         name: 'dashboard',
-        redirect: '/dashboard/analysis',
+        redirect: '/dashboard/dashboard',
         component: RouteView,
         meta: {
           title: 'menu.dashboard',
@@ -42,11 +42,11 @@ export const asyncRouterMap = [
         },
         children: [
           {
-            path: '/dashboard/analysis/:pageNo([1-9]\\d*)?',
-            name: 'Analysis',
-            component: () => import('@/views/dashboard/Analysis'),
+            path: '/dashboard/dashboard',
+            name: 'Dashboard',
+            component: () => import('@/views/dashboard/dashboard'),
             meta: {
-              title: 'menu.dashboard.analysis',
+              title: 'Dashboard',
               keepAlive: false,
               permission: ['dashboard'],
             },
@@ -200,7 +200,7 @@ const createRouter = () =>
   })
 
 const router = createRouter()
-router.addRoutes(asyncRouterMap) 
+router.addRoutes(asyncRouterMap)
 
 export function resetRouter() {
   const newRouter = createRouter()

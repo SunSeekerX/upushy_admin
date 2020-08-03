@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 16:52:56
+ * @LastEditTime: 2020-08-03 22:09:51
  */
 // chart
 import Bar from '@/components/Charts/Bar'
@@ -16,14 +16,12 @@ import MiniProgress from '@/components/Charts/MiniProgress'
 import Radar from '@/components/Charts/Radar'
 import RankList from '@/components/Charts/RankList'
 import TransferBar from '@/components/Charts/TransferBar'
-import TagCloud from '@/components/Charts/TagCloud'
 
 // pro components
 import FooterToolbar from '@/components/FooterToolbar'
 import NumberInfo from '@/components/NumberInfo'
 import Tree from '@/components/Tree/Tree'
 import Trend from '@/components/Trend'
-import STable from '@/components/Table'
 import MultiTab from '@/components/MultiTab'
 
 import Dialog from '@/components/Dialog'
@@ -37,14 +35,12 @@ export {
   MiniBar,
   MiniProgress,
   Radar,
-  TagCloud,
   RankList,
   TransferBar,
   Trend,
   FooterToolbar,
   NumberInfo,
   Tree,
-  STable,
   MultiTab,
   Dialog
 }
