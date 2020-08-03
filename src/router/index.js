@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 18:03:28
+ * @LastEditTime: 2020-08-03 18:49:17
  */
 
 // eslint-disable-next-line
@@ -195,12 +195,12 @@ Vue.use(Router)
 const createRouter = () =>
   new Router({
     scrollBehavior: () => ({ y: 0 }),
-    mode: 'history',
+    // mode: 'history',
     routes: constantRouterMap,
   })
 
 const router = createRouter()
-router.addRoutes(asyncRouterMap)
+router.addRoutes(asyncRouterMap) 
 
 export function resetRouter() {
   const newRouter = createRouter()

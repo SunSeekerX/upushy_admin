@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 17:48:01
+ * @LastEditTime: 2020-08-03 18:49:33
  */
 
 import router from './router'
@@ -16,6 +16,7 @@ import '@/components/NProgress/nprogress.less' // progress bar custom style
 import { setDocumentTitle, domTitle } from '@/utils/domUtil'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { i18nRender } from '@/locales'
+// import { asyncRouterMap } from '@/router/index'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -36,10 +37,9 @@ router.beforeEach(async (to, from, next) => {
       next({ path: defaultRoutePath })
       NProgress.done()
     } else {
-      if (store.state.permission.addRouters.length === 0) {
+      if (store.getters.addRouters.length === 0) {
         store.commit('GENNERAT_ROUTES')
-        
-        // router.addRoutes(store.state.permission.addRouters)
+        // router.addRoutes(asyncRouterMap)
       }
       next()
     }
@@ -48,7 +48,7 @@ router.beforeEach(async (to, from, next) => {
       // 在免登录白名单，直接进入
       next()
     } else {
-      next({ path: loginRoutePath, query: { redirect: to.fullPath } })
+      next({ path: loginRoutePath })
       NProgress.done()
     }
   }

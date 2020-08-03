@@ -18,7 +18,6 @@
     </template>
     
     <!-- <template v-slot:footerRender>
-      <global-footer />
     </template> -->
     <router-view />
   </pro-layout>
@@ -32,7 +31,6 @@ import { SIDEBAR_TYPE, TOGGLE_MOBILE_TYPE } from '@/store/mutation-types'
 
 import defaultSettings from '@/config/defaultSettings'
 import RightContent from '@/components/GlobalHeader/RightContent'
-// import GlobalFooter from '@/components/GlobalFooter'
 import LogoSvg from '../assets/logo.svg?inline'
 
 export default {
@@ -40,7 +38,6 @@ export default {
   components: {
     SettingDrawer,
     RightContent,
-    // GlobalFooter,
   },
   data () {
     return {
