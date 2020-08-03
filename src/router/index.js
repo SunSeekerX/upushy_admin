@@ -1,9 +1,9 @@
 /**
- * @name: 
+ * @name:
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 17:18:32
+ * @LastEditTime: 2020-08-03 18:03:28
  */
 
 // eslint-disable-next-line
@@ -26,13 +26,13 @@ export const asyncRouterMap = [
     name: 'index',
     component: BasicLayout,
     meta: { title: 'menu.home' },
-    redirect: '/dashboard/workplace',
+    redirect: '/dashboard/analysis',
     children: [
       // dashboard
       {
         path: '/dashboard',
         name: 'dashboard',
-        redirect: '/dashboard/workplace',
+        redirect: '/dashboard/analysis',
         component: RouteView,
         meta: {
           title: 'menu.dashboard',
@@ -113,7 +113,12 @@ export const asyncRouterMap = [
             path: '/system/dict',
             name: 'dictHome',
             component: () => import('@/views/sys/dict/Dict'),
-            meta: { title: '数据字典', icon: 'edit',  keepAlive: true, permission: ['user'] },
+            meta: {
+              title: '数据字典',
+              icon: 'edit',
+              keepAlive: true,
+              permission: ['user'],
+            },
           },
           {
             path: '/system/dict-data',
@@ -190,7 +195,6 @@ Vue.use(Router)
 const createRouter = () =>
   new Router({
     scrollBehavior: () => ({ y: 0 }),
-    // mode: 'history',
     mode: 'history',
     routes: constantRouterMap,
   })

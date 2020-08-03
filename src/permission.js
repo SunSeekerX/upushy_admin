@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 10:41:22
+ * @LastEditTime: 2020-08-03 17:48:01
  */
 
 import router from './router'
@@ -38,8 +38,9 @@ router.beforeEach(async (to, from, next) => {
     } else {
       if (store.state.permission.addRouters.length === 0) {
         store.commit('GENNERAT_ROUTES')
+        
+        // router.addRoutes(store.state.permission.addRouters)
       }
-      
       next()
     }
   } else {
