@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-07-27 17:01:46
+ * @LastEditTime: 2020-08-03 16:37:54
 --> 
 <template>
   <a-dropdown v-if="currentUser && currentUser.name" placement="bottomRight">
@@ -17,13 +17,13 @@
     </span>
     <template v-slot:overlay>
       <a-menu class="ant-pro-drop-down menu" :selected-keys="[]">
-        <a-menu-item v-if="menu" key="center" @click="handleToCenter">
+        <!-- <a-menu-item v-if="menu" key="center" @click="handleToCenter">
           <a-icon type="user" />个人中心
         </a-menu-item>
         <a-menu-item v-if="menu" key="settings" @click="handleToSettings">
           <a-icon type="setting" />个人设置
         </a-menu-item>
-        <a-menu-divider v-if="menu" />
+        <a-menu-divider v-if="menu" /> -->
         <a-menu-item key="logout" @click="handleLogout">
           <a-icon type="logout" />退出登录
         </a-menu-item>
