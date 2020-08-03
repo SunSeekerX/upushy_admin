@@ -6,7 +6,7 @@ export default {
     return request({
       url: '/api/dict/type',
       method: 'GET',
-      data: {
+      params: {
         pageNum,
         pageSize,
       },
@@ -55,11 +55,12 @@ export default {
   },
 
   // 获取字典数据列表
-  getDictDataList({ pageNum, pageSize }) {
+  getDictDataList({ dictTypeId, pageNum, pageSize }) {
     return request({
       url: '/api/dict/data',
       method: 'GET',
-      data: {
+      params: {
+        dictTypeId,
         pageNum,
         pageSize,
       },

@@ -3,7 +3,7 @@
  * @author SunSeekerX
  * @time 2019-11-27 15:18:44
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-01 21:17:51
+ * @LastEditTime: 2020-08-03 14:53:49
  */
 
 import notification from 'ant-design-vue/es/notification'
@@ -15,7 +15,6 @@ import notification from 'ant-design-vue/es/notification'
  * @returns void
  */
 function handleApiRequestException(error) {
-  console.log(error)
   // notification['error']({
   //   message: '错误',
   //   description:

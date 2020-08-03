@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-02 19:14:33
+ * @LastEditTime: 2020-08-03 15:31:25
  */
 
 // eslint-disable-next-line
@@ -208,7 +208,14 @@ export const asyncRouterMap = [
             path: '/system/dict',
             name: 'dictHome',
             component: () => import('@/views/sys/dict/Dict'),
-            meta: { title: '数据字典', icon: 'edit', permission: ['user'] },
+            meta: { title: '数据字典', icon: 'edit',  keepAlive: true, permission: ['user'] },
+          },
+          {
+            path: '/system/dict-data',
+            name: 'dictData',
+            hidden: true,
+            component: () => import('@/views/sys/dictData/DictData'),
+            meta: { title: '数据字典详情', icon: 'edit', permission: ['user'] },
           },
         ],
       },

@@ -5,9 +5,16 @@
         <a-button type="primary" icon="plus" @click="state.isCreateShow = true">新建</a-button>
       </div>
 
-      <a-table :columns="columns" :data-source="data" :loading="state.loading" rowKey="id">
-        <span slot="action" slot-scope="{id}">
-          <router-link :to="{ path: `/source/sources/${id}`}">
+      <a-table
+        :columns="columns"
+        :data-source="data"
+        :loading="state.loading"
+        rowKey="id"
+        :pagination="pagination"
+        @change="pageChange"
+      >
+        <span slot="action" slot-scope="{ id }">
+          <router-link :to="{ path: `/source/sources/${id}` }">
             <a-button type="primary">查看资源</a-button>
           </router-link>
         </span>
@@ -29,13 +36,35 @@
 
           <a-form-item label="项目名">
             <a-input
-              v-decorator="['name', {rules: [{required: true, type: 'string', message: '请输入项目名！'}]}]"
+              v-decorator="[
+                'name',
+                {
+                  rules: [
+                    {
+                      required: true,
+                      type: 'string',
+                      message: '请输入项目名！',
+                    },
+                  ],
+                },
+              ]"
             />
           </a-form-item>
 
           <a-form-item label="项目描述">
             <a-input
-              v-decorator="['describe', {rules: [{required: true, min: 5, message: '请输入至少五个字符的规则描述！'}]}]"
+              v-decorator="[
+                'describe',
+                {
+                  rules: [
+                    {
+                      required: true,
+                      min: 5,
+                      message: '请输入至少五个字符的规则描述！',
+                    },
+                  ],
+                },
+              ]"
             />
           </a-form-item>
         </a-form>
@@ -118,6 +147,12 @@ export default {
         // },
       ],
       data: [],
+      pagination: {
+        total: 0,
+        pageSize: 10,
+        defaultCurrent: 1,
+        pageNum:1
+      },
       formLayout: {
         labelCol: {
           xs: { span: 24 },
@@ -136,14 +171,18 @@ export default {
     async onGetProjects() {
       try {
         this.state.loading = true
-        const res = await this.$api.Project.projects()
+        const res = await this.$api.Project.projects({
+          pageNum: this.pagination.pageNum,
+          pageSize: this.pagination.pageSize,
+        })
         if (res.success) {
           this.$notification.success({
             message: '成功',
             description: res.message,
           })
 
-          this.data = res.data
+          this.data = res.data.records
+          this.pagination.total = res.data.total
         } else {
           this.$handleError.handleRequestFail(res.message)
         }
@@ -153,7 +192,10 @@ export default {
         this.state.loading = false
       }
     },
-
+    pageChange(e) {
+      this.pagination.pageNum=e.current
+      this.onGetProjects()
+    },
     // 创建项目
     async onCreateProject({ describe, name }) {
       try {
@@ -197,5 +239,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

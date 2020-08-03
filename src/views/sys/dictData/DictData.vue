@@ -5,6 +5,7 @@
         <a-button type="primary" icon="plus" @click="state.isCreateShow = true">新建</a-button>
       </div>
 
+      <!-- 数据表格 -->
       <a-table
         :columns="columns"
         :data-source="tableData"
@@ -13,17 +14,16 @@
         :pagination="pagination"
         @change="pageChange"
       >
-        <!-- 类型 -->
-        <template slot="type" slot-scope="text, { id, type }">
-          <router-link :to="{ name: 'dictData', query: {id: id}}">{{ type }}</router-link>
-        </template>
-
         <!-- 状态 -->
         <template slot="status" slot-scope="status">
           <a-tag :color="status === 0 ? 'blue' : 'red'">{{ status === 0 ? '正常' : '停用' }}</a-tag>
         </template>
 
-        <!-- 操作 -->
+        <!-- 是否默认 -->
+        <template slot="isDefault" slot-scope="isDefault">
+          <a-tag :color="isDefault === 0 ? 'blue' : 'red'">{{ isDefault === 0 ? '默认' : '否' }}</a-tag>
+        </template>
+
         <template slot="action" slot-scope="{ id }, record, index">
           <a-button @click="onUpdate(record)" type="primary">修改数据</a-button>
 
@@ -49,12 +49,12 @@
           :label-col="labelCol"
           :wrapper-col="wrapperCol"
         >
-          <a-form-model-item ref="name" label="字典名" prop="name">
-            <a-input v-model="form.name" />
+          <a-form-model-item ref="label" label="字典标签" prop="label">
+            <a-input v-model="form.label" />
           </a-form-model-item>
 
-          <a-form-model-item ref="type" label="字典类型" prop="type">
-            <a-input v-model="form.type" />
+          <a-form-model-item ref="value" label="字典键值" prop="value">
+            <a-input v-model="form.value" />
           </a-form-model-item>
 
           <a-form-model-item label="状态" prop="status">
@@ -62,6 +62,17 @@
               <a-radio :value="0">正常</a-radio>
               <a-radio :value="1">停用</a-radio>
             </a-radio-group>
+          </a-form-model-item>
+
+          <a-form-model-item label="是否默认" prop="isDefault">
+            <a-radio-group v-model="form.isDefault">
+              <a-radio :value="0">正常</a-radio>
+              <a-radio :value="1">停用</a-radio>
+            </a-radio-group>
+          </a-form-model-item>
+
+          <a-form-model-item ref="sort" label="字典排序" prop="sort">
+            <a-input v-model="form.sort" type="tel" />
           </a-form-model-item>
 
           <a-form-model-item label="备注" prop="remark">
@@ -124,6 +135,8 @@ export default {
 
   data() {
     return {
+      dictTypeId: '',
+
       state: {
         loading: false,
 
@@ -134,24 +147,25 @@ export default {
         // 修改是否加载
         isEditLoading: false,
       },
+
       columns: [
         // ID
         {
           title: 'ID',
           dataIndex: 'id',
+          key: 'id',
         },
 
         // Name
         {
-          title: '字典名',
-          dataIndex: 'name',
+          title: '标签',
+          dataIndex: 'label',
         },
 
         // Type
         {
-          title: '字典类型',
-          dataIndex: 'type',
-          scopedSlots: { customRender: 'type' },
+          title: '键值',
+          dataIndex: 'value',
         },
 
         // Status
@@ -159,6 +173,13 @@ export default {
           title: '状态',
           dataIndex: 'status',
           scopedSlots: { customRender: 'status' },
+        },
+
+        // Status
+        {
+          title: '是否默认',
+          dataIndex: 'isDefault',
+          scopedSlots: { customRender: 'isDefault' },
         },
 
         // Remark
@@ -189,21 +210,26 @@ export default {
           scopedSlots: { customRender: 'action' },
         },
       ],
+
       tableData: [],
+
       pagination: {
         total: 0,
         pageSize: 10,
         defaultCurrent: 1,
         pageNum: 1,
       },
+
       labelCol: {
         xs: { span: 24 },
         sm: { span: 7 },
       },
+
       wrapperCol: {
         xs: { span: 24 },
         sm: { span: 13 },
       },
+      
       formLayout: {
         labelCol: {
           xs: { span: 24 },
@@ -217,12 +243,16 @@ export default {
 
       // 新增表格
       form: {
+        // 字典标签
+        label: '',
         // 字典类型名
-        name: '',
-        // 字典类型名
-        type: '',
+        value: '',
         // 状态（0正常 1停用
         status: 0,
+        // 是否默认（0是 1否）
+        isDefault: 0,
+        // 字典排序
+        sort: 0,
         // 备注
         remark: '',
       },
@@ -242,7 +272,7 @@ export default {
       },
 
       rules: {
-        name: [
+        label: [
           {
             required: true,
             message: '请输入字典类型名',
@@ -255,7 +285,7 @@ export default {
             trigger: 'blur',
           },
         ],
-        type: [
+        value: [
           {
             required: true,
             message: '请输入字典类型',
@@ -272,6 +302,13 @@ export default {
           {
             required: true,
             message: '请选择状态',
+            trigger: 'change',
+          },
+        ],
+        isDefault: [
+          {
+            required: true,
+            message: '请选择是否默认',
             trigger: 'change',
           },
         ],
@@ -293,11 +330,12 @@ export default {
   },
 
   methods: {
-    // 获取字典类型列表
+    // 获取数据
     async onGetList() {
       try {
         this.state.loading = true
-        const res = await this.$api.Dict.getDictList({
+        const res = await this.$api.Dict.getDictDataList({
+          dictTypeId: this.dictTypeId,
           pageNum: this.pagination.pageNum,
           pageSize: this.pagination.pageSize,
         })
@@ -314,6 +352,7 @@ export default {
         this.state.loading = false
       }
     },
+
     pageChange(e) {
       this.pagination.pageNum = e.current
       this.onGetList()
@@ -335,16 +374,18 @@ export default {
     // 创建项目
     async onCreate() {
       try {
-        const res = await this.$api.Dict.addDictType(this.form)
+        const res = await this.$api.Dict.addDictData({
+          ...this.form,
+          dictTypeId: this.dictTypeId,
+        })
         if (res.success) {
           this.$notification.success({
             message: '成功',
             description: res.message,
           })
 
-          // 添加数据
+          // 获取数据
           this.onGetList()
-          // this.tableData.push(res.data)
         } else {
           this.$handleError.handleRequestFail(res.message)
         }
@@ -395,9 +436,8 @@ export default {
 
     // 删除字典类型
     async onDelete(id, index) {
-      console.log(id)
       try {
-        const res = await this.$api.Dict.removeDictType({
+        const res = await this.$api.Dict.removeDictData({
           id: id,
         })
 
@@ -437,6 +477,7 @@ export default {
   },
 
   mounted() {
+    this.dictTypeId = this.$route.query.id
     // 获取字典类型列表
     this.onGetList()
   },

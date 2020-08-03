@@ -10,10 +10,14 @@ import { request } from '@/utils/request/index'
 
 export default {
   // 项目列表
-  projects() {
+  projects({pageNum,pageSize}) {
     return request({
       url: '/api/projects',
       method: 'GET',
+      params:{
+        pageNum,
+        pageSize
+      }
     })
   },
 
