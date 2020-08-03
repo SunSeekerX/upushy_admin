@@ -5,11 +5,19 @@
         <a-button type="primary" icon="plus" @click="state.isCreateShow = true">新建</a-button>
       </div>
 
-      <a-table :columns="columns" :data-source="data" :loading="state.loading" rowKey="id">
-        <span slot="action" slot-scope="{ id }">
+      <a-table :columns="columns" :data-source="tableData" :loading="state.loading" rowKey="id">
+        <!-- 状态 -->
+        <template slot="status" slot-scope="status">
+          <a-tag :color="status === 0 ? 'blue' : 'red'">{{ status === 0 ? '正常' : '停用' }}</a-tag>
+        </template>
+
+        <template slot="action" slot-scope="{ id }, record, index">
           <a-button @click="onUpdate(id)" type="primary">修改数据</a-button>
-          <a-button @click="onDelete(id)" type="danger">删除</a-button>
-        </span>
+
+          <a-popconfirm title="确定删除?" ok-text="确定" cancel-text="取消" @confirm="onDelete(id, index)">
+            <a-button type="danger">删除</a-button>
+          </a-popconfirm>
+        </template>
       </a-table>
 
       <!-- 新建 -->
@@ -79,55 +87,54 @@ export default {
 
         // Name
         {
-          title: 'Name',
+          title: '字典名',
           dataIndex: 'name',
           key: 'name',
         },
 
         // Type
         {
-          title: 'Type',
+          title: '字典类型',
           dataIndex: 'type',
           key: 'type',
         },
 
         // Status
         {
-          title: 'Status',
+          title: '状态',
           dataIndex: 'status',
-          key: 'status',
+          scopedSlots: { customRender: 'status' },
         },
 
         // Remark
         {
-          title: 'Remark',
+          title: '备注',
           dataIndex: 'remark',
           key: 'remark',
         },
 
         // CreatedTime
         {
-          title: 'CreatedTime',
+          title: '创建时间',
           dataIndex: 'createdTime',
           key: 'createdTime',
         },
 
         // UpdatedTime
         {
-          title: 'UpdatedTime',
+          title: '修改时间',
           dataIndex: 'updatedTime',
           key: 'updatedTime',
         },
 
         // Action
         {
-          title: 'Action',
-          key: 'action',
+          title: '操作',
           fixed: 'right',
           scopedSlots: { customRender: 'action' },
         },
       ],
-      data: [],
+      tableData: [],
       labelCol: {
         xs: { span: 24 },
         sm: { span: 7 },
@@ -223,7 +230,7 @@ export default {
             description: res.message,
           })
 
-          this.data = res.data.records
+          this.tableData = res.data.records
         } else {
           this.$handleError.handleRequestFail(res.message)
         }
@@ -245,8 +252,8 @@ export default {
           })
 
           // 添加数据
-          
-          // this.data.push(res.data)
+
+          this.tableData.push(res.data)
         } else {
           this.$handleError.handleRequestFail(res.message)
         }
@@ -273,8 +280,29 @@ export default {
     },
 
     // 删除字典类型
-    onDelete() {
-      console.log('删除')
+    async onDelete(id, index) {
+      console.log(id);
+      try {
+        const res = await this.$api.Dict.removeDictType({
+          id: id,
+        })
+
+        if (res.success) {
+          this.$notification.success({
+            message: '成功',
+            description: res.message,
+          })
+
+          this.tableData.splice(index, 1)
+        } else {
+          this.$handleError.handleRequestFail(res.message)
+        }
+        console.log(res)
+      } catch (error) {
+        this.$handleError.handleApiRequestException(error)
+      } finally {
+        this.state.isCreateLoading = false
+      }
     },
 
     // 修改字典类型
