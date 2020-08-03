@@ -1,7 +1,12 @@
-import UserLayout from './UserLayout'
-import BlankLayout from './BlankLayout'
-import BasicLayout from './BasicLayout'
-import RouteView from './RouteView'
-import PageView from './PageView'
+/**
+ * @name: 
+ * @author: SunSeekerX
+ * @Date: 2020-07-26 17:49:41
+ * @LastEditors: SunSeekerX
+ * @LastEditTime: 2020-08-03 23:30:43
+ */
 
-export { UserLayout, BasicLayout, BlankLayout, RouteView, PageView }
+import UserLayout from './UserLayout'
+import BasicLayout from './BasicLayout'
+
+export { UserLayout, BasicLayout }

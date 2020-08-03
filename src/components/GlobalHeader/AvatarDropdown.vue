@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 16:37:54
+ * @LastEditTime: 2020-08-03 22:50:36
 --> 
 <template>
   <a-dropdown v-if="currentUser && currentUser.name" placement="bottomRight">
@@ -65,9 +65,6 @@ export default {
           this.$store.commit('LOGIN_OUT')
 
           this.$router.push({ name: 'login' })
-          // return this.$store.dispatch('Logout').then(() => {
-          //   this.$router.push({ name: 'login' })
-          // })
         },
         onCancel() {},
       })

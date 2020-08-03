@@ -1,3 +1,11 @@
+/**
+ * @name: 
+ * @author: SunSeekerX
+ * @Date: 2020-07-26 17:49:41
+ * @LastEditors: SunSeekerX
+ * @LastEditTime: 2020-08-03 23:07:28
+ */
+
 export const ACCESS_TOKEN = 'Access-Token'
 
 export const SIDEBAR_TYPE = 'sidebar_type'
@@ -12,13 +20,3 @@ export const TOGGLE_COLOR = 'color'
 export const TOGGLE_WEAK = 'weak'
 export const TOGGLE_MULTI_TAB = 'multi_tab'
 export const APP_LANGUAGE = 'app_language'
-
-export const CONTENT_WIDTH_TYPE = {
-  Fluid: 'Fluid',
-  Fixed: 'Fixed'
-}
-
-export const NAV_THEME = {
-  LIGHT: 'light',
-  DARK: 'dark'
-}

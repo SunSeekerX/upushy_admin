@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 22:09:51
+ * @LastEditTime: 2020-08-03 23:25:25
  */
 // chart
 import Bar from '@/components/Charts/Bar'
@@ -18,11 +18,10 @@ import RankList from '@/components/Charts/RankList'
 import TransferBar from '@/components/Charts/TransferBar'
 
 // pro components
-import FooterToolbar from '@/components/FooterToolbar'
-import NumberInfo from '@/components/NumberInfo'
-import Tree from '@/components/Tree/Tree'
-import Trend from '@/components/Trend'
-import MultiTab from '@/components/MultiTab'
+// import FooterToolbar from '@/components/FooterToolbar'
+// import Tree from '@/components/Tree/Tree'
+// import Trend from '@/components/Trend'
+// import MultiTab from '@/components/MultiTab'
 
 import Dialog from '@/components/Dialog'
 
@@ -37,10 +36,9 @@ export {
   Radar,
   RankList,
   TransferBar,
-  Trend,
-  FooterToolbar,
-  NumberInfo,
-  Tree,
-  MultiTab,
+  // Trend,
+  // FooterToolbar,
+  // Tree,
+  // MultiTab,
   Dialog
 }

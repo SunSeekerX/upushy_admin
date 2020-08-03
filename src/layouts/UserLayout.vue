@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { deviceMixin } from '@/store/device-mixin'
+import { deviceMixin } from '@/utils/mixin/device-mixin'
 
 export default {
   name: 'UserLayout',

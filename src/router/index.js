@@ -3,10 +3,9 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 22:18:24
+ * @LastEditTime: 2020-08-03 23:27:34
  */
 
-// eslint-disable-next-line
 import Vue from 'vue'
 import Router from 'vue-router'
 
@@ -152,20 +151,17 @@ export const constantRouterMap = [
       {
         path: 'login',
         name: 'login',
-        component: () =>
-          import(/* webpackChunkName: "user" */ '@/views/user/Login'),
+        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Login'),
       },
       {
         path: 'register',
         name: 'register',
-        component: () =>
-          import(/* webpackChunkName: "user" */ '@/views/user/Register'),
+        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Register'),
       },
       {
         path: 'register-result',
         name: 'registerResult',
-        component: () =>
-          import(/* webpackChunkName: "user" */ '@/views/user/RegisterResult'),
+        component: () => import(/* webpackChunkName: "user" */ '@/views/user/RegisterResult'),
       },
       {
         path: 'recover',
@@ -177,16 +173,14 @@ export const constantRouterMap = [
 
   {
     path: '/404',
-    component: () =>
-      import(/* webpackChunkName: "fail" */ '@/views/exception/404'),
+    component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/404'),
   },
 ]
 
 // hack router push callback
 const originalPush = Router.prototype.push
 Router.prototype.push = function push(location, onResolve, onReject) {
-  if (onResolve || onReject)
-    return originalPush.call(this, location, onResolve, onReject)
+  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
   return originalPush.call(this, location).catch(err => err)
 }
 
