@@ -2,7 +2,7 @@
   <page-header-wrapper>
     <a-card :bordered="false">
       <div class="table-operator">
-        <a-button type="primary" icon="plus" @click="state.isCreateShow = true">新建</a-button>
+        <a-button type="primary" icon="plus" @click="createProject">新建</a-button>
       </div>
 
       <a-table
@@ -155,6 +155,7 @@ export default {
         describe: '',
         id: '',
       },
+      type:'',
       data: [],
       pagination: {
         total: 0,
@@ -243,12 +244,16 @@ export default {
         this.$handleError.handleApiRequestException(error)
       }
     },
+    createProject(){
+      this.state.isCreateShow=true
+      this.type='create'
+    },
     update(id,name,describe){
       this.state.isCreateShow=true
       this.editForm.id=id
       this.editForm.name=name
       this.editForm.describe=describe
-      this.updateData()
+      this.type='update'
     },
     // 创建项目
     async onCreateProject() {
@@ -281,7 +286,11 @@ export default {
       // console.log(this.$refs)
       this.$refs.editForm.validate(valid => {
         if (valid) {
-          this.onCreateProject()
+          if(this.type==='create'){
+            this.onCreateProject()
+          }else{
+            this.updateData()
+          }
         } else {
           this.state.isCreateLoading = false
         }
