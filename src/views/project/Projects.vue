@@ -72,33 +72,25 @@ export default {
         {
           title: 'ID',
           dataIndex: 'id',
-          key: 'id',
         },
         {
-          title: 'Name',
+          title: '项目名称',
           dataIndex: 'name',
-          key: 'name',
         },
         {
-          title: 'Describe',
+          title: '项目描述',
           dataIndex: 'describe',
-          key: 'describe',
         },
         {
-          title: 'CreatedTime',
+          title: '创建时间',
           dataIndex: 'createdTime',
-          key: 'createdTime',
         },
         {
-          title: 'UpdatedTime',
+          title: '修改时间',
           dataIndex: 'updatedTime',
-          key: 'updatedTime',
         },
         {
-          // dataIndex: 'name',
-          key: 'action',
-          title: 'Action',
-          // slots: { title: 'customTitle' },
+          title: '操作',
           scopedSlots: { customRender: 'action' },
         },
         // {
@@ -193,11 +185,6 @@ export default {
           pageSize: this.pagination.pageSize,
         })
         if (res.success) {
-          this.$notification.success({
-            message: '成功',
-            description: res.message,
-          })
-
           this.data = res.data.records
           this.pagination.total = res.data.total
         } else {

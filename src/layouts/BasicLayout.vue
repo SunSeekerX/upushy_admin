@@ -21,8 +21,9 @@
       />
     </template>
 
-    <!-- <template v-slot:footerRender>
-    </template>-->
+    <template v-slot:footerRender>
+      <div></div>
+    </template>
     <router-view />
   </pro-layout>
 </template>
@@ -45,10 +46,6 @@ export default {
   },
   data() {
     return {
-      // preview.pro.antdv.com only use.
-      isProPreviewSite: process.env.VUE_APP_PREVIEW === 'true' && process.env.NODE_ENV !== 'development',
-      // end
-
       // base
       menus: [],
       // 侧栏收起状态

@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 23:49:55
+ * @LastEditTime: 2020-08-04 09:16:22
 --> 
 <template>
   <a-dropdown v-if="currentUser && currentUser.nickname" placement="bottomRight">
@@ -51,6 +51,8 @@ export default {
         content: '确定退出登录吗？',
         onOk: () => {
           this.$store.commit('LOGIN_OUT')
+          
+          this.$store.commit('RESET_ROUTER')
 
           this.$router.push({ name: 'login' })
         },

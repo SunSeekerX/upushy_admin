@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-26 17:49:41
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 23:47:37
+ * @LastEditTime: 2020-08-04 09:17:45
  */
 
 import Vue from 'vue'
@@ -27,9 +27,7 @@ export default new Vuex.Store({
     theme: state => state.app.theme,
     color: state => state.app.color,
     token: state => state.user.token,
-    avatar: state => state.user.avatar,
     userInfo: state => state.user.info,
     addRouters: state => state.permission.addRouters,
-    multiTab: state => state.app.multiTab,
   },
 })

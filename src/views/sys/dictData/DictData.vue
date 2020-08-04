@@ -21,7 +21,7 @@
 
         <!-- 是否默认 -->
         <template slot="isDefault" slot-scope="isDefault">
-          <a-tag :color="isDefault === 0 ? 'blue' : 'red'">{{ isDefault === 0 ? '默认' : '否' }}</a-tag>
+          <a-tag :color="isDefault === 0 ? 'blue' : 'red'">{{ isDefault === 0 ? '是' : '否' }}</a-tag>
         </template>
 
         <template slot="action" slot-scope="{ id }, record, index">
@@ -66,8 +66,8 @@
 
           <a-form-model-item label="是否默认" prop="isDefault">
             <a-radio-group v-model="form.isDefault">
-              <a-radio :value="0">正常</a-radio>
-              <a-radio :value="1">停用</a-radio>
+              <a-radio :value="0">是</a-radio>
+              <a-radio :value="1">否</a-radio>
             </a-radio-group>
           </a-form-model-item>
 
@@ -118,9 +118,9 @@
           </a-form-model-item>
 
           <a-form-model-item label="是否默认" prop="isDefault">
-            <a-radio-group v-model="form.isDefault">
-              <a-radio :value="0">正常</a-radio>
-              <a-radio :value="1">停用</a-radio>
+            <a-radio-group v-model="editForm.isDefault">
+              <a-radio :value="0">是</a-radio>
+              <a-radio :value="1">否</a-radio>
             </a-radio-group>
           </a-form-model-item>
 
