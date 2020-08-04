@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-28 09:28:09
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-04 15:32:18
+ * @LastEditTime: 2020-08-04 18:15:29
 -->
 
 <template>
@@ -11,6 +11,7 @@
     <a-card :bordered="false">
       <div class="table-operator">
         <a-button type="primary" icon="plus" @click="state.isCreateShow = true">新建</a-button>
+
         <a-select default-value="wgt" style="width: 120px" @change="selectChange">
           <a-select-option value="wgt">wgt</a-select-option>
           <a-select-option value="android">android</a-select-option>
@@ -28,8 +29,7 @@
         @change="pageChange"
       >
         <!-- url -->
-        <!-- <a-tag slot="url" slot-scope="url" color="blue">{{ onFormatUrl(url) }}</a-tag> -->
-        <span slot="url" slot-scope="url">{{ onFormatUrl(url) }}</span>
+        <span slot="url" slot-scope="url">{{ handleFormatUrl(url) }}</span>
 
         <!-- 整包更新 -->
         <span slot="isFullUpdated" slot-scope="isFullUpdated">{{ isFullUpdated === 0 ? '否' : '是' }}</span>
@@ -53,7 +53,7 @@
         </template>
       </a-table>
 
-      <!-- 新建资源 -->
+      <!-- 新建 -->
       <a-modal
         title="新建资源"
         :width="640"
@@ -62,168 +62,69 @@
         @ok="onConfirm"
         @cancel="state.isCreateShow = false"
       >
-        <a-form :form="form" v-bind="formLayout">
-          <!-- 检查是否有 id 并且大于0，大于0是修改。其他是新增，新增不显示主键ID -->
-          <!-- <a-form-item v-show="model && model.id > 0" label="主键ID">
-              <a-input v-decorator="['id', { initialValue: 0 }]" disabled />
-          </a-form-item>-->
-          <a-form-item label="项目ID">
+        <a-form-model
+          ref="createForm"
+          :model="form"
+          :rules="rules"
+          :label-col="labelCol"
+          :wrapper-col="wrapperCol"
+        >
+          <a-form-model-item ref="projectId" label="项目ID" prop="projectId">
+            <a-input disabled v-model="form.projectId" prop="projectId" />
+          </a-form-model-item>
+
+          <a-form-model-item ref="version" label="版本" prop="version">
+            <a-input v-model="form.version" />
+          </a-form-model-item>
+
+          <a-form-model-item ref="versionCode" label="版本号" prop="versionCode">
             <a-input
-              disabled
-              v-decorator="[
-                'projectId',
-                {
-                  rules: [
-                    {
-                      required: true,
-                      type: 'string',
-                      message: '请输入项目ID！',
-                    },
-                  ],
-                  initialValue: id,
-                },
-              ]"
+              @change="e => form.versionCode = Number(e.target.value.replace(/\D/g, ''))"
+              v-model="form.versionCode"
             />
-          </a-form-item>
+          </a-form-model-item>
 
-          <a-form-item label="版本">
-            <a-input
-              v-decorator="[
-                'version',
-                {
-                  rules: [
-                    { required: true, type: 'string', message: '请输入版本！' },
-                  ],
-                },
-              ]"
-            />
-          </a-form-item>
+          <a-form-model-item ref="remark" label="备注" prop="remark">
+            <a-textarea v-model="form.remark" />
+          </a-form-model-item>
 
-          <a-form-item label="版本号">
-            <a-input
-              type="tel"
-              inputmode="numeric"
-              @change="
-                e => (e.target.value = e.target.value.replace(/\D/g, ''))
-              "
-              v-decorator="[
-                'versionCode',
-                {
-                  rules: [
-                    {
-                      required: true,
-                      type: 'integer',
-                      transform: val => Number(val),
-                      message: '请输入正确的版本号！',
-                    },
-                  ],
-                },
-              ]"
-            />
-          </a-form-item>
-
-          <a-form-item label="备注">
-            <a-textarea
-              v-decorator="[
-                'remark',
-                {
-                  rules: [
-                    { required: true, type: 'string', message: '请输入备注！' },
-                  ],
-                },
-              ]"
-            />
-          </a-form-item>
-
-          <a-form-item label="是否强制更新">
-            <a-radio-group
-              v-decorator="[
-                'isForceUpdate',
-                {
-                  initialValue: 0,
-                  rules: [
-                    {
-                      required: true,
-                      message: '请选择是否强制更新！',
-                    },
-                  ],
-                },
-              ]"
-            >
+          <a-form-model-item label="是否强制更新" prop="isForceUpdate">
+            <a-radio-group v-model="form.isForceUpdate">
               <a-radio :value="0">否</a-radio>
               <a-radio :value="1">是</a-radio>
             </a-radio-group>
-          </a-form-item>
+          </a-form-model-item>
 
-          <a-form-item label="是否整包更新">
-            <a-radio-group
-              v-decorator="[
-                'isFullUpdated',
-                {
-                  initialValue: 0,
-                  rules: [
-                    {
-                      required: true,
-                      message: '请选择是否强制更新！',
-                    },
-                  ],
-                },
-              ]"
-            >
+          <a-form-model-item label="是否整包更新" prop="isFullUpdated">
+            <a-radio-group v-model="form.isFullUpdated">
               <a-radio :value="0">否</a-radio>
               <a-radio :value="1">是</a-radio>
             </a-radio-group>
-          </a-form-item>
-          <a-form-item label="类型">
-            <a-select
-              default-value="0"
-              style="width: 120px"
-              v-decorator="[
-                'type',
-                {
-                  initialValue: 0,
-                  rules: [
-                    {
-                      required: true,
-                      message: '请选择类型！',
-                    },
-                  ],
-                },
-              ]"
-            >
+          </a-form-model-item>
+
+          <a-form-model-item label="类型" prop="type">
+            <a-select v-model="form.type">
               <a-select-option :value="0">wgt</a-select-option>
               <a-select-option :value="1">android</a-select-option>
               <a-select-option :value="2">ios</a-select-option>
             </a-select>
-          </a-form-item>
-          <!-- 这里设置为another解决点击label触发input -->
-          <a-form-item label="资源包" for="another">
-            <div>
-              <a-upload
-                v-decorator="[
-                  'url',
-                  {
-                    valuePropName: 'file',
-                    getValueFromEvent: normFile,
-                    rules: [
-                      {
-                        required: true,
-                        message: '请上传资源包！',
-                      },
-                    ],
-                  },
-                ]"
-                name="file"
-                :action="uploadAcrion"
-                @change="handleChange"
-              >
-                <a-button :disabled="fileList.length > 0">
-                  <a-icon type="upload" />点击上传资源
-                </a-button>
-              </a-upload>
-            </div>
-          </a-form-item>
-        </a-form>
+          </a-form-model-item>
+
+          <a-form-model-item label="资源包" prop="url">
+            <a-upload
+              name="file"
+              accept=".wgt, .apk"
+              :headers="headers"
+              :action="uploadAcrion"
+              @change="handleChange"
+              :remove="onRemoveFile"
+            >
+              <a-button :disabled="fileList.length > 0">
+                <a-icon type="upload" />点击上传资源
+              </a-button>
+            </a-upload>
+          </a-form-model-item>
+        </a-form-model>
       </a-modal>
 
       <!-- 编辑资源 -->
@@ -236,9 +137,9 @@
         @cancel="state.isEditFormShow = false"
       >
         <a-form-model
-          ref="ruleForm"
+          ref="editForm"
           :model="editForm"
-          :rules="editFormRules"
+          :rules="rules"
           :label-col="labelCol"
           :wrapper-col="wrapperCol"
         >
@@ -251,7 +152,7 @@
           </a-form-model-item>
 
           <a-form-model-item label="版本号" prop="versionCode">
-            <a-input v-model="editForm.versionCode" />
+            <a-input @change="e => editForm.versionCode = Number(e.target.value.replace(/\D/g, ''))" v-model="editForm.versionCode" />
           </a-form-model-item>
 
           <a-form-model-item label="备注" prop="remark">
@@ -271,35 +172,17 @@
               <a-radio :value="1">是</a-radio>
             </a-radio-group>
           </a-form-item>
+
           <a-form-item label="类型">
-            <a-select
-              :default-value="String(editType)"
-              style="width: 120px"
-              @change="(e)=>{editForm.type=e}"
-            >
-              <a-select-option value="0">wgt</a-select-option>
-              <a-select-option value="1">android</a-select-option>
-              <a-select-option value="2">ios</a-select-option>
+            <a-select v-model="editForm.type">
+              <a-select-option :value="0">wgt</a-select-option>
+              <a-select-option :value="1">android</a-select-option>
+              <a-select-option :value="2">ios</a-select-option>
             </a-select>
           </a-form-item>
           <a-form-item label="资源包地址" prop="url">
             <a-input v-model="editForm.url" disabled="disabled" />
           </a-form-item>
-
-          <!-- <a-form-item label="资源包" prop="url">
-            <div>
-              <a-upload
-                name="file"
-                :action="uploadAcrion"
-                @change="handleChange"
-                :defaultFileList="editFileList"
-              >
-                <a-button :disabled="fileList.length > 0">
-                  <a-icon type="upload" />点击上传资源
-                </a-button>
-              </a-upload>
-            </div>
-          </a-form-item>-->
         </a-form-model>
       </a-modal>
     </a-card>
@@ -307,25 +190,25 @@
 </template>
 
 <script>
+import storage from 'store'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
+
 export default {
   name: 'BasicSource',
   data() {
     return {
-      // 项目id
-      id: '',
       state: {
         // 表格是否加载
         isTableLoading: false,
-
         // 创建表格是否显示
         isCreateShow: false,
+        // 创建按钮是否加载
         isCreateLoading: false,
-
         // 修改表格是否显示
         isEditFormShow: false,
+        // 编辑是否加载
         isEditLoading: false,
       },
-
       // 表头
       tableColumns: [
         // ID
@@ -391,7 +274,6 @@ export default {
           fixed: 'right',
         },
       ],
-
       // 表格数据
       tableData: [],
       fileList: [],
@@ -403,28 +285,79 @@ export default {
       },
       // 编辑的行数据
       editForm: {},
-      editFileList: [],
       sourcesType: 0,
-      editType: 0,
       editFormRules: {},
-      labelCol: { xs: { span: 24 }, sm: { span: 7 } },
-      wrapperCol: { xs: { span: 24 }, sm: { span: 13 } },
-
       // 上传文件地址
       uploadAcrion: `${process.env.VUE_APP_API_BASE_URL}/api/upload`,
-
-      formLayout: {
-        labelCol: {
-          xs: { span: 24 },
-          sm: { span: 7 },
-        },
-        wrapperCol: {
-          xs: { span: 24 },
-          sm: { span: 13 },
-        },
+      labelCol: { xs: { span: 24 }, sm: { span: 7 } },
+      wrapperCol: { xs: { span: 24 }, sm: { span: 13 } },
+      // 新增表格
+      form: {
+        // 项目ID
+        projectId: '',
+        // 版本
+        version: '',
+        // 版本号
+        versionCode: '',
+        // 备注
+        remark: '',
+        // 是否强制更新
+        isForceUpdate: 0,
+        // 是否强制更新
+        isFullUpdated: 0,
+        // 类型
+        type: 0,
+        // 资源包
+        url: '',
       },
-
-      form: this.$form.createForm(this),
+      // 新增表格rules
+      rules: {
+        projectId: [
+          {
+            required: true,
+            type: 'number',
+            message: '请输入项目ID！',
+          },
+        ],
+        version: [{ required: true, type: 'string', message: '请输入版本！' }],
+        versionCode: [
+          {
+            required: true,
+            type: 'integer',
+            message: '请输入正确的版本号！',
+          },
+        ],
+        remark: [{ required: true, type: 'string', message: '请输入备注！' }],
+        isForceUpdate: [
+          {
+            required: true,
+            message: '请选择是否强制更新！',
+          },
+        ],
+        isFullUpdated: [
+          {
+            required: true,
+            message: '请选择是否整包更新！',
+          },
+        ],
+        type: [
+          {
+            required: true,
+            message: '请选择类型！',
+            trigger: 'change',
+          },
+        ],
+        url: [
+          {
+            required: true,
+            message: '请上传资源包！',
+          },
+        ],
+      },
+      // 上传文件header
+      headers: {
+        Authorization: `Bearer ${storage.get(ACCESS_TOKEN)}`,
+      },
     }
   },
   methods: {
@@ -433,16 +366,12 @@ export default {
       try {
         this.state.isTableLoading = true
         const res = await this.$api.Source.sources({
-          id: this.id,
+          id: this.form.projectId,
           type: this.sourcesType,
           pageNum: this.pagination.pageNum,
           pageSize: this.pagination.pageSize,
         })
         if (res.success) {
-          this.$notification.success({
-            message: '成功',
-            description: res.message,
-          })
           this.tableData = res.data.records
           this.pagination.total = res.data.total
         } else {
@@ -455,25 +384,17 @@ export default {
       }
     },
 
-    // 创建项目
-    async onCreateSource({ projectId, version, versionCode, url, isForceUpdate, isFullUpdated, remark, type }) {
+    // 创建
+    async onCreateSource() {
       try {
-        const res = await this.$api.Source.createSource({
-          projectId,
-          version,
-          versionCode,
-          url,
-          isForceUpdate,
-          isFullUpdated,
-          remark,
-          type
-        })
+        this.state.isCreateLoading = true
+        const res = await this.$api.Source.createSource(this.form)
         if (res.success) {
           this.$notification.success({
             message: '成功',
             description: res.message,
           })
-          this.state.isCreateShow=false
+          this.state.isCreateShow = false
           this.state.isCreateLoading = false
           // 添加数据
           this.tableData.push(res.data)
@@ -489,14 +410,15 @@ export default {
 
     // 新建资源确认
     onConfirm() {
-      this.form.validateFields((errors, values) => {
-        if (!errors) {
-          this.onCreateSource(values)
+      this.$refs.createForm.validate(valid => {
+        if (valid) {
+          this.onCreateSource()
         } else {
           this.state.isCreateLoading = false
         }
       })
     },
+
     selectChange(e) {
       if (e === 'android') {
         this.sourcesType = 1
@@ -509,18 +431,13 @@ export default {
         this.onGetSources()
       }
     },
-    normFile(e) {
-      if (e.fileList.length && e.fileList[0].response) {
-        return e.fileList[0].response.data.customName
-      } else {
-        return ''
-      }
-    },
 
+    // 文件上传状态发生变化
     handleChange(info) {
       const status = info.file.status
 
       if (status === 'done') {
+        this.form.url = info.fileList[0].response.data.customName
         this.$message.success(`${info.file.name} 上传成功。`)
       } else if (status === 'error') {
         this.$message.error(`${info.file.name} 上传失败。`)
@@ -529,47 +446,60 @@ export default {
       this.fileList = info.fileList
     },
 
-    onFormatUrl(url) {
+    // 移除上传的文件
+    onRemoveFile() {
+      this.form.url = ''
+      return true
+    },
+
+    handleFormatUrl(url) {
       return `${process.env.VUE_APP_OSS_BASE_URL}/${url}`
     },
+
     pageChange(e) {
       this.pagination.pageNum = e.current
       this.onGetSources()
     },
+
     // 点击编辑
     onEdit(record) {
-      this.editFileList = []
-      // this.form.setFieldsValue(pick(record, fields))
-      this.editFileList.push({
-        url: record.url,
-      })
-      this.editForm = record
+      // 合并编辑项
+      this.editForm = Object.assign({}, record)
+      // 显示编辑modal
       this.state.isEditFormShow = true
-      this.editType=record.type
     },
 
-    // 编辑确定
+    // 编辑资源确定
     async onEditConfirm() {
-      try {
-        const res = await this.$api.Source.updateSource(this.editForm)
-        if (res.success) {
-          this.$notification.success({
-            message: '成功',
-            description: res.message,
-          })
-          this.state.isEditFormShow=false
-          this.state.isEditLoading=false
+      this.$refs.editForm.validate(async valid => {
+        if (valid) {
+          try {
+            this.state.isEditLoading = true
+            const res = await this.$api.Source.updateSource(this.editForm)
+            if (res.success) {
+              this.$notification.success({
+                message: '成功',
+                description: res.message,
+              })
+
+              this.state.isEditFormShow = false
+
+              this.onGetSources()
+            } else {
+              this.$handleError.handleRequestFail(res.message)
+            }
+          } catch (error) {
+            this.$handleError.handleApiRequestException(error)
+          } finally {
+            this.state.isEditLoading = false
+          }
         } else {
-          this.$handleError.handleRequestFail(res.message)
+          this.state.isEditLoading = false
         }
-      } catch (error) {
-        this.$handleError.handleApiRequestException(error)
-      } finally {
-        this.state.isCreateLoading = false
-      }
+      })
     },
 
-    // 删除
+    // 删除资源
     async onDelete(record, index) {
       try {
         const res = await this.$api.Source.deleteSource({
@@ -595,7 +525,7 @@ export default {
   },
   created() {
     // 获取项目id
-    this.id = this.$route.query.id
+    this.form.projectId = this.$route.query.id
   },
   mounted() {
     // 获取资源列表

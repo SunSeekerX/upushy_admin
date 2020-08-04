@@ -35,7 +35,14 @@
 
           <a-col :span="8">
             <a-spin :spinning="state.isCaptchaImgLoading">
-              <img class="captcha-img" @click="onGetCaptchaImg" :src="imgCaptchaUrl" height="40" @load="state.isCaptchaImgLoading = false" />
+              <div @click="onGetCaptchaImg" class="captcha-img" v-html="imgCaptchaUrl"></div>
+              <!-- <img
+                class="captcha-img"
+                @click="onGetCaptchaImg"
+                :src="imgCaptchaUrl"
+                height="40"
+                @load="state.isCaptchaImgLoading = false"
+              />-->
             </a-spin>
           </a-col>
         </a-row>
@@ -74,7 +81,6 @@
 // import md5 from 'md5'
 import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
-import Cookies from 'js-cookie'
 
 export default {
   data() {
@@ -87,6 +93,8 @@ export default {
         password: '',
         // 图片验证码
         imgCaptcha: '',
+        // 登录uuidKey
+        loginCaptchaKey: '',
       },
       rules: {
         username: [
@@ -150,7 +158,6 @@ export default {
           this.Login(
             Object.assign(this.loginForm, {
               imgCaptcha: this.loginForm.imgCaptcha.toLowerCase(),
-              loginCaptchaKey: Cookies.get('loginCaptcha'),
             }),
           )
             .then(res => {
@@ -181,9 +188,22 @@ export default {
     },
 
     // 获取验证码
-    onGetCaptchaImg() {
+    async onGetCaptchaImg() {
       this.state.isCaptchaImgLoading = true
-      this.imgCaptchaUrl = `${process.env.VUE_APP_API_BASE_URL}/api/user/login/captcha?t=${Date.now()}`
+
+      try {
+        const res = await this.$api.Auth.LoginCaptcha()
+        if (res.success) {
+          this.imgCaptchaUrl = res.data.img
+          this.loginForm.loginCaptchaKey = res.data.uuid
+        } else {
+          this.$handleError.handleRequestFail(res.message)
+        }
+      } catch (error) {
+        this.$handleError.handleApiRequestException(error)
+      } finally {
+        this.state.isCaptchaImgLoading = false
+      }
     },
   },
 
@@ -241,6 +261,11 @@ export default {
 
   .captcha-img {
     cursor: pointer;
+    width: 120px;
+    height: 40px;
+    ::v-deep svg {
+      height: 40px;
+    }
   }
 }
 </style>

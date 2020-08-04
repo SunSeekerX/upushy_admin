@@ -32,16 +32,11 @@
         title="新建项目"
         :width="640"
         :visible="state.isCreateShow"
-        :rules="rules"
         :confirmLoading="state.isCreateLoading"
         @ok="onConfirm"
         @cancel="state.isCreateShow = false"
       >
-        <a-form-model ref="editForm" :model="editForm" v-bind="formLayout">
-          <!-- 检查是否有 id 并且大于0，大于0是修改。其他是新增，新增不显示主键ID -->
-          <!-- <a-form-item v-show="model && model.id > 0" label="主键ID">
-              <a-input v-decorator="['id', { initialValue: 0 }]" disabled />
-          </a-form-item>-->
+        <a-form-model ref="editForm" :rules="rules" :model="editForm" v-bind="formLayout">
           <a-form-model-item ref="name" label="项目名" prop="name">
             <a-input v-model="editForm.name" />
           </a-form-model-item>
@@ -110,12 +105,12 @@ export default {
         ],
         describe: [
           {
-            required: true,
+            required: false,
             message: '请输入至少五个字符的规则描述！',
             trigger: 'blur',
           },
           {
-            min: 5,
+            min: 0,
             max: 10,
             message: 'Length should be 5 to 10',
             trigger: 'blur',

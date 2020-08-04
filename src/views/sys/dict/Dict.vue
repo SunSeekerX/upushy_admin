@@ -314,6 +314,7 @@ export default {
         this.state.loading = false
       }
     },
+    
     pageChange(e) {
       this.pagination.pageNum = e.current
       this.onGetList()
