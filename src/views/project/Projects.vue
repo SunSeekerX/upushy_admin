@@ -18,7 +18,14 @@
             <a-button type="primary">查看资源</a-button>
           </router-link>
           <a-button @click="update(id,name,describe)">修改</a-button>
-          <a-button type="danger" @click="delData(id)">删除</a-button>
+          <a-popconfirm
+          title="确定要删除该项目吗?"
+          ok-text="确认"
+          cancel-text="取消"
+          @confirm="delData(id)"
+        >
+        <a-button type="danger">删除</a-button>
+        </a-popconfirm>
         </span>
       </a-table>
 
@@ -236,6 +243,7 @@ export default {
             message: '成功',
             description: res.message,
           })
+          this.state.isCreateShow=false
           this.onGetProjects()
         } else {
           this.$handleError.handleRequestFail(res.message)
