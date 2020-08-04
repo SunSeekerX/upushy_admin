@@ -1,4 +1,14 @@
+/**
+ * @name: 
+ * @author: SunSeekerX
+ * @Date: 2020-07-26 17:49:41
+ * @LastEditors: SunSeekerX
+ * @LastEditTime: 2020-08-03 23:45:13
+ */
+
 export const ACCESS_TOKEN = 'Access-Token'
+export const USER_INFO = 'User-info'
+
 
 export const SIDEBAR_TYPE = 'sidebar_type'
 export const TOGGLE_MOBILE_TYPE = 'is_mobile'
@@ -12,13 +22,3 @@ export const TOGGLE_COLOR = 'color'
 export const TOGGLE_WEAK = 'weak'
 export const TOGGLE_MULTI_TAB = 'multi_tab'
 export const APP_LANGUAGE = 'app_language'
-
-export const CONTENT_WIDTH_TYPE = {
-  Fluid: 'Fluid',
-  Fixed: 'Fixed'
-}
-
-export const NAV_THEME = {
-  LIGHT: 'light',
-  DARK: 'dark'
-}

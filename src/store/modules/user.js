@@ -1,18 +1,20 @@
+/**
+ * @name:
+ * @author: SunSeekerX
+ * @Date: 2020-07-26 17:49:41
+ * @LastEditors: SunSeekerX
+ * @LastEditTime: 2020-08-03 23:49:40
+ */
 import storage from 'store'
 
 import { Auth } from '@/api/index'
-import { getInfo, logout } from '@/api/login'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
-import { welcome } from '@/utils/util'
+import { ACCESS_TOKEN, USER_INFO } from '@/store/mutation-types'
 import { resetRouter } from '@/router/index'
 
 const user = {
   state: {
     token: '',
-    name: '',
-    welcome: '',
-    avatar: '',
-    roles: [],
+
     info: {},
   },
 
@@ -20,23 +22,13 @@ const user = {
     SET_TOKEN: (state, token) => {
       state.token = token
     },
-    SET_NAME: (state, { name, welcome }) => {
-      state.name = name
-      state.welcome = welcome
-    },
-    SET_AVATAR: (state, avatar) => {
-      state.avatar = avatar
-    },
-    SET_ROLES: (state, roles) => {
-      state.roles = roles
-    },
-    SET_INFO: (state, info) => {
+
+    SET_INFO(state, info) {
       state.info = info
     },
 
     LOGIN_OUT(state) {
       state.token = ''
-      state.roles = []
       storage.remove(ACCESS_TOKEN)
 
       // 重置路由
@@ -52,7 +44,9 @@ const user = {
           .then(res => {
             if (res.success) {
               storage.set(ACCESS_TOKEN, res.data.token, 7 * 24 * 60 * 60 * 1000)
+              storage.set(USER_INFO, res.data.userInfo)
               commit('SET_TOKEN', res.data.token)
+              commit('SET_INFO', res.data.userInfo)
               resolve(res)
             } else {
               reject(res)
@@ -60,76 +54,6 @@ const user = {
           })
           .catch(error => {
             reject(error)
-          })
-
-        // login(userInfo)
-        //   .then(response => {
-        //     const result = response.result
-        //     storage.set(ACCESS_TOKEN, result.token, 7 * 24 * 60 * 60 * 1000)
-        //     commit('SET_TOKEN', result.token)
-        //     resolve()
-        //   })
-        //   .catch(error => {
-        //     reject(error)
-        //   })
-      })
-    },
-
-    // 获取用户信息
-    GetInfo({ commit }) {
-      return new Promise((resolve, reject) => {
-        getInfo()
-          .then(response => {
-            const result = response.result
-
-            if (result.role && result.role.permissions.length > 0) {
-              const role = result.role
-              role.permissions = result.role.permissions
-              role.permissions.map(per => {
-                if (
-                  per.actionEntitySet != null &&
-                  per.actionEntitySet.length > 0
-                ) {
-                  const action = per.actionEntitySet.map(action => {
-                    return action.action
-                  })
-                  per.actionList = action
-                }
-              })
-              role.permissionList = role.permissions.map(permission => {
-                return permission.permissionId
-              })
-              commit('SET_ROLES', result.role)
-              commit('SET_INFO', result)
-            } else {
-              reject(new Error('getInfo: roles must be a non-null array !'))
-            }
-
-            commit('SET_NAME', { name: result.name, welcome: welcome() })
-            commit('SET_AVATAR', result.avatar)
-
-            resolve(response)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      })
-    },
-
-    // 登出
-    Logout({ commit, state }) {
-      return new Promise(resolve => {
-        logout(state.token)
-          .then(() => {
-            resolve()
-          })
-          .catch(() => {
-            resolve()
-          })
-          .finally(() => {
-            commit('SET_TOKEN', '')
-            commit('SET_ROLES', [])
-            storage.remove(ACCESS_TOKEN)
           })
       })
     },

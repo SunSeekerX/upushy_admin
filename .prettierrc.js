@@ -3,10 +3,11 @@
  * @author: SunSeekerX
  * @Date: 2020-03-25 18:38:15
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-04-27 18:22:51
+ * @LastEditTime: 2020-08-03 23:10:18
  */
 
 module.exports = {
+  printWidth: 180,
   // 是否使用单引号
   singleQuote: true,
   // 是否添加分号

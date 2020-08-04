@@ -1,4 +1,11 @@
 /**
+ * @name: 
+ * @author: SunSeekerX
+ * @Date: 2020-07-27 09:56:07
+ * @LastEditors: SunSeekerX
+ * @LastEditTime: 2020-08-03 19:34:31
+ */
+/**
  * 项目默认配置项
  * primaryColor - 默认主题色, 如果修改颜色不生效，请清理 localStorage
  * navTheme - sidebar theme ['dark', 'light'] 两种主题
@@ -13,12 +20,12 @@
  */
 
 export default {
-  navTheme: 'dark', // theme for nav menu
-  primaryColor: '#52C41A', // primary color of ant design
+  navTheme: 'dark', 
+  primaryColor: '#722ED1', // primary color of ant design
   layout: 'sidemenu', // nav menu position: `sidemenu` or `topmenu`
   contentWidth: 'Fluid', // layout of content: `Fluid` or `Fixed`, only works when layout is topmenu
-  fixedHeader: false, // sticky header
-  fixSiderbar: false, // sticky siderbar
+  fixedHeader: true, // sticky header
+  fixSiderbar: true, // sticky siderbar
   colorWeak: false,
   menu: {
     locale: true

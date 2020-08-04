@@ -12,14 +12,17 @@
     v-bind="settings"
   >
     <setting-drawer :settings="settings" @change="handleSettingChange" />
-    
+
     <template v-slot:rightContentRender>
-      <right-content :top-menu="settings.layout === 'topmenu'" :is-mobile="isMobile" :theme="settings.theme" />
+      <right-content
+        :top-menu="settings.layout === 'topmenu'"
+        :is-mobile="isMobile"
+        :theme="settings.theme"
+      />
     </template>
-    
+
     <!-- <template v-slot:footerRender>
-      <global-footer />
-    </template> -->
+    </template>-->
     <router-view />
   </pro-layout>
 </template>
@@ -32,7 +35,6 @@ import { SIDEBAR_TYPE, TOGGLE_MOBILE_TYPE } from '@/store/mutation-types'
 
 import defaultSettings from '@/config/defaultSettings'
 import RightContent from '@/components/GlobalHeader/RightContent'
-// import GlobalFooter from '@/components/GlobalFooter'
 import LogoSvg from '../assets/logo.svg?inline'
 
 export default {
@@ -40,9 +42,8 @@ export default {
   components: {
     SettingDrawer,
     RightContent,
-    // GlobalFooter,
   },
-  data () {
+  data() {
     return {
       // preview.pro.antdv.com only use.
       isProPreviewSite: process.env.VUE_APP_PREVIEW === 'true' && process.env.NODE_ENV !== 'development',
@@ -67,22 +68,22 @@ export default {
         colorWeak: defaultSettings.colorWeak,
 
         hideHintAlert: false,
-        hideCopyButton: false
+        hideCopyButton: false,
       },
       // 媒体查询
       query: {},
 
       // 是否手机模式
-      isMobile: false
+      isMobile: false,
     }
   },
   computed: {
     ...mapState({
       // 动态主路由
-      mainMenu: state => state.permission.addRouters
-    })
+      mainMenu: state => state.permission.addRouters,
+    }),
   },
-  created () {
+  created() {
     const routes = this.mainMenu.find(item => item.path === '/')
     this.menus = (routes && routes.children) || []
     // 处理侧栏收起状态
@@ -93,7 +94,7 @@ export default {
       this.$store.commit(TOGGLE_MOBILE_TYPE, this.isMobile)
     })
   },
-  mounted () {
+  mounted() {
     const userAgent = navigator.userAgent
     if (userAgent.indexOf('Edge') > -1) {
       this.$nextTick(() => {
@@ -112,7 +113,7 @@ export default {
   },
   methods: {
     i18nRender,
-    handleMediaQuery (val) {
+    handleMediaQuery(val) {
       this.query = val
       if (this.isMobile && !val['screen-xs']) {
         this.isMobile = false
@@ -125,10 +126,10 @@ export default {
         // this.settings.fixSiderbar = false
       }
     },
-    handleCollapse (val) {
+    handleCollapse(val) {
       this.collapsed = val
     },
-    handleSettingChange ({ type, value }) {
+    handleSettingChange({ type, value }) {
       console.log('type', type, value)
       type && (this.settings[type] = value)
       switch (type) {
@@ -145,13 +146,47 @@ export default {
           break
       }
     },
-    logoRender () {
+    logoRender() {
       return <LogoSvg />
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang="less">
-@import "./BasicLayout.less";
+@import '~ant-design-vue/es/style/themes/default.less';
+
+.ant-pro-global-header-index-right {
+  margin-right: 8px;
+
+  &.ant-pro-global-header-index-dark {
+    .ant-pro-global-header-index-action {
+      color: hsla(0, 0%, 100%, 0.85);
+
+      &:hover {
+        background: #1890ff;
+      }
+    }
+  }
+
+  .ant-pro-account-avatar {
+    .antd-pro-global-header-index-avatar {
+      margin: ~'calc((@{layout-header-height} - 24px) / 2)' 0;
+      margin-right: 8px;
+      color: @primary-color;
+      vertical-align: top;
+      background: rgba(255, 255, 255, 0.85);
+    }
+  }
+
+  .menu {
+    .anticon {
+      margin-right: 8px;
+    }
+
+    .ant-dropdown-menu-item {
+      min-width: 100px;
+    }
+  }
+}
 </style>

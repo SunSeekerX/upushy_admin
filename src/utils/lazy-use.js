@@ -1,6 +1,5 @@
 import Vue from 'vue'
 
-// base library
 import {
   ConfigProvider,
   Layout,
@@ -47,15 +46,8 @@ import {
   message,
   notification
 } from 'ant-design-vue'
-import Viser from 'viser-vue'
 
-// ext library
-import VueCropper from 'vue-cropper'
 import Dialog from '@/components/Dialog'
-import MultiTab from '@/components/MultiTab'
-import PageLoading from '@/components/PageLoading'
-import PermissionHelper from '@/utils/helper/permission'
-import './directives/action'
 
 Vue.use(ConfigProvider)
 Vue.use(Layout)
@@ -108,11 +100,4 @@ Vue.prototype.$success = Modal.success
 Vue.prototype.$error = Modal.error
 Vue.prototype.$warning = Modal.warning
 
-Vue.use(Viser)
-Vue.use(Dialog) // this.$dialog func
-Vue.use(MultiTab)
-Vue.use(PageLoading)
-Vue.use(PermissionHelper)
-Vue.use(VueCropper)
-
-process.env.NODE_ENV !== 'production' && console.warn('[antd-pro] NOTICE: Antd use lazy-load.')
+Vue.use(Dialog)

@@ -1,28 +1,31 @@
 /**
- * @name: 
+ * @name:
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-07-28 14:19:14
+ * @LastEditTime: 2020-08-03 23:45:49
  */
 
-import store from '@/store'
 import storage from 'store'
+
+import store from '@/store'
 import {
   ACCESS_TOKEN,
+  USER_INFO,
   APP_LANGUAGE,
   TOGGLE_CONTENT_WIDTH,
   TOGGLE_FIXED_HEADER,
-  TOGGLE_FIXED_SIDEBAR, TOGGLE_HIDE_HEADER,
-  TOGGLE_LAYOUT, TOGGLE_NAV_THEME, TOGGLE_WEAK,
-  TOGGLE_COLOR, TOGGLE_MULTI_TAB
+  TOGGLE_FIXED_SIDEBAR,
+  TOGGLE_HIDE_HEADER,
+  TOGGLE_LAYOUT,
+  TOGGLE_NAV_THEME,
+  TOGGLE_WEAK,
+  TOGGLE_COLOR,
+  TOGGLE_MULTI_TAB,
 } from '@/store/mutation-types'
-// import { printANSI } from '@/utils/screenLog'
 import defaultSettings from '@/config/defaultSettings'
 
-export default function Initializer () {
-  // printANSI() // 请自行移除该行.  please remove this line
-
+export default function Initializer() {
   store.commit(TOGGLE_LAYOUT, storage.get(TOGGLE_LAYOUT, defaultSettings.layout))
   store.commit(TOGGLE_FIXED_HEADER, storage.get(TOGGLE_FIXED_HEADER, defaultSettings.fixedHeader))
   store.commit(TOGGLE_FIXED_SIDEBAR, storage.get(TOGGLE_FIXED_SIDEBAR, defaultSettings.fixSiderbar))
@@ -33,7 +36,7 @@ export default function Initializer () {
   store.commit(TOGGLE_COLOR, storage.get(TOGGLE_COLOR, defaultSettings.primaryColor))
   store.commit(TOGGLE_MULTI_TAB, storage.get(TOGGLE_MULTI_TAB, defaultSettings.multiTab))
   store.commit('SET_TOKEN', storage.get(ACCESS_TOKEN))
+  store.commit('SET_INFO', storage.get(USER_INFO))
 
   store.dispatch('setLang', storage.get(APP_LANGUAGE, 'en-US'))
-  // last step
 }
