@@ -348,7 +348,6 @@ export default {
         } else {
           this.$handleError.handleRequestFail(res.message)
         }
-        console.log(res)
       } catch (error) {
         this.$handleError.handleApiRequestException(error)
       } finally {
@@ -384,7 +383,6 @@ export default {
         } else {
           this.$handleError.handleRequestFail(res.message)
         }
-        console.log(res)
       } catch (error) {
         this.$handleError.handleApiRequestException(error)
       } finally {
@@ -395,7 +393,6 @@ export default {
 
     // 删除字典类型
     async onDelete(id, index) {
-      console.log(id)
       try {
         const res = await this.$api.Dict.removeDictType({
           id: id,
@@ -411,7 +408,6 @@ export default {
         } else {
           this.$handleError.handleRequestFail(res.message)
         }
-        console.log(res)
       } catch (error) {
         this.$handleError.handleApiRequestException(error)
       } finally {

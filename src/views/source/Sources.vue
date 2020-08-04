@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-28 09:28:09
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-04 10:30:33
+ * @LastEditTime: 2020-08-04 15:32:18
 -->
 
 <template>
@@ -174,7 +174,28 @@
               <a-radio :value="1">是</a-radio>
             </a-radio-group>
           </a-form-item>
-
+          <a-form-item label="类型">
+            <a-select
+              default-value="0"
+              style="width: 120px"
+              v-decorator="[
+                'type',
+                {
+                  initialValue: 0,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请选择类型！',
+                    },
+                  ],
+                },
+              ]"
+            >
+              <a-select-option :value="0">wgt</a-select-option>
+              <a-select-option :value="1">android</a-select-option>
+              <a-select-option :value="2">ios</a-select-option>
+            </a-select>
+          </a-form-item>
           <!-- 这里设置为another解决点击label触发input -->
           <a-form-item label="资源包" for="another">
             <div>
@@ -250,7 +271,17 @@
               <a-radio :value="1">是</a-radio>
             </a-radio-group>
           </a-form-item>
-
+          <a-form-item label="类型">
+            <a-select
+              :default-value="String(editType)"
+              style="width: 120px"
+              @change="(e)=>{editForm.type=e}"
+            >
+              <a-select-option value="0">wgt</a-select-option>
+              <a-select-option value="1">android</a-select-option>
+              <a-select-option value="2">ios</a-select-option>
+            </a-select>
+          </a-form-item>
           <a-form-item label="资源包地址" prop="url">
             <a-input v-model="editForm.url" disabled="disabled" />
           </a-form-item>
@@ -326,6 +357,12 @@ export default {
           dataIndex: 'isForceUpdate',
           scopedSlots: { customRender: 'isForceUpdate' },
         },
+        // 类型
+        {
+          title: '类型',
+          dataIndex: 'sourcesType',
+          scopedSlots: { customRender: 'sourcesType' },
+        },
         // 强制更新
         {
           title: '整包更新',
@@ -368,6 +405,7 @@ export default {
       editForm: {},
       editFileList: [],
       sourcesType: 0,
+      editType: 0,
       editFormRules: {},
       labelCol: { xs: { span: 24 }, sm: { span: 7 } },
       wrapperCol: { xs: { span: 24 }, sm: { span: 13 } },
@@ -418,7 +456,7 @@ export default {
     },
 
     // 创建项目
-    async onCreateSource({ projectId, version, versionCode, url, isForceUpdate, isFullUpdated, remark }) {
+    async onCreateSource({ projectId, version, versionCode, url, isForceUpdate, isFullUpdated, remark, type }) {
       try {
         const res = await this.$api.Source.createSource({
           projectId,
@@ -428,13 +466,15 @@ export default {
           isForceUpdate,
           isFullUpdated,
           remark,
+          type
         })
         if (res.success) {
           this.$notification.success({
             message: '成功',
             description: res.message,
           })
-
+          this.state.isCreateShow=false
+          this.state.isCreateLoading = false
           // 添加数据
           this.tableData.push(res.data)
         } else {
@@ -479,10 +519,6 @@ export default {
 
     handleChange(info) {
       const status = info.file.status
-      // if (status !== 'uploading') {
-      //   this.fileList = info.fileList
-      //   // console.log(info.file, info.fileList)
-      // }
 
       if (status === 'done') {
         this.$message.success(`${info.file.name} 上传成功。`)
@@ -509,7 +545,7 @@ export default {
       })
       this.editForm = record
       this.state.isEditFormShow = true
-      // console.log(record)
+      this.editType=record.type
     },
 
     // 编辑确定
@@ -521,6 +557,8 @@ export default {
             message: '成功',
             description: res.message,
           })
+          this.state.isEditFormShow=false
+          this.state.isEditLoading=false
         } else {
           this.$handleError.handleRequestFail(res.message)
         }
@@ -548,7 +586,6 @@ export default {
         } else {
           this.$handleError.handleRequestFail(res.message)
         }
-        console.log(res)
       } catch (error) {
         this.$handleError.handleApiRequestException(error)
       } finally {
