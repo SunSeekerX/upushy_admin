@@ -13,19 +13,18 @@
         :pagination="pagination"
         @change="pageChange"
       >
+        <!-- 项目名称 -->
+        <template slot="name" slot-scope="text, { id, name }">
+          <router-link :to="{ name: 'BasicSource', query: {id: id}}">{{ name }}</router-link>
+        </template>
+
+        <!-- 操作 -->
         <span slot="action" slot-scope="{ id, name, describe }">
-          <router-link :to="{ path: `/source/sources/${id}` }">
-            <a-button type="primary">查看资源</a-button>
-          </router-link>
           <a-button @click="update(id,name,describe)">修改</a-button>
-          <a-popconfirm
-          title="确定要删除该项目吗?"
-          ok-text="确认"
-          cancel-text="取消"
-          @confirm="delData(id)"
-        >
-        <a-button type="danger">删除</a-button>
-        </a-popconfirm>
+
+          <a-popconfirm title="确定要删除该项目吗?" ok-text="确认" cancel-text="取消" @confirm="delData(id)">
+            <a-button type="danger">删除</a-button>
+          </a-popconfirm>
         </span>
       </a-table>
 
@@ -76,6 +75,7 @@ export default {
         {
           title: '项目名称',
           dataIndex: 'name',
+          scopedSlots: { customRender: 'name' },
         },
         {
           title: '项目描述',
@@ -93,33 +93,6 @@ export default {
           title: '操作',
           scopedSlots: { customRender: 'action' },
         },
-        // {
-        //   dataIndex: 'name',
-        //   key: 'name',
-        //   slots: { title: 'customTitle' },
-        //   scopedSlots: { customRender: 'name' },
-        // },
-        // {
-        //   title: 'Age',
-        //   dataIndex: 'age',
-        //   key: 'age',
-        // },
-        // {
-        //   title: 'Address',
-        //   dataIndex: 'address',
-        //   key: 'address',
-        // },
-        // {
-        //   title: 'Tags',
-        //   key: 'tags',
-        //   dataIndex: 'tags',
-        //   scopedSlots: { customRender: 'tags' },
-        // },
-        // {
-        //   title: 'Action',
-        //   key: 'action',
-        //   scopedSlots: { customRender: 'action' },
-        // },
       ],
       rules: {
         name: [
@@ -154,7 +127,7 @@ export default {
         describe: '',
         id: '',
       },
-      type:'',
+      type: '',
       data: [],
       pagination: {
         total: 0,
@@ -230,8 +203,8 @@ export default {
             message: '成功',
             description: res.message,
           })
-          this.state.isCreateShow=false
-          this.state.isCreateLoading=false
+          this.state.isCreateShow = false
+          this.state.isCreateLoading = false
           this.onGetProjects()
         } else {
           this.$handleError.handleRequestFail(res.message)
@@ -240,16 +213,16 @@ export default {
         this.$handleError.handleApiRequestException(error)
       }
     },
-    createProject(){
-      this.state.isCreateShow=true
-      this.type='create'
+    createProject() {
+      this.state.isCreateShow = true
+      this.type = 'create'
     },
-    update(id,name,describe){
-      this.state.isCreateShow=true
-      this.editForm.id=id
-      this.editForm.name=name
-      this.editForm.describe=describe
-      this.type='update'
+    update(id, name, describe) {
+      this.state.isCreateShow = true
+      this.editForm.id = id
+      this.editForm.name = name
+      this.editForm.describe = describe
+      this.type = 'update'
     },
     // 创建项目
     async onCreateProject() {
@@ -263,7 +236,7 @@ export default {
             message: '成功',
             description: res.message,
           })
-          this.state.isCreateShow=false
+          this.state.isCreateShow = false
           // 添加数据
           this.data.push(res.data)
         } else {
@@ -282,9 +255,9 @@ export default {
       // console.log(this.$refs)
       this.$refs.editForm.validate(valid => {
         if (valid) {
-          if(this.type==='create'){
+          if (this.type === 'create') {
             this.onCreateProject()
-          }else{
+          } else {
             this.updateData()
           }
         } else {

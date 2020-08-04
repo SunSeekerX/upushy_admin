@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-28 09:28:09
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-07-29 17:28:59
+ * @LastEditTime: 2020-08-04 10:30:33
 -->
 
 <template>
@@ -599,7 +599,7 @@ export default {
   },
   created() {
     // 获取项目id
-    this.id = this.$route.params.id
+    this.id = this.$route.query.id
   },
   mounted() {
     // 获取资源列表
