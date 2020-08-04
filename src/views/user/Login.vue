@@ -1,12 +1,6 @@
 <template>
   <div class="main">
-    <a-form
-      id="formLogin"
-      class="user-layout-login"
-      ref="formLogin"
-      :form="form"
-      @submit="handleSubmit"
-    >
+    <a-form-model class="user-layout-login" ref="loginForm" :model="loginForm" :rules="rules">
       <a-alert
         v-if="isLoginError"
         type="error"
@@ -14,37 +8,50 @@
         style="margin-bottom: 24px;"
         message="账户或密码错误（admin/ant.design )"
       />
-      <a-form-item>
-        <a-input
-          size="large"
-          type="text"
-          placeholder="用户名"
-          v-decorator="['username',{rules: [{ required: true, message: '请输入帐户名或邮箱地址' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}]"
-        >
+
+      <a-form-model-item ref="username" prop="username">
+        <a-input size="large" type="text" placeholder="用户名" v-model="loginForm.username">
           <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }" />
         </a-input>
-      </a-form-item>
+      </a-form-model-item>
 
-      <a-form-item>
-        <a-input-password
-          size="large"
-          placeholder="密码"
-          v-decorator="['password',{rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}]"
-        >
+      <a-form-model-item ref="password" prop="password">
+        <a-input-password size="large" placeholder="密码" v-model="loginForm.password">
           <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }" />
         </a-input-password>
-      </a-form-item>
+      </a-form-model-item>
 
-      <a-form-item style="margin-top:24px">
+      <a-form-model-item ref="imgCaptcha" prop="imgCaptcha">
+        <a-row>
+          <a-col :span="16">
+            <a-input
+              size="large"
+              :maxLength="4"
+              placeholder="图片验证码"
+              type="text"
+              v-model="loginForm.imgCaptcha"
+            />
+          </a-col>
+
+          <a-col :span="8">
+            <a-spin :spinning="state.isCaptchaImgLoading">
+              <img class="captcha-img" @click="onGetCaptchaImg" :src="imgCaptchaUrl" height="40" @load="state.isCaptchaImgLoading = false" />
+            </a-spin>
+          </a-col>
+        </a-row>
+      </a-form-model-item>
+
+      <a-form-model-item style="margin-top:24px">
         <a-button
+          @click="onLogin"
           size="large"
           type="primary"
           htmlType="submit"
           class="login-button"
-          :loading="state.loginBtn"
-          :disabled="state.loginBtn"
+          :loading="state.isLogginBtnLoading"
+          :disabled="state.isLogginBtnLoading"
         >确定</a-button>
-      </a-form-item>
+      </a-form-model-item>
 
       <div class="user-login-other">
         <!-- <span>其他登录方式</span>
@@ -59,7 +66,7 @@
         </a>-->
         <router-link class="register" :to="{ name: 'register' }">注册账户</router-link>
       </div>
-    </a-form>
+    </a-form-model>
   </div>
 </template>
 
@@ -67,104 +74,121 @@
 // import md5 from 'md5'
 import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
+import Cookies from 'js-cookie'
 
 export default {
   data() {
     return {
-      customActiveKey: 'tab1',
-      loginBtn: false,
+      // 登录表单
+      loginForm: {
+        // 用户名
+        username: '',
+        // 密码
+        password: '',
+        // 图片验证码
+        imgCaptcha: '',
+      },
+      rules: {
+        username: [
+          {
+            required: true,
+            message: '请输入用户名',
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 20,
+            message: 'Length should be 1 to 20',
+            trigger: 'blur',
+          },
+        ],
+        password: [
+          {
+            required: true,
+            message: '请输入密码',
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 20,
+            message: 'Length should be 6 to 20',
+            trigger: 'blur',
+          },
+        ],
+        imgCaptcha: [
+          {
+            required: true,
+            message: '请输入图片验证码',
+            trigger: 'blur',
+          },
+          {
+            len: 4,
+            message: 'Length should 4',
+            trigger: 'blur',
+          },
+        ],
+      },
+      imgCaptchaUrl: '',
       // login type: 0 email, 1 username, 2 telephone
-      loginType: 0,
       isLoginError: false,
-      requiredTwoStepCaptcha: false,
-      stepCaptchaVisible: false,
-      form: this.$form.createForm(this),
       state: {
-        time: 60,
-        loginBtn: false,
-        // login type: 0 email, 1 username, 2 telephone
-        loginType: 0,
-        smsSendBtn: false,
+        isLogginBtnLoading: false,
+        isCaptchaImgLoading: true,
       },
     }
   },
 
   methods: {
     ...mapActions(['Login']),
-    // handler
-    handleUsernameOrEmail(rule, value, callback) {
-      const { state } = this
-      const regex = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/
-      if (regex.test(value)) {
-        state.loginType = 0
-      } else {
-        state.loginType = 1
-      }
-      callback()
+
+    // 点击登录
+    onLogin() {
+      this.state.isLogginBtnLoading = true
+
+      this.$refs.loginForm.validate(valid => {
+        if (valid) {
+          this.Login(
+            Object.assign(this.loginForm, {
+              imgCaptcha: this.loginForm.imgCaptcha.toLowerCase(),
+              loginCaptchaKey: Cookies.get('loginCaptcha'),
+            }),
+          )
+            .then(res => {
+              if (res.success) {
+                this.$router.push({ path: '/' })
+                // 延迟 1 秒显示欢迎信息
+                setTimeout(() => {
+                  this.$notification.success({
+                    message: '欢迎',
+                    description: `${timeFix()}，欢迎回来`,
+                  })
+                }, 1000)
+                this.isLoginError = false
+              } else {
+                this.isLoginError = true
+                this.$handleError.handleRequestFail(res.message)
+              }
+            })
+            .catch(err => this.$handleError.handleApiRequestException(err))
+            .finally(() => {
+              this.state.isLogginBtnLoading = false
+            })
+        } else {
+          this.state.isLogginBtnLoading = false
+          return false
+        }
+      })
     },
-    handleTabClick(key) {
-      this.customActiveKey = key
-      // this.form.resetFields()
+
+    // 获取验证码
+    onGetCaptchaImg() {
+      this.state.isCaptchaImgLoading = true
+      this.imgCaptchaUrl = `${process.env.VUE_APP_API_BASE_URL}/api/user/login/captcha?t=${Date.now()}`
     },
+  },
 
-    handleSubmit(e) {
-      e.preventDefault()
-      const {
-        form: { validateFields },
-      } = this
-
-      this.state.loginBtn = true
-
-      // const validateFieldsKey =
-      //   customActiveKey === 'tab1'
-      //     ? ['username', 'password']
-      //     : ['mobile', 'captcha']
-
-      validateFields(
-        ['username', 'password'],
-        { force: true },
-        (err, values) => {
-          if (!err) {
-            // console.log('login form', values)
-            // const loginParams = { ...values }
-            // delete loginParams.username
-            // loginParams[!state.loginType ? 'email' : 'username'] =
-            //   values.username
-            // loginParams.password = md5(values.password)
-            this.$store
-              .dispatch('Login', values)
-              .then(res => {
-                if (res.success) {
-                  this.$router.push({ path: '/' })
-                  // 延迟 1 秒显示欢迎信息
-                  setTimeout(() => {
-                    this.$notification.success({
-                      message: '欢迎',
-                      description: `${timeFix()}，欢迎回来`,
-                    })
-                  }, 1000)
-                  this.isLoginError = false
-                } else {
-                  this.$handleError.handleRequestFail(res.message)
-                }
-              })
-              .catch(err => this.$handleError.handleApiRequestException(err))
-              .finally(() => {
-                this.state.loginBtn = false
-              })
-
-            // this.Login(values)
-            //   .then(res => this.loginSuccess(res))
-            //   .catch(err => this.$handleError.handleApiRequestException(err))
-            //   .finally(() => {
-            //     this.state.loginBtn = false
-            //   })
-          } else {
-            this.state.loginBtn = false
-          }
-        },
-      )
-    },
+  created() {
+    this.onGetCaptchaImg()
   },
 }
 </script>
@@ -213,6 +237,10 @@ export default {
     .register {
       float: right;
     }
+  }
+
+  .captcha-img {
+    cursor: pointer;
   }
 }
 </style>
