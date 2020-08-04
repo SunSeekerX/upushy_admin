@@ -10,12 +10,15 @@ import { request } from '@/utils/request/index'
 
 export default {
   // 资源列表
-  sources({ id }) {
+  sources({ id,type,pageNum,pageSize }) {
     return request({
       url: '/api/source',
       method: 'GET',
       params: {
         projectId: id,
+        type,
+        pageNum,
+        pageSize
       },
     })
   },

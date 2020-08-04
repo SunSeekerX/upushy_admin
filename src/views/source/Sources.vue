@@ -11,6 +11,17 @@
     <a-card :bordered="false">
       <div class="table-operator">
         <a-button type="primary" icon="plus" @click="state.isCreateShow = true">新建</a-button>
+        <a-select default-value="wgt" style="width: 120px" @change="selectChange">
+            <a-select-option value="wgt">
+              wgt
+            </a-select-option>
+            <a-select-option value="android">
+              android
+            </a-select-option>
+            <a-select-option value="ios">
+              ios
+            </a-select-option>
+          </a-select>
       </div>
 
       <!-- 资源表格 -->
@@ -19,6 +30,8 @@
         :data-source="tableData"
         :loading="state.isTableLoading"
         rowKey="id"
+        :pagination="pagination"
+        @change="pageChange"
       >
         <!-- url -->
         <!-- <a-tag slot="url" slot-scope="url" color="blue">{{ onFormatUrl(url) }}</a-tag> -->
@@ -351,10 +364,16 @@ export default {
       // 表格数据
       tableData: [],
       fileList: [],
-
+      pagination: {
+        total: 0,
+        pageSize: 10,
+        defaultCurrent: 1,
+        pageNum: 1,
+      },
       // 编辑的行数据
       editForm: {},
       editFileList: [],
+      sourcesType:0,
       editFormRules: {},
       labelCol: { xs: { span: 24 }, sm: { span: 7 } },
       wrapperCol: { xs: { span: 24 }, sm: { span: 13 } },
@@ -383,13 +402,17 @@ export default {
         this.state.isTableLoading = true
         const res = await this.$api.Source.sources({
           id: this.id,
+          type:this.sourcesType,
+          pageNum: this.pagination.pageNum,
+          pageSize: this.pagination.pageSize,
         })
         if (res.success) {
           this.$notification.success({
             message: '成功',
             description: res.message,
           })
-          this.tableData = res.data
+          this.tableData = res.data.records
+          this.pagination.total=res.data.total
         } else {
           this.$handleError.handleRequestFail(res.message)
         }
@@ -431,7 +454,6 @@ export default {
         } else {
           this.$handleError.handleRequestFail(res.message)
         }
-        console.log(res)
       } catch (error) {
         this.$handleError.handleApiRequestException(error)
       } finally {
@@ -449,7 +471,18 @@ export default {
         }
       })
     },
-
+    selectChange(e){
+      if(e==='android'){
+        this.sourcesType=1
+        this.onGetSources()
+      }else if(e==='ios'){
+        this.sourcesType=2
+        this.onGetSources()
+      }else{
+        this.sourcesType=0
+        this.onGetSources()
+      }
+    },
     normFile(e) {
       if (e.fileList.length && e.fileList[0].response) {
         return e.fileList[0].response.data.customName
@@ -460,7 +493,6 @@ export default {
 
     handleChange(info) {
       const status = info.file.status
-      console.log(info)
       // if (status !== 'uploading') {
       //   this.fileList = info.fileList
       //   // console.log(info.file, info.fileList)
@@ -478,7 +510,10 @@ export default {
     onFormatUrl(url) {
       return `${process.env.VUE_APP_OSS_BASE_URL}/${url}`
     },
-
+    pageChange(e) {
+      this.pagination.pageNum = e.current
+      this.onGetSources()
+    },
     // 点击编辑
     onEdit(record) {
       this.editFileList = []
@@ -503,7 +538,6 @@ export default {
         } else {
           this.$handleError.handleRequestFail(res.message)
         }
-        console.log(res)
       } catch (error) {
         this.$handleError.handleApiRequestException(error)
       } finally {

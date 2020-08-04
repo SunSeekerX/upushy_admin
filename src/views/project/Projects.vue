@@ -244,6 +244,7 @@ export default {
             description: res.message,
           })
           this.state.isCreateShow=false
+          this.state.isCreateLoading=false
           this.onGetProjects()
         } else {
           this.$handleError.handleRequestFail(res.message)
