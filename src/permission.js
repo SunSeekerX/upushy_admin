@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 18:49:33
+ * @LastEditTime: 2020-08-04 09:12:58
  */
 
 import router from './router'
@@ -27,9 +27,7 @@ const defaultRoutePath = '/dashboard/workplace'
 router.beforeEach(async (to, from, next) => {
   NProgress.start() // start progress bar
 
-  to.meta &&
-    typeof to.meta.title !== 'undefined' &&
-    setDocumentTitle(`${i18nRender(to.meta.title)} - ${domTitle}`)
+  to.meta && typeof to.meta.title !== 'undefined' && setDocumentTitle(`${i18nRender(to.meta.title)} - ${domTitle}`)
 
   /* has token */
   if (storage.get(ACCESS_TOKEN)) {
@@ -39,9 +37,11 @@ router.beforeEach(async (to, from, next) => {
     } else {
       if (store.getters.addRouters.length === 0) {
         store.commit('GENNERAT_ROUTES')
-        // router.addRoutes(asyncRouterMap)
+        router.addRoutes(store.getters.addRouters)
+        next({ ...to, replace: true })
+      } else {
+        next()
       }
-      next()
     }
   } else {
     if (whiteList.includes(to.name)) {

@@ -194,7 +194,7 @@ const createRouter = () =>
   })
 
 const router = createRouter()
-router.addRoutes(asyncRouterMap)
+// router.addRoutes(asyncRouterMap)
 
 export function resetRouter() {
   const newRouter = createRouter()
