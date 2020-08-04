@@ -32,6 +32,7 @@ export default {
     isFullUpdated,
     isForceUpdate,
     remark,
+    type
   }) {
     return request({
       url: '/api/source',
@@ -44,6 +45,7 @@ export default {
         isFullUpdated,
         isForceUpdate,
         remark,
+        type
       },
     })
   },
@@ -57,6 +59,7 @@ export default {
     isFullUpdated,
     isForceUpdate,
     remark,
+    type
   }) {
     return request({
       url: '/api/source',
@@ -69,6 +72,7 @@ export default {
         isFullUpdated,
         isForceUpdate,
         remark,
+        type
       },
     })
   },
