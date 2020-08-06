@@ -10,6 +10,12 @@
 
 
 
+# ❗ 注意（Notice）
+
+目前应用仍然处于开发阶段，不排除出现重大 `bug` 的可能性。
+
+
+
 # 快速上手（Getting Started）
 
 克隆仓库（Clone this repo）
