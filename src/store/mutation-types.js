@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-26 17:49:41
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 23:45:13
+ * @LastEditTime: 2020-08-06 20:16:16
  */
 
 export const ACCESS_TOKEN = 'Access-Token'
@@ -22,3 +22,8 @@ export const TOGGLE_COLOR = 'color'
 export const TOGGLE_WEAK = 'weak'
 export const TOGGLE_MULTI_TAB = 'multi_tab'
 export const APP_LANGUAGE = 'app_language'
+
+export const CONTENT_WIDTH_TYPE = {
+  Fluid: 'Fluid',
+  Fixed: 'Fixed'
+}

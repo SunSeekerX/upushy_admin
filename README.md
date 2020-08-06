@@ -92,39 +92,7 @@ npm run server
 mv .env.example .env.production
 ```
 
-打开  `.env.production`，填写环境变量
-
-```shell
-# 运行模式
-NODE_ENV=production
-
-# 
-VUE_APP_PREVIEW=true
-
-# 请求地址前缀，不带“/”！
-VUE_APP_API_BASE_URL=
-
-# 资源访问前缀，不带“/”！
-VUE_APP_OSS_BASE_URL=
-
-```
-
-**示例**
-
-```shell
-# 运行模式
-NODE_ENV=production
-
-# 
-VUE_APP_PREVIEW=true
-
-# 请求地址前缀，不带“/”！
-VUE_APP_API_BASE_URL=http://192.192.192.192:3000
-
-# 资源访问前缀，不带“/”！
-VUE_APP_OSS_BASE_URL=https://uni-pushy.oss-cn-hangzhou.aliyuncs.com
- 
-```
+打开  `.env.production`，填写环境变量，环境变量同开发。
 
 
 
@@ -137,6 +105,12 @@ npm run build
 打包完成生成的静态文件位于 `dist` 目录下，为标准的 `web` 项目。直接放到服务器路径下即可。
 
 > 需要配合 `jenkins` 集成 `ci&cd` 的可以参考 [Vue项目自动化构建](https://sunseekerx.yoouu.cn/common/jenkins/#%E5%89%8D%E6%8F%90)
+
+
+
+## uni-app 接入
+
+查看配套后端文档快速上手 `uni-app` 章节：[uni-pushy-server](https://github.com/SunSeekerX/uni-pushy-server)
 
 
 
@@ -162,27 +136,7 @@ npm run build
 
 > [可选] [目录] 又称”开发篇“，提供中高级的开发教程
 
-## docker
 
-打包
-
-```bash
-docker build -t uni-pushy:0.0.1-SNAPSHOT .
-```
-
-
-
-`Docker hub` 镜像地址：[https://hub.docker.com/r/1647800606/uni-pushy/tags](https://hub.docker.com/r/1647800606/uni-pushy/tags)
-
-> 启动时需要映射外部环境变量文件至容器内部 `/app` 路径下
->
-> 参考启动命令
->
-> ```bash
-> docker run -d -p 8080:3000 -v /w/env/.env:/app/.env --name uni-pushy  1647800606/uni-pushy
-> ```
->
-> 
 
 # **API**（Reference）
 
@@ -231,6 +185,18 @@ docker build -t uni-pushy:0.0.1-SNAPSHOT .
 ## 为什么用Nestjs ？
 
 其他的我也不会。
+
+
+
+## 为什么要用 antd-vue？
+
+至少它一直在更新，你来维护 `element-ui` 吗？
+
+
+
+## 为什么有个数据字典模块？
+
+想做一套完整的后台解决方案。
 
 
 
