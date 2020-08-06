@@ -18,11 +18,13 @@
 git clone https://github.com/SunSeekerX/uni-pushy-admin.git
 ```
 
+进入项目目录
 
+```bash
+cd uni-pushy-admin/
+```
 
-安装依赖 （Install dependencies）
-
-项目根目录下执行
+安装依赖 （Install dependencies），项目根目录下执行
 
 ```bash
 npm i
