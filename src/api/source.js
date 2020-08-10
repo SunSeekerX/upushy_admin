@@ -3,14 +3,14 @@
  * @author: SunSeekerX
  * @Date: 2020-07-28 09:52:25
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-07-29 17:22:32
+ * @LastEditTime: 2020-08-10 19:13:26
  */
 
 import { request } from '@/utils/request/index'
 
 export default {
   // 资源列表
-  sources({ id,type,pageNum,pageSize }) {
+  sources({ id, type, pageNum, pageSize }) {
     return request({
       url: '/api/source',
       method: 'GET',
@@ -18,22 +18,13 @@ export default {
         projectId: id,
         type,
         pageNum,
-        pageSize
+        pageSize,
       },
     })
   },
 
   // 新建资源
-  createSource({
-    projectId,
-    version,
-    versionCode,
-    url,
-    isFullUpdated,
-    isForceUpdate,
-    remark,
-    type
-  }) {
+  createSource({ projectId, version, versionCode, nativeVersionCode, url, isForceUpdate, type, remark }) {
     return request({
       url: '/api/source',
       method: 'POST',
@@ -41,26 +32,17 @@ export default {
         projectId,
         version,
         versionCode,
+        nativeVersionCode,
         url,
-        isFullUpdated,
         isForceUpdate,
+        type,
         remark,
-        type
       },
     })
   },
 
   // 修改资源
-  updateSource({
-    id,
-    version,
-    versionCode,
-    url,
-    isFullUpdated,
-    isForceUpdate,
-    remark,
-    type
-  }) {
+  updateSource({ id, version, versionCode, nativeVersionCode, url, isFullUpdated, isForceUpdate, remark, type }) {
     return request({
       url: '/api/source',
       method: 'PUT',
@@ -68,11 +50,12 @@ export default {
         id,
         version,
         versionCode,
+        nativeVersionCode,
         url,
         isFullUpdated,
         isForceUpdate,
         remark,
-        type
+        type,
       },
     })
   },

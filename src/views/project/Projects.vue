@@ -13,36 +13,70 @@
         :pagination="pagination"
         @change="pageChange"
       >
+        <!-- Appid -->
+        <template slot="appid" slot-scope="text, { id, appid }">
+          <router-link :to="{ name: 'BasicSource', query: {id: id}}">{{ appid }}</router-link>
+        </template>
+
         <!-- 项目名称 -->
         <template slot="name" slot-scope="text, { id, name }">
           <router-link :to="{ name: 'BasicSource', query: {id: id}}">{{ name }}</router-link>
         </template>
 
         <!-- 操作 -->
-        <span slot="action" slot-scope="{ id, name, describe }">
-          <a-button @click="update(id,name,describe)">修改</a-button>
+        <span slot="action" slot-scope="text, record">
+          <a-button @click="onClickUpdate(record)">修改</a-button>
 
-          <a-popconfirm title="确定要删除该项目吗?" ok-text="确认" cancel-text="取消" @confirm="delData(id)">
+          <a-popconfirm title="确定要删除该项目吗?" ok-text="确认" cancel-text="取消" @confirm="onDelete(record.id)">
             <a-button type="danger">删除</a-button>
           </a-popconfirm>
         </span>
       </a-table>
 
+      <!-- 新建项目 -->
       <a-modal
         title="新建项目"
         :width="640"
         :visible="state.isCreateShow"
         :confirmLoading="state.isCreateLoading"
-        @ok="onConfirm"
+        @ok="onCreateProject"
         @cancel="state.isCreateShow = false"
       >
-        <a-form-model ref="editForm" :rules="rules" :model="editForm" v-bind="formLayout">
+        <a-form-model ref="createForm" :rules="rules" :model="createForm" v-bind="formLayout">
+          <a-form-model-item ref="appid" label="Appid" prop="appid">
+            <a-input v-model="createForm.appid" :max-length="20" />
+          </a-form-model-item>
+
           <a-form-model-item ref="name" label="项目名" prop="name">
-            <a-input v-model="editForm.name" />
+            <a-input v-model="createForm.name" :max-length="50" />
           </a-form-model-item>
 
           <a-form-model-item ref="describe" label="项目描述" prop="describe">
-            <a-input v-model="editForm.describe" />
+            <a-input v-model="createForm.describe" :max-length="200" />
+          </a-form-model-item>
+        </a-form-model>
+      </a-modal>
+
+      <!-- 修改项目 -->
+      <a-modal
+        title="修改项目"
+        :width="640"
+        :visible="state.isUpdateShow"
+        :confirmLoading="state.isUpdateLoading"
+        @ok="onUpdateProject"
+        @cancel="state.isUpdateShow = false"
+      >
+        <a-form-model ref="updateForm" :rules="rules" :model="updateForm" v-bind="formLayout">
+          <a-form-model-item ref="appid" label="Appid" prop="appid">
+            <a-input v-model="updateForm.appid" :max-length="20" />
+          </a-form-model-item>
+
+          <a-form-model-item ref="name" label="项目名" prop="name">
+            <a-input v-model="updateForm.name" :max-length="50" />
+          </a-form-model-item>
+
+          <a-form-model-item ref="describe" label="项目描述" prop="describe">
+            <a-input v-model="updateForm.describe" :max-length="200" />
           </a-form-model-item>
         </a-form-model>
       </a-modal>
@@ -56,16 +90,27 @@ export default {
   data() {
     return {
       state: {
+        // 是否表格正在加载
         loading: false,
-
+        // 是否显示新建modal
         isCreateShow: false,
-
+        // 是否创建按钮加载
         isCreateLoading: false,
+        // 是否显示修改modal
+        isUpdateShow: false,
+        // 是否修改按钮加载
+        isUpdateLoading: false,
       },
+      // 表头
       columns: [
         {
           title: 'ID',
           dataIndex: 'id',
+        },
+        {
+          title: 'Appid',
+          dataIndex: 'appid',
+          scopedSlots: { customRender: 'appid' },
         },
         {
           title: '项目名称',
@@ -89,7 +134,23 @@ export default {
           scopedSlots: { customRender: 'action' },
         },
       ],
+      // 表单校验规则
       rules: {
+        // appid
+        appid: [
+          {
+            required: true,
+            message: '请输入appid！',
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 20,
+            message: 'Length should be 1 to 20',
+            trigger: 'blur',
+          },
+        ],
+        // 项目名称
         name: [
           {
             required: true,
@@ -98,30 +159,47 @@ export default {
           },
           {
             min: 1,
-            max: 10,
-            message: 'Length should be 1 to 10',
+            max: 50,
+            message: 'Length should be 1 to 50',
             trigger: 'blur',
           },
         ],
+        // 项目描述
         describe: [
           {
             required: false,
-            message: '请输入至少五个字符的规则描述！',
+            message: '请输入项目描述！',
             trigger: 'blur',
           },
           {
             min: 0,
-            max: 10,
-            message: 'Length should be 5 to 10',
+            max: 200,
+            message: 'Length should be 0 to 200',
             trigger: 'blur',
           },
         ],
       },
-      editForm: {
+      // 新建表单
+      createForm: {
+        // appid
+        appid: '',
+        // 项目名称
         name: '',
+        // 项目描述
         describe: '',
+      },
+      // 修改表单
+      updateForm: {
+        // appid
+        appid: '',
+        // 项目名称
+        name: '',
+        // 项目描述
+        describe: '',
+        // ID
         id: '',
       },
+
       type: '',
       data: [],
       pagination: {
@@ -140,7 +218,6 @@ export default {
           sm: { span: 13 },
         },
       },
-      // form: this.$form.createForm(this),
     }
   },
   methods: {
@@ -164,11 +241,13 @@ export default {
         this.state.loading = false
       }
     },
+
     pageChange(e) {
       this.pagination.pageNum = e.current
       this.onGetProjects()
     },
-    async delData(id) {
+
+    async onDelete(id) {
       try {
         const res = await this.$api.Project.deleteProject({
           id: id,
@@ -186,12 +265,13 @@ export default {
         this.$handleError.handleApiRequestException(error)
       }
     },
+    //
     async updateData() {
       try {
         const res = await this.$api.Project.updateProject({
-          id: this.editForm.id,
-          name: this.editForm.name,
-          describe: this.editForm.describe,
+          id: this.createForm.id,
+          name: this.createForm.name,
+          describe: this.createForm.describe,
         })
         if (res.success) {
           this.$notification.success({
@@ -212,51 +292,68 @@ export default {
       this.state.isCreateShow = true
       this.type = 'create'
     },
-    update(id, name, describe) {
-      this.state.isCreateShow = true
-      this.editForm.id = id
-      this.editForm.name = name
-      this.editForm.describe = describe
-      this.type = 'update'
-    },
-    // 创建项目
-    async onCreateProject() {
-      try {
-        const res = await this.$api.Project.createProject({
-          describe: this.editForm.describe,
-          name: this.editForm.name,
-        })
-        if (res.success) {
-          this.$notification.success({
-            message: '成功',
-            description: res.message,
-          })
-          this.state.isCreateShow = false
-          // 添加数据
-          this.data.push(res.data)
-        } else {
-          this.$handleError.handleRequestFail(res.message)
-        }
-      } catch (error) {
-        this.$handleError.handleApiRequestException(error)
-      } finally {
-        this.state.isCreateLoading = false
-      }
+
+    // 点击编辑
+    onClickUpdate(record) {
+      Object.assign(this.updateForm, record)
+      this.state.isUpdateShow = true
     },
 
-    // 创建项目确认
-    onConfirm() {
+    // 创建项目
+    async onCreateProject() {
       this.state.isCreateLoading = true
-      // console.log(this.$refs)
-      this.$refs.editForm.validate(valid => {
+
+      this.$refs.createForm.validate(async valid => {
         if (valid) {
-          if (this.type === 'create') {
-            this.onCreateProject()
-          } else {
-            this.updateData()
+          try {
+            const res = await this.$api.Project.createProject(this.createForm)
+            if (res.success) {
+              this.$notification.success({
+                message: '成功',
+                description: res.message,
+              })
+              this.state.isCreateShow = false
+              // 添加数据
+              this.data.push(res.data)
+            } else {
+              this.$handleError.handleRequestFail(res.message)
+            }
+          } catch (error) {
+            this.$handleError.handleApiRequestException(error)
+          } finally {
+            this.state.isCreateLoading = false
           }
         } else {
           this.state.isCreateLoading = false
+        }
+      })
+    },
+
+    // 修改项目
+    async onUpdateProject() {
+      this.state.isUpdateLoading = true
+
+      this.$refs.updateForm.validate(async valid => {
+        if (valid) {
+          try {
+            const res = await this.$api.Project.updateProject(this.updateForm)
+            if (res.success) {
+              this.$notification.success({
+                message: '成功',
+                description: res.message,
+              })
+              this.state.isUpdateShow = false
+              this.onGetProjects()
+            } else {
+              this.$handleError.handleRequestFail(res.message)
+            }
+          } catch (error) {
+            this.$handleError.handleApiRequestException(error)
+          } finally {
+            this.state.isUpdateLoading = false
+          }
+        } else {
+          this.state.isUpdateLoading = false
         }
       })
     },

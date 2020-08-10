@@ -23,7 +23,7 @@
 
       <a-form-model-item ref="imgCaptcha" prop="imgCaptcha">
         <a-row>
-          <a-col :span="16">
+          <a-col :span="14">
             <a-input
               size="large"
               :maxLength="4"
@@ -33,7 +33,7 @@
             />
           </a-col>
 
-          <a-col :span="8">
+          <a-col :span="10">
             <a-spin :spinning="state.isCaptchaImgLoading">
               <div @click="onGetCaptchaImg" class="captcha-img" v-html="imgCaptchaUrl"></div>
               <!-- <img
@@ -50,11 +50,11 @@
 
       <a-form-model-item style="margin-top:24px">
         <a-button
-          @click="onLogin"
           size="large"
           type="primary"
           htmlType="submit"
           class="login-button"
+          @click="onLogin"
           :loading="state.isLogginBtnLoading"
           :disabled="state.isLogginBtnLoading"
         >确定</a-button>
@@ -156,8 +156,9 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.Login(
-            Object.assign(this.loginForm, {
+            Object.assign({}, this.loginForm, {
               imgCaptcha: this.loginForm.imgCaptcha.toLowerCase(),
+              password: this.$util.md5(this.loginForm.password),
             }),
           )
             .then(res => {
@@ -192,7 +193,7 @@ export default {
       this.state.isCaptchaImgLoading = true
 
       try {
-        const res = await this.$api.Auth.LoginCaptcha()
+        const res = await this.$api.Auth.loginCaptcha()
         if (res.success) {
           this.imgCaptchaUrl = res.data.img
           this.loginForm.loginCaptchaKey = res.data.uuid

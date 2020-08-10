@@ -3,7 +3,8 @@
     <h3>
       <span>注册</span>
     </h3>
-    <a-form ref="formRegister" :form="form" id="formRegister">
+
+    <!-- <a-form ref="formRegister" :form="form" id="formRegister">
       <a-form-item>
         <a-input
           size="large"
@@ -125,7 +126,119 @@
         >注册</a-button>
         <router-link class="login" :to="{ name: 'login' }">使用已有账户登录</router-link>
       </a-form-item>
-    </a-form>
+    </a-form>-->
+
+    <!-- 注册表单 -->
+    <a-form-model ref="registerForm" :model="form" :rules="rules">
+      <a-form-model-item ref="nickname" prop="nickname">
+        <a-input size="large" type="text" placeholder="昵称" v-model="form.nickname"></a-input>
+      </a-form-model-item>
+
+      <a-form-model-item ref="username" prop="username">
+        <a-input size="large" type="text" placeholder="账号" v-model="form.username"></a-input>
+      </a-form-model-item>
+
+      <a-form-model-item ref="email" prop="email">
+        <a-input size="large" type="text" placeholder="邮箱" v-model="form.email"></a-input>
+      </a-form-model-item>
+
+      <a-popover
+        placement="rightTop"
+        :trigger="['focus']"
+        :getPopupContainer="trigger => trigger.parentElement"
+        v-model="state.passwordLevelChecked"
+      >
+        <template slot="content">
+          <div :style="{ width: '240px' }">
+            <div :class="['user-register', passwordLevelClass]">
+              强度：
+              <span>{{ passwordLevelName }}</span>
+            </div>
+
+            <a-progress
+              :percent="state.percent"
+              :showInfo="false"
+              :strokeColor="passwordLevelColor"
+            />
+            <div style="margin-top: 10px;">
+              <span>请至少输入 6 个字符。请不要使用容易被猜到的密码。</span>
+            </div>
+          </div>
+        </template>
+
+        <a-form-model-item ref="password" prop="password">
+          <a-input-password
+            @click="handlePasswordInputClick"
+            size="large"
+            placeholder="至少6位密码，区分大小写"
+            v-model="form.password"
+          ></a-input-password>
+        </a-form-model-item>
+
+        <!-- <a-form-item>
+          <a-input-password
+            size="large"
+            @click="handlePasswordInputClick"
+            placeholder="至少6位密码，区分大小写"
+            v-decorator="[
+              'password',
+              {
+                rules: [
+                  { required: true, message: '至少6位密码，区分大小写' },
+                  { validator: this.handlePasswordLevel },
+                ],
+                validateTrigger: ['change', 'blur'],
+              },
+            ]"
+          ></a-input-password>
+        </a-form-item>-->
+      </a-popover>
+
+      <a-form-model-item ref="password2" prop="password2">
+        <a-input-password size="large" placeholder="确认密码" v-model="form.password2"></a-input-password>
+      </a-form-model-item>
+
+      <a-form-model-item ref="imgCaptcha" prop="imgCaptcha">
+        <a-row>
+          <a-col :span="14">
+            <a-input
+              size="large"
+              :maxLength="4"
+              placeholder="图片验证码"
+              type="text"
+              v-model="form.imgCaptcha"
+            />
+          </a-col>
+
+          <a-col :span="10">
+            <a-spin :spinning="state.isCaptchaImgLoading">
+              <div @click="onGetCaptchaImg" class="captcha-img" v-html="imgCaptchaUrl"></div>
+              <!-- <img
+                class="captcha-img"
+                @click="onGetCaptchaImg"
+                :src="imgCaptchaUrl"
+                height="40"
+                @load="state.isCaptchaImgLoading = false"
+              />-->
+            </a-spin>
+          </a-col>
+        </a-row>
+      </a-form-model-item>
+
+      <a-form-model-item style="margin-top:24px">
+        <a-button
+          size="large"
+          type="primary"
+          htmlType="submit"
+          class="register-button"
+          @click="onRegister"
+          :loading="state.isRegisterBtnLoading"
+          :disabled="state.isRegisterBtnLoading"
+        >确定</a-button>
+
+        <router-link class="login" :to="{ name: 'login' }">使用已有账户登录</router-link>
+      </a-form-model-item>
+    </a-form-model>
   </div>
 </template>
 
@@ -153,11 +266,68 @@ const levelColor = {
 
 export default {
   name: 'Register',
-  components: {},
+
   mixins: [deviceMixin],
+
   data() {
     return {
-      form: this.$form.createForm(this),
+      // form: this.$form.createForm(this),
+
+      form: {
+        // 昵称
+        nickname: '',
+        // 账号
+        username: '',
+        // 邮箱
+        email: '',
+        // 密码
+        password: '',
+        // 确认密码
+        password2: '',
+        // 图片验证码
+        imgCaptcha: '',
+        // 登录uuidKey
+        imgCaptchaKey: '',
+      },
+
+      rules: {
+        // 昵称
+        nickname: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
+        // 账号
+        // username: [{ required: true, type: 'string', message: '请输入账号' }],
+        username: [
+          {
+            required: true,
+            message: '请输入用户名',
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 20,
+            message: 'Length should be 1 to 20',
+            trigger: 'blur',
+          },
+        ],
+        // 邮箱
+        email: [{ required: true, message: '请输入邮箱地址', trigger: 'blur' }],
+        // 密码
+        password: [{ required: true, message: '至少6位密码，区分大小写', trigger: 'blur' }, { validator: this.handlePasswordLevel }],
+        // 确认密码
+        password2: [{ required: true, message: '至少6位密码，区分大小写', trigger: 'blur' }, { validator: this.handlePasswordCheck }],
+        // 图片验证码
+        imgCaptcha: [
+          {
+            required: true,
+            message: '请输入图片验证码',
+            trigger: 'blur',
+          },
+          {
+            len: 4,
+            message: 'Length should 4',
+            trigger: 'blur',
+          },
+        ],
+      },
 
       state: {
         time: 60,
@@ -168,9 +338,14 @@ export default {
         progressColor: '#FF0000',
 
         isRegisterBtnLoading: false,
+        // 图片验证码是否加载
+        isCaptchaImgLoading: true,
       },
+      // 图片验证码
+      imgCaptchaUrl: '',
     }
   },
+
   computed: {
     passwordLevelClass() {
       return levelClass[this.state.passwordLevel]
@@ -182,6 +357,7 @@ export default {
       return levelColor[this.state.passwordLevel]
     },
   },
+
   methods: {
     handlePasswordLevel(rule, value, callback) {
       let level = 0
@@ -200,7 +376,7 @@ export default {
       }
       this.state.passwordLevel = level
       this.state.percent = level * 30
-      if (level >= 2) {
+      if (level >= 1) {
         if (level >= 3) {
           this.state.percent = 100
         }
@@ -214,7 +390,8 @@ export default {
     },
 
     handlePasswordCheck(rule, value, callback) {
-      const password = this.form.getFieldValue('password')
+      // const password = this.form.getFieldValue('password')
+      const { password } = this.form
       if (value === undefined) {
         callback(new Error('请输入密码'))
       }
@@ -232,62 +409,61 @@ export default {
       this.state.passwordLevelChecked = false
     },
 
-    handleSubmit() {
-      const {
-        form: { validateFields },
-        state,
-        // $router,
-      } = this
-      validateFields({ force: true }, (err, values) => {
-        if (!err) {
-          state.passwordLevelChecked = false
+    // 获取验证码
+    async onGetCaptchaImg() {
+      this.state.isCaptchaImgLoading = true
 
-          // 请求接口注册
-          this.onRegister(values)
-
-          // $router.push({ name: 'registerResult', params: { ...values } })
-        } else {
-          console.log(err)
-        }
-      })
-    },
-    requestFailed(err) {
-      this.$notification['error']({
-        message: '错误',
-        description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
-        duration: 4,
-      })
-      this.state.isRegisterBtnLoading = false
-    },
-
-    // 注册
-    async onRegister({ username, password, email, nickname }) {
       try {
-        this.state.isRegisterBtnLoading = true
-
-        const res = await this.$api.Auth.register({
-          username,
-          password,
-          email,
-          nickname,
-        })
-
+        const res = await this.$api.Auth.registerCaptcha()
         if (res.success) {
-          this.$notification.success({
-            message: '成功',
-            description: res.message,
-          })
+          this.imgCaptchaUrl = res.data.img
+          this.form.imgCaptchaKey = res.data.uuid
         } else {
           this.$handleError.handleRequestFail(res.message)
         }
-
-        console.log(res)
       } catch (error) {
         this.$handleError.handleApiRequestException(error)
       } finally {
-        this.state.isRegisterBtnLoading = false
+        this.state.isCaptchaImgLoading = false
       }
     },
+
+    // 注册
+    async onRegister() {
+      this.state.isRegisterBtnLoading = true
+
+      this.$refs.registerForm.validate(valid => {
+        if (valid) {
+          this.$api.Auth.register(
+            Object.assign({}, this.form, {
+              imgCaptcha: this.form.imgCaptcha.toLowerCase(),
+              password: this.$util.md5(this.form.password),
+            }),
+          )
+            .then(res => {
+              if (res.success) {
+                this.$notification.success({
+                  message: '成功',
+                  description: res.message,
+                })
+              } else {
+                this.$handleError.handleRequestFail(res.message)
+              }
+            })
+            .catch(err => this.$handleError.handleApiRequestException(err))
+            .finally(() => {
+              this.state.isRegisterBtnLoading = false
+            })
+        } else {
+          this.state.isRegisterBtnLoading = false
+          return false
+        }
+      })
+    },
+  },
+
+  created() {
+    this.onGetCaptchaImg()
   },
 }
 </script>
@@ -334,6 +510,15 @@ export default {
   .login {
     float: right;
     line-height: 40px;
+  }
+
+  .captcha-img {
+    cursor: pointer;
+    width: 120px;
+    height: 40px;
+    ::v-deep svg {
+      height: 40px;
+    }
   }
 }
 </style>

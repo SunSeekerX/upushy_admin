@@ -3,20 +3,52 @@
  * @author: SunSeekerX
  * @Date: 2020-07-28 09:28:09
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-04 18:15:29
+ * @LastEditTime: 2020-08-10 21:59:54
 -->
 
 <template>
   <page-header-wrapper>
     <a-card :bordered="false">
       <div class="table-operator">
-        <a-button type="primary" icon="plus" @click="state.isCreateShow = true">新建</a-button>
+        <a-row align="middle" type="flex">
+          <a-col :xs="24" :md="12">
+            <a-button type="primary" icon="plus" @click="state.isCreateShow = true">新建</a-button>
+          </a-col>
 
-        <a-select default-value="wgt" style="width: 120px" @change="selectChange">
+          <a-col :xs="24" :md="12">
+            <a-tabs v-model="sourcesType" size="small" @change="onGetSources">
+              <a-tab-pane key="1">
+                <span slot="tab">
+                  <a-icon type="android" />WGT
+                </span>
+              </a-tab-pane>
+
+              <a-tab-pane key="2">
+                <span slot="tab">
+                  <a-icon type="apple" />WGT
+                </span>
+              </a-tab-pane>
+
+              <a-tab-pane key="3">
+                <span slot="tab">
+                  <a-icon type="android" />Android
+                </span>
+              </a-tab-pane>
+
+              <a-tab-pane key="4">
+                <span slot="tab">
+                  <a-icon type="apple" />Apple
+                </span>
+              </a-tab-pane>
+            </a-tabs>
+          </a-col>
+        </a-row>
+
+        <!-- <a-select default-value="wgt" style="width: 120px" @change="selectChange">
           <a-select-option value="wgt">wgt</a-select-option>
           <a-select-option value="android">android</a-select-option>
           <a-select-option value="ios">ios</a-select-option>
-        </a-select>
+        </a-select>-->
       </div>
 
       <!-- 资源表格 -->
@@ -31,11 +63,11 @@
         <!-- url -->
         <span slot="url" slot-scope="url">{{ handleFormatUrl(url) }}</span>
 
-        <!-- 整包更新 -->
-        <span slot="isFullUpdated" slot-scope="isFullUpdated">{{ isFullUpdated === 0 ? '否' : '是' }}</span>
-
         <!-- 强制更新 -->
         <span slot="isForceUpdate" slot-scope="isForceUpdate">{{ isForceUpdate === 0 ? '否' : '是' }}</span>
+
+        <!-- 类型 -->
+        <span slot="sourcesType" slot-scope="text, record">{{ handleFormatType(record.type) }}</span>
 
         <!-- 操作 -->
         <!-- <a-button slot="action" type="primary">查看资源</a-button> -->
@@ -59,7 +91,7 @@
         :width="640"
         :visible="state.isCreateShow"
         :confirmLoading="state.isCreateLoading"
-        @ok="onConfirm"
+        @ok="onCreateSource"
         @cancel="state.isCreateShow = false"
       >
         <a-form-model
@@ -69,23 +101,26 @@
           :label-col="labelCol"
           :wrapper-col="wrapperCol"
         >
-          <a-form-model-item ref="projectId" label="项目ID" prop="projectId">
+          <a-form-model-item label="项目ID" ref="projectId" prop="projectId">
             <a-input disabled v-model="form.projectId" prop="projectId" />
           </a-form-model-item>
 
-          <a-form-model-item ref="version" label="版本" prop="version">
+          <a-form-model-item label="版本" ref="version" prop="version">
             <a-input v-model="form.version" />
           </a-form-model-item>
 
-          <a-form-model-item ref="versionCode" label="版本号" prop="versionCode">
+          <a-form-model-item label="版本号" ref="versionCode" prop="versionCode">
             <a-input
               @change="e => form.versionCode = Number(e.target.value.replace(/\D/g, ''))"
               v-model="form.versionCode"
             />
           </a-form-model-item>
 
-          <a-form-model-item ref="remark" label="备注" prop="remark">
-            <a-textarea v-model="form.remark" />
+          <a-form-model-item label="原生应用版本号" ref="nativeVersionCode" prop="nativeVersionCode">
+            <a-input
+              @change="e => form.nativeVersionCode = Number(e.target.value.replace(/\D/g, ''))"
+              v-model="form.nativeVersionCode"
+            />
           </a-form-model-item>
 
           <a-form-model-item label="是否强制更新" prop="isForceUpdate">
@@ -95,19 +130,17 @@
             </a-radio-group>
           </a-form-model-item>
 
-          <a-form-model-item label="是否整包更新" prop="isFullUpdated">
-            <a-radio-group v-model="form.isFullUpdated">
-              <a-radio :value="0">否</a-radio>
-              <a-radio :value="1">是</a-radio>
-            </a-radio-group>
-          </a-form-model-item>
-
           <a-form-model-item label="类型" prop="type">
             <a-select v-model="form.type">
-              <a-select-option :value="0">wgt</a-select-option>
-              <a-select-option :value="1">android</a-select-option>
-              <a-select-option :value="2">ios</a-select-option>
+              <a-select-option :value="1">wgt-android</a-select-option>
+              <a-select-option :value="2">wgt-ios</a-select-option>
+              <a-select-option :value="3">android</a-select-option>
+              <a-select-option :value="4">ios</a-select-option>
             </a-select>
+          </a-form-model-item>
+
+          <a-form-model-item label="备注" ref="remark" prop="remark">
+            <a-textarea v-model="form.remark" />
           </a-form-model-item>
 
           <a-form-model-item label="资源包" prop="url">
@@ -139,7 +172,7 @@
         <a-form-model
           ref="editForm"
           :model="editForm"
-          :rules="rules"
+          :rules="editFormRules"
           :label-col="labelCol"
           :wrapper-col="wrapperCol"
         >
@@ -152,37 +185,42 @@
           </a-form-model-item>
 
           <a-form-model-item label="版本号" prop="versionCode">
-            <a-input @change="e => editForm.versionCode = Number(e.target.value.replace(/\D/g, ''))" v-model="editForm.versionCode" />
+            <a-input
+              @change="e => editForm.versionCode = Number(e.target.value.replace(/\D/g, ''))"
+              v-model="editForm.versionCode"
+            />
           </a-form-model-item>
 
-          <a-form-model-item label="备注" prop="remark">
-            <a-textarea v-model="editForm.remark" />
+          <a-form-model-item label="原生应用版本号" ref="nativeVersionCode" prop="nativeVersionCode">
+            <a-input
+              @change="e => editForm.nativeVersionCode = Number(e.target.value.replace(/\D/g, ''))"
+              v-model="editForm.nativeVersionCode"
+            />
           </a-form-model-item>
 
-          <a-form-item label="是否强制更新" prop="isForceUpdate">
+          <a-form-model-item label="是否强制更新" prop="isForceUpdate">
             <a-radio-group v-model="editForm.isForceUpdate">
               <a-radio :value="0">否</a-radio>
               <a-radio :value="1">是</a-radio>
             </a-radio-group>
-          </a-form-item>
+          </a-form-model-item>
 
-          <a-form-item label="是否整包更新" prop="isFullUpdated">
-            <a-radio-group v-model="editForm.isFullUpdated">
-              <a-radio :value="0">否</a-radio>
-              <a-radio :value="1">是</a-radio>
-            </a-radio-group>
-          </a-form-item>
-
-          <a-form-item label="类型">
+          <a-form-model-item label="类型" prop="type">
             <a-select v-model="editForm.type">
-              <a-select-option :value="0">wgt</a-select-option>
-              <a-select-option :value="1">android</a-select-option>
-              <a-select-option :value="2">ios</a-select-option>
+              <a-select-option :value="1">wgt-android</a-select-option>
+              <a-select-option :value="2">wgt-ios</a-select-option>
+              <a-select-option :value="3">android</a-select-option>
+              <a-select-option :value="4">ios</a-select-option>
             </a-select>
-          </a-form-item>
-          <a-form-item label="资源包地址" prop="url">
+          </a-form-model-item>
+
+          <a-form-model-item label="备注" ref="remark" prop="remark">
+            <a-textarea v-model="editForm.remark" />
+          </a-form-model-item>
+
+          <a-form-model-item label="资源包地址" prop="url">
             <a-input v-model="editForm.url" disabled="disabled" />
-          </a-form-item>
+          </a-form-model-item>
         </a-form-model>
       </a-modal>
     </a-card>
@@ -195,8 +233,22 @@ import { ACCESS_TOKEN } from '@/store/mutation-types'
 
 export default {
   name: 'BasicSource',
+
   data() {
     return {
+      labelCol: { xs: { span: 24 }, sm: { span: 7 } },
+      wrapperCol: { xs: { span: 24 }, sm: { span: 13 } },
+      // 字典
+      dict: {
+        // 资源类型
+        sourcesType: {
+          1: 'wgt-android',
+          2: 'wgt-ios',
+          3: 'android',
+          4: 'ios',
+        },
+      },
+      // 状态
       state: {
         // 表格是否加载
         isTableLoading: false,
@@ -226,6 +278,11 @@ export default {
           title: '版本号',
           dataIndex: 'versionCode',
         },
+        // 原生应用版本号
+        {
+          title: '原生应用版本号',
+          dataIndex: 'nativeVersionCode',
+        },
         // 下载地址
         {
           title: '下载地址',
@@ -245,12 +302,6 @@ export default {
           title: '类型',
           dataIndex: 'sourcesType',
           scopedSlots: { customRender: 'sourcesType' },
-        },
-        // 强制更新
-        {
-          title: '整包更新',
-          dataIndex: 'isFullUpdated',
-          scopedSlots: { customRender: 'isFullUpdated' },
         },
         // 备注
         {
@@ -274,72 +325,84 @@ export default {
           fixed: 'right',
         },
       ],
+      // 资源类型
+      sourcesType: '1',
       // 表格数据
       tableData: [],
+      // 文件数据
       fileList: [],
+      // 分页
       pagination: {
         total: 0,
         pageSize: 10,
         defaultCurrent: 1,
         pageNum: 1,
       },
-      // 编辑的行数据
-      editForm: {},
-      sourcesType: 0,
-      editFormRules: {},
-      // 上传文件地址
-      uploadAcrion: `${process.env.VUE_APP_API_BASE_URL}/api/upload`,
-      labelCol: { xs: { span: 24 }, sm: { span: 7 } },
-      wrapperCol: { xs: { span: 24 }, sm: { span: 13 } },
       // 新增表格
       form: {
         // 项目ID
-        projectId: '',
+        projectId: 0,
         // 版本
         version: '',
         // 版本号
-        versionCode: '',
-        // 备注
-        remark: '',
+        versionCode: 0,
+        // 原生应用版本号
+        nativeVersionCode: 0,
         // 是否强制更新
         isForceUpdate: 0,
-        // 是否强制更新
-        isFullUpdated: 0,
         // 类型
-        type: 0,
+        type: 1,
+        // 备注
+        remark: '',
         // 资源包
         url: '',
       },
       // 新增表格rules
       rules: {
+        // 项目ID
         projectId: [
           {
             required: true,
-            type: 'number',
-            message: '请输入项目ID！',
+            type: 'integer',
+            message: '请输入正确的项目ID！',
           },
         ],
+        // 版本
         version: [{ required: true, type: 'string', message: '请输入版本！' }],
+        // 版本号
         versionCode: [
           {
             required: true,
             type: 'integer',
             message: '请输入正确的版本号！',
           },
+          {
+            type: 'integer',
+            min: 1,
+            message: '版本号必须大于0！',
+          },
         ],
-        remark: [{ required: true, type: 'string', message: '请输入备注！' }],
+        // 原生应用版本号
+        nativeVersionCode: [
+          {
+            required: false,
+            type: 'integer',
+            message: '请输入正确的原生应用版本号！',
+          },
+          {
+            validator: this.handleValideNativeVersionCode,
+          },
+        ],
+        // 备注
+        remark: [{ required: false, type: 'string', message: '请输入备注！' }],
+        // 是否强制更新（0：否 1：是）
         isForceUpdate: [
           {
             required: true,
             message: '请选择是否强制更新！',
           },
         ],
-        isFullUpdated: [
-          {
-            required: true,
-            message: '请选择是否整包更新！',
-          },
-        ],
+        // 资源类型（1：wgt-android 2：wgt-ios  3：android，4：ios）
         type: [
           {
             required: true,
@@ -347,6 +410,7 @@ export default {
             trigger: 'change',
           },
         ],
+        // 下载地址
         url: [
           {
             required: true,
@@ -358,8 +422,74 @@ export default {
       headers: {
         Authorization: `Bearer ${storage.get(ACCESS_TOKEN)}`,
       },
+      // 编辑的行数据
+      editForm: {},
+      // 编辑表格rules
+      editFormRules: {
+        // 项目ID
+        projectId: [
+          {
+            required: true,
+            type: 'integer',
+            message: '请输入正确的项目ID！',
+          },
+        ],
+        // 版本
+        version: [{ required: true, type: 'string', message: '请输入版本！' }],
+        // 版本号
+        versionCode: [
+          {
+            required: true,
+            type: 'integer',
+            message: '请输入正确的版本号！',
+          },
+          {
+            type: 'integer',
+            min: 1,
+            message: '版本号必须大于0！',
+          },
+        ],
+        // 原生应用版本号
+        nativeVersionCode: [
+          {
+            required: false,
+            type: 'integer',
+            message: '请输入正确的原生应用版本号！',
+          },
+          {
+            validator: this.handleValideEditNativeVersionCode,
+          },
+        ],
+        // 备注
+        remark: [{ required: false, type: 'string', message: '请输入备注！' }],
+        // 是否强制更新（0：否 1：是）
+        isForceUpdate: [
+          {
+            required: true,
+            message: '请选择是否强制更新！',
+          },
+        ],
+        // 资源类型（1：wgt-android 2：wgt-ios  3：android，4：ios）
+        type: [
+          {
+            required: true,
+            message: '请选择类型！',
+            trigger: 'change',
+          },
+        ],
+        // 下载地址
+        url: [
+          {
+            required: true,
+            message: '请上传资源包！',
+          },
+        ],
+      },
+      // 上传文件地址
+      uploadAcrion: `${process.env.VUE_APP_API_BASE_URL}/api/upload`,
     }
   },
+
   methods: {
     // 获取资源列表
     async onGetSources() {
@@ -384,35 +514,33 @@ export default {
       }
     },
 
-    // 创建
+    // 新建资源
     async onCreateSource() {
-      try {
-        this.state.isCreateLoading = true
-        const res = await this.$api.Source.createSource(this.form)
-        if (res.success) {
-          this.$notification.success({
-            message: '成功',
-            description: res.message,
-          })
-          this.state.isCreateShow = false
-          this.state.isCreateLoading = false
-          // 添加数据
-          this.tableData.push(res.data)
-        } else {
-          this.$handleError.handleRequestFail(res.message)
-        }
-      } catch (error) {
-        this.$handleError.handleApiRequestException(error)
-      } finally {
-        this.state.isCreateLoading = false
-      }
-    },
-
-    // 新建资源确认
-    onConfirm() {
-      this.$refs.createForm.validate(valid => {
+      this.$refs.createForm.validate(async valid => {
         if (valid) {
-          this.onCreateSource()
+          try {
+            this.state.isCreateLoading = true
+            const res = await this.$api.Source.createSource(this.form)
+            if (res.success) {
+              this.$notification.success({
+                message: '成功',
+                description: res.message,
+              })
+              this.state.isCreateShow = false
+              this.state.isCreateLoading = false
+
+              if (this.form.type === Number(this.sourcesType)) {
+                // 添加数据
+                this.tableData.push(res.data)
+              }
+            } else {
+              this.$handleError.handleRequestFail(res.message)
+            }
+          } catch (error) {
+            this.$handleError.handleApiRequestException(error)
+          } finally {
+            this.state.isCreateLoading = false
+          }
         } else {
           this.state.isCreateLoading = false
         }
@@ -421,7 +549,7 @@ export default {
 
     selectChange(e) {
       if (e === 'android') {
-        this.sourcesType = 1
+        this.sourcesType = 3
         this.onGetSources()
       } else if (e === 'ios') {
         this.sourcesType = 2
@@ -522,11 +650,54 @@ export default {
         this.state.isCreateLoading = false
       }
     },
+
+    // 校验新增原生版本号
+    handleValideNativeVersionCode(rule, value, callback) {
+      const { type } = this.form
+      if (type === 1 || type === 2) {
+        if (typeof value !== 'number') {
+          callback(new Error('请输入正确的原生版本号！'))
+        } else if (value <= 0) {
+          callback(new Error('wgt资源的原生版本号必须大于0！'))
+        } else {
+          callback()
+        }
+      } else {
+        callback()
+      }
+    },
+
+    // 校验编辑原生版本号
+    handleValideEditNativeVersionCode(rule, value, callback) {
+      const { type } = this.editForm
+      if (type === 1 || type === 2) {
+        if (typeof value !== 'number') {
+          callback(new Error('请输入正确的原生版本号！'))
+        } else if (value <= 0) {
+          callback(new Error('wgt资源的原生版本号必须大于0！'))
+        } else {
+          callback()
+        }
+      } else {
+        callback()
+      }
+    },
+
+    // 格式化表格类型
+    handleFormatType(type) {
+      if (this.dict.sourcesType[type]) {
+        return this.dict.sourcesType[type]
+      } else {
+        return '未知'
+      }
+    },
   },
+
   created() {
     // 获取项目id
-    this.form.projectId = this.$route.query.id
+    this.form.projectId = Number(this.$route.query.id)
   },
+
   mounted() {
     // 获取资源列表
     this.onGetSources()
