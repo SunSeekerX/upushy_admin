@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-28 09:28:09
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-10 21:59:54
+ * @LastEditTime: 2020-08-13 19:01:00
 -->
 
 <template>
@@ -85,7 +85,7 @@
         </template>
       </a-table>
 
-      <!-- 新建 -->
+      <!-- 新建资源 -->
       <a-modal
         title="新建资源"
         :width="640"
@@ -143,7 +143,11 @@
             <a-textarea v-model="form.remark" />
           </a-form-model-item>
 
-          <a-form-model-item label="资源包" prop="url">
+          <a-form-model-item v-if="form.type === 4" label="资源链接" ref="url" prop="url">
+            <a-input v-model="form.url" />
+          </a-form-model-item>
+
+          <a-form-model-item v-else label="资源包" prop="url">
             <a-upload
               name="file"
               accept=".wgt, .apk"
@@ -490,6 +494,12 @@ export default {
     }
   },
 
+  watch: {
+    'form.type'() {
+      this.form.url = ''
+    },
+  },
+
   methods: {
     // 获取资源列表
     async onGetSources() {
@@ -581,7 +591,11 @@ export default {
     },
 
     handleFormatUrl(url) {
-      return `${process.env.VUE_APP_OSS_BASE_URL}/${url}`
+      if (this.sourcesType === '4') {
+        return url
+      } else {
+        return `${process.env.VUE_APP_OSS_BASE_URL}/${url}`
+      }
     },
 
     pageChange(e) {
