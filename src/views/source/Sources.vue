@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-28 09:28:09
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-13 19:01:00
+ * @LastEditTime: 2020-08-13 21:39:07
 -->
 
 <template>
@@ -60,8 +60,20 @@
         :pagination="pagination"
         @change="pageChange"
       >
+        <!-- id -->
+        <a-tooltip slot="id" slot-scope="id">
+          <template slot="title">{{ id }}</template>
+          {{ id }}
+        </a-tooltip>
+
         <!-- url -->
-        <span slot="url" slot-scope="url">{{ handleFormatUrl(url) }}</span>
+        <a-tooltip slot="url" slot-scope="url">
+          <template slot="title">{{ handleFormatUrl(url) }}</template>
+          {{ handleFormatUrl(url) }}
+        </a-tooltip>
+
+        <!-- 版本号 -->
+        <a-tag slot="versionCode" slot-scope="versionCode" color="green">{{ versionCode }}</a-tag>
 
         <!-- 强制更新 -->
         <span slot="isForceUpdate" slot-scope="isForceUpdate">{{ isForceUpdate === 0 ? '否' : '是' }}</span>
@@ -83,6 +95,12 @@
             <a-button type="danger">删除</a-button>
           </a-popconfirm>
         </template>
+
+        <!-- 创建时间 -->
+        <template slot="createdTime" slot-scope="createdTime">{{ $util.formatTime(createdTime) }}</template>
+
+        <!-- 更新时间 -->
+        <template slot="updatedTime" slot-scope="updatedTime">{{ $util.formatTime(updatedTime) }}</template>
       </a-table>
 
       <!-- 新建资源 -->
@@ -116,7 +134,7 @@
             />
           </a-form-model-item>
 
-          <a-form-model-item label="原生应用版本号" ref="nativeVersionCode" prop="nativeVersionCode">
+          <a-form-model-item label="原生版本号" ref="nativeVersionCode" prop="nativeVersionCode">
             <a-input
               @change="e => form.nativeVersionCode = Number(e.target.value.replace(/\D/g, ''))"
               v-model="form.nativeVersionCode"
@@ -189,13 +207,10 @@
           </a-form-model-item>
 
           <a-form-model-item label="版本号" prop="versionCode">
-            <a-input
-              @change="e => editForm.versionCode = Number(e.target.value.replace(/\D/g, ''))"
-              v-model="editForm.versionCode"
-            />
+            <a-input disabled="disabled" v-model="editForm.versionCode" />
           </a-form-model-item>
 
-          <a-form-model-item label="原生应用版本号" ref="nativeVersionCode" prop="nativeVersionCode">
+          <a-form-model-item label="原生版本号" ref="nativeVersionCode" prop="nativeVersionCode">
             <a-input
               @change="e => editForm.nativeVersionCode = Number(e.target.value.replace(/\D/g, ''))"
               v-model="editForm.nativeVersionCode"
@@ -271,28 +286,34 @@ export default {
         {
           title: 'ID',
           dataIndex: 'id',
+          scopedSlots: { customRender: 'id' },
+          width: 300,
         },
         // 版本
         {
-          title: '版本',
+          title: '版本名',
           dataIndex: 'version',
+          width: 80,
         },
         // 版本号
         {
           title: '版本号',
           dataIndex: 'versionCode',
+          scopedSlots: { customRender: 'versionCode' },
+          width: 80,
         },
-        // 原生应用版本号
+        // 原生版本号
         {
-          title: '原生应用版本号',
+          title: '原生版本号',
           dataIndex: 'nativeVersionCode',
+          width: 100,
         },
         // 下载地址
         {
           title: '下载地址',
           dataIndex: 'url',
           scopedSlots: { customRender: 'url' },
-          width: 200,
+          width: 150,
           // ellipsis: true,
         },
         // 强制更新
@@ -300,33 +321,41 @@ export default {
           title: '强制更新',
           dataIndex: 'isForceUpdate',
           scopedSlots: { customRender: 'isForceUpdate' },
+          width: 80,
         },
         // 类型
         {
           title: '类型',
           dataIndex: 'sourcesType',
           scopedSlots: { customRender: 'sourcesType' },
+          width: 80,
         },
         // 备注
         {
           title: '备注',
           dataIndex: 'remark',
+          width: 80,
         },
         // 创建时间
         {
           title: '创建时间',
           dataIndex: 'createdTime',
+          scopedSlots: { customRender: 'createdTime' },
+          width: 150,
         },
         // 更新时间
         {
           title: '更新时间',
           dataIndex: 'updatedTime',
+          scopedSlots: { customRender: 'updatedTime' },
+          width: 150,
         },
         // 操作
         {
           title: '操作',
-          scopedSlots: { customRender: 'action' },
           fixed: 'right',
+          scopedSlots: { customRender: 'action' },
+          width: 150,
         },
       ],
       // 资源类型
@@ -350,7 +379,7 @@ export default {
         version: '',
         // 版本号
         versionCode: 0,
-        // 原生应用版本号
+        // 原生版本号
         nativeVersionCode: 0,
         // 是否强制更新
         isForceUpdate: 0,
@@ -367,7 +396,7 @@ export default {
         projectId: [
           {
             required: true,
-            type: 'integer',
+            type: 'string',
             message: '请输入正确的项目ID！',
           },
         ],
@@ -386,7 +415,7 @@ export default {
             message: '版本号必须大于0！',
           },
         ],
-        // 原生应用版本号
+        // 原生版本号
         nativeVersionCode: [
           {
             required: false,
@@ -453,7 +482,7 @@ export default {
             message: '版本号必须大于0！',
           },
         ],
-        // 原生应用版本号
+        // 原生版本号
         nativeVersionCode: [
           {
             required: false,
@@ -495,8 +524,11 @@ export default {
   },
 
   watch: {
-    'form.type'() {
-      this.form.url = ''
+    'form.type'(newVal) {
+      if (newVal === 4) {
+        this.form.url = ''
+        this.fileList = []
+      }
     },
   },
 
@@ -709,7 +741,7 @@ export default {
 
   created() {
     // 获取项目id
-    this.form.projectId = Number(this.$route.query.id)
+    this.form.projectId = this.$route.query.id
   },
 
   mounted() {

@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 23:27:34
+ * @LastEditTime: 2020-08-13 19:29:14
  */
 
 import Vue from 'vue'
@@ -92,39 +92,6 @@ export const asyncRouterMap = [
               keepAlive: true,
               permission: ['source'],
             },
-          },
-        ],
-      },
-
-      // System
-      {
-        path: '/system',
-        component: RouteView,
-        redirect: '/system/dict',
-        name: 'system',
-        meta: {
-          title: '系统管理',
-          icon: 'setting',
-          permission: ['user'],
-        },
-        children: [
-          {
-            path: '/system/dict',
-            name: 'dictHome',
-            component: () => import('@/views/sys/dict/Dict'),
-            meta: {
-              title: '数据字典',
-              icon: 'edit',
-              keepAlive: true,
-              permission: ['user'],
-            },
-          },
-          {
-            path: '/system/dict-data',
-            name: 'dictData',
-            hidden: true,
-            component: () => import('@/views/sys/dictData/DictData'),
-            meta: { title: '数据字典详情', icon: 'edit', permission: ['user'] },
           },
         ],
       },

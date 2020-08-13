@@ -1,13 +1,16 @@
 /**
- * @name: 
+ * @name:
  * @author: SunSeekerX
  * @Date: 2020-08-10 10:29:06
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-10 10:37:37
+ * @LastEditTime: 2020-08-13 21:26:07
  */
 
- import md5 from './core/md5'
+import moment from 'moment'
 
- export {
-   md5
- }
+import md5 from './core/md5'
+
+export function formatTime(timeStr) {
+  return moment(timeStr).format('YYYY-MM-DD HH:mm:ss')
+}
+export { md5 }

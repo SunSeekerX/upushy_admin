@@ -13,10 +13,11 @@
         :pagination="pagination"
         @change="pageChange"
       >
-        <!-- Appid -->
-        <template slot="appid" slot-scope="text, { id, appid }">
-          <router-link :to="{ name: 'BasicSource', query: {id: id}}">{{ appid }}</router-link>
-        </template>
+        <!-- id -->
+        <a-tooltip slot="id" slot-scope="id">
+          <template slot="title">{{ id }}</template>
+          {{ id }}
+        </a-tooltip>
 
         <!-- 项目名称 -->
         <template slot="name" slot-scope="text, { id, name }">
@@ -27,10 +28,21 @@
         <span slot="action" slot-scope="text, record">
           <a-button @click="onClickUpdate(record)">修改</a-button>
 
-          <a-popconfirm title="确定要删除该项目吗?" ok-text="确认" cancel-text="取消" @confirm="onDelete(record.id)">
+          <a-popconfirm
+            title="确定要删除该项目吗?"
+            ok-text="确认"
+            cancel-text="取消"
+            @confirm="onDelete(record.id)"
+          >
             <a-button type="danger">删除</a-button>
           </a-popconfirm>
         </span>
+
+        <!-- 创建时间 -->
+        <template slot="createdTime" slot-scope="createdTime">{{ $util.formatTime(createdTime) }}</template>
+
+        <!-- 更新时间 -->
+        <template slot="updatedTime" slot-scope="updatedTime">{{ $util.formatTime(updatedTime) }}</template>
       </a-table>
 
       <!-- 新建项目 -->
@@ -43,10 +55,6 @@
         @cancel="state.isCreateShow = false"
       >
         <a-form-model ref="createForm" :rules="rules" :model="createForm" v-bind="formLayout">
-          <a-form-model-item ref="appid" label="Appid" prop="appid">
-            <a-input v-model="createForm.appid" :max-length="20" />
-          </a-form-model-item>
-
           <a-form-model-item ref="name" label="项目名" prop="name">
             <a-input v-model="createForm.name" :max-length="50" />
           </a-form-model-item>
@@ -67,10 +75,6 @@
         @cancel="state.isUpdateShow = false"
       >
         <a-form-model ref="updateForm" :rules="rules" :model="updateForm" v-bind="formLayout">
-          <a-form-model-item ref="appid" label="Appid" prop="appid">
-            <a-input v-model="updateForm.appid" :max-length="20" />
-          </a-form-model-item>
-
           <a-form-model-item ref="name" label="项目名" prop="name">
             <a-input v-model="updateForm.name" :max-length="50" />
           </a-form-model-item>
@@ -106,28 +110,27 @@ export default {
         {
           title: 'ID',
           dataIndex: 'id',
-        },
-        {
-          title: 'Appid',
-          dataIndex: 'appid',
-          scopedSlots: { customRender: 'appid' },
+          scopedSlots: { customRender: 'id' },
+          width: 300,
         },
         {
           title: '项目名称',
           dataIndex: 'name',
           scopedSlots: { customRender: 'name' },
         },
-        {
-          title: '项目描述',
-          dataIndex: 'describe',
-        },
+        // 创建时间
         {
           title: '创建时间',
           dataIndex: 'createdTime',
+          scopedSlots: { customRender: 'createdTime' },
+          width: 150,
         },
+        // 更新时间
         {
-          title: '修改时间',
+          title: '更新时间',
           dataIndex: 'updatedTime',
+          scopedSlots: { customRender: 'updatedTime' },
+          width: 150,
         },
         {
           title: '操作',
@@ -136,20 +139,6 @@ export default {
       ],
       // 表单校验规则
       rules: {
-        // appid
-        appid: [
-          {
-            required: true,
-            message: '请输入appid！',
-            trigger: 'blur',
-          },
-          {
-            min: 1,
-            max: 20,
-            message: 'Length should be 1 to 20',
-            trigger: 'blur',
-          },
-        ],
         // 项目名称
         name: [
           {
@@ -181,8 +170,6 @@ export default {
       },
       // 新建表单
       createForm: {
-        // appid
-        appid: '',
         // 项目名称
         name: '',
         // 项目描述
@@ -190,8 +177,6 @@ export default {
       },
       // 修改表单
       updateForm: {
-        // appid
-        appid: '',
         // 项目名称
         name: '',
         // 项目描述
