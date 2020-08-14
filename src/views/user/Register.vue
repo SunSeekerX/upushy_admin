@@ -4,130 +4,6 @@
       <span>注册</span>
     </h3>
 
-    <!-- <a-form ref="formRegister" :form="form" id="formRegister">
-      <a-form-item>
-        <a-input
-          size="large"
-          type="text"
-          placeholder="昵称"
-          v-decorator="[
-            'nickname',
-            {
-              rules: [
-                { required: true, type: 'string', message: '请输入昵称' },
-              ],
-              validateTrigger: ['change', 'blur'],
-            },
-          ]"
-        ></a-input>
-      </a-form-item>
-
-      <a-form-item>
-        <a-input
-          size="large"
-          type="text"
-          placeholder="账号"
-          v-decorator="[
-            'username',
-            {
-              rules: [
-                { required: true, type: 'string', message: '请输入账号' },
-              ],
-              validateTrigger: ['change', 'blur'],
-            },
-          ]"
-        ></a-input>
-      </a-form-item>
-
-      <a-form-item>
-        <a-input
-          size="large"
-          type="text"
-          placeholder="邮箱"
-          v-decorator="[
-            'email',
-            {
-              rules: [
-                { required: true, type: 'email', message: '请输入邮箱地址' },
-              ],
-              validateTrigger: ['change', 'blur'],
-            },
-          ]"
-        ></a-input>
-      </a-form-item>
-
-      <a-popover
-        placement="rightTop"
-        :trigger="['focus']"
-        :getPopupContainer="trigger => trigger.parentElement"
-        v-model="state.passwordLevelChecked"
-      >
-        <template slot="content">
-          <div :style="{ width: '240px' }">
-            <div :class="['user-register', passwordLevelClass]">
-              强度：
-              <span>{{ passwordLevelName }}</span>
-            </div>
-            <a-progress
-              :percent="state.percent"
-              :showInfo="false"
-              :strokeColor="passwordLevelColor"
-            />
-            <div style="margin-top: 10px;">
-              <span>请至少输入 6 个字符。请不要使用容易被猜到的密码。</span>
-            </div>
-          </div>
-        </template>
-        <a-form-item>
-          <a-input-password
-            size="large"
-            @click="handlePasswordInputClick"
-            placeholder="至少6位密码，区分大小写"
-            v-decorator="[
-              'password',
-              {
-                rules: [
-                  { required: true, message: '至少6位密码，区分大小写' },
-                  { validator: this.handlePasswordLevel },
-                ],
-                validateTrigger: ['change', 'blur'],
-              },
-            ]"
-          ></a-input-password>
-        </a-form-item>
-      </a-popover>
-
-      <a-form-item>
-        <a-input-password
-          size="large"
-          placeholder="确认密码"
-          v-decorator="[
-            'password2',
-            {
-              rules: [
-                { required: true, message: '至少6位密码，区分大小写' },
-                { validator: this.handlePasswordCheck },
-              ],
-              validateTrigger: ['change', 'blur'],
-            },
-          ]"
-        ></a-input-password>
-      </a-form-item>
-
-      <a-form-item>
-        <a-button
-          size="large"
-          type="primary"
-          htmlType="submit"
-          class="register-button"
-          :loading="state.isRegisterBtnLoading"
-          @click.stop.prevent="handleSubmit"
-          :disabled="state.isRegisterBtnLoading"
-        >注册</a-button>
-        <router-link class="login" :to="{ name: 'login' }">使用已有账户登录</router-link>
-      </a-form-item>
-    </a-form>-->
-
     <!-- 注册表单 -->
     <a-form-model ref="registerForm" :model="form" :rules="rules">
       <a-form-model-item ref="nickname" prop="nickname">
@@ -174,24 +50,6 @@
             v-model="form.password"
           ></a-input-password>
         </a-form-model-item>
-
-        <!-- <a-form-item>
-          <a-input-password
-            size="large"
-            @click="handlePasswordInputClick"
-            placeholder="至少6位密码，区分大小写"
-            v-decorator="[
-              'password',
-              {
-                rules: [
-                  { required: true, message: '至少6位密码，区分大小写' },
-                  { validator: this.handlePasswordLevel },
-                ],
-                validateTrigger: ['change', 'blur'],
-              },
-            ]"
-          ></a-input-password>
-        </a-form-item>-->
       </a-popover>
 
       <a-form-model-item ref="password2" prop="password2">
@@ -213,13 +71,6 @@
           <a-col :span="10">
             <a-spin :spinning="state.isCaptchaImgLoading">
               <div @click="onGetCaptchaImg" class="captcha-img" v-html="imgCaptchaUrl"></div>
-              <!-- <img
-                class="captcha-img"
-                @click="onGetCaptchaImg"
-                :src="imgCaptchaUrl"
-                height="40"
-                @load="state.isCaptchaImgLoading = false"
-              />-->
             </a-spin>
           </a-col>
         </a-row>
@@ -235,7 +86,6 @@
           :loading="state.isRegisterBtnLoading"
           :disabled="state.isRegisterBtnLoading"
         >确定</a-button>
-
         <router-link class="login" :to="{ name: 'login' }">使用已有账户登录</router-link>
       </a-form-model-item>
     </a-form-model>
@@ -446,6 +296,8 @@ export default {
                   message: '成功',
                   description: res.message,
                 })
+
+                this.$router.replace('/user/login')
               } else {
                 this.$handleError.handleRequestFail(res.message)
               }

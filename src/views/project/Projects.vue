@@ -118,6 +118,10 @@ export default {
           dataIndex: 'name',
           scopedSlots: { customRender: 'name' },
         },
+        {
+          title: '项目描述',
+          dataIndex: 'describe',
+        },
         // 创建时间
         {
           title: '创建时间',
@@ -135,6 +139,7 @@ export default {
         {
           title: '操作',
           scopedSlots: { customRender: 'action' },
+          width: 200,
         },
       ],
       // 表单校验规则
