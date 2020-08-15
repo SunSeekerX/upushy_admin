@@ -107,17 +107,20 @@ export default {
       },
       // 表头
       columns: [
+        // ID
         {
           title: 'ID',
           dataIndex: 'id',
           scopedSlots: { customRender: 'id' },
           width: 300,
         },
+        // 项目名称
         {
           title: '项目名称',
           dataIndex: 'name',
           scopedSlots: { customRender: 'name' },
         },
+        // 项目描述
         {
           title: '项目描述',
           dataIndex: 'describe',
@@ -136,6 +139,7 @@ export default {
           scopedSlots: { customRender: 'updatedTime' },
           width: 150,
         },
+        // 操作
         {
           title: '操作',
           scopedSlots: { customRender: 'action' },

@@ -8,6 +8,10 @@
 
 配套后端：[uni-pushy-server](https://github.com/SunSeekerX/uni-pushy-server)
 
+> **uni-app App整包升级检测：** https://ask.dcloud.net.cn/article/34972
+>
+> **uni-app App资源热更新：** https://ask.dcloud.net.cn/article/35667
+
 
 
 # ❗ 注意（Notice）
@@ -185,7 +189,21 @@ npm run build
 
 # 更新日志（Changelog）
 
-## 2.0.0-0 (2020-08-10)
+## 0.0.1 - 2020-08-15
+
+### Bug 修复 （Bug Fixes）
+
+- 资源 `bug`：修复新增资源切换类型已经上传的文件未清除
+
+### 功能（Features）
+
+- 【重要】资源：增加更新日志字段
+
+
+
+## 0.0.1 -  (2020-08-10)
+
+### 功能（Features）
 
 - 【重要】增加登录注册 `md5` 加密
 - 【重要】项目新增 `appid` 唯一属性，原来为 `name（项目名）` 为唯一属性 

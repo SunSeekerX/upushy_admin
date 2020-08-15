@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-28 09:28:09
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-13 21:39:07
+ * @LastEditTime: 2020-08-15 17:28:48
 -->
 
 <template>
@@ -43,12 +43,6 @@
             </a-tabs>
           </a-col>
         </a-row>
-
-        <!-- <a-select default-value="wgt" style="width: 120px" @change="selectChange">
-          <a-select-option value="wgt">wgt</a-select-option>
-          <a-select-option value="android">android</a-select-option>
-          <a-select-option value="ios">ios</a-select-option>
-        </a-select>-->
       </div>
 
       <!-- 资源表格 -->
@@ -157,6 +151,10 @@
             </a-select>
           </a-form-model-item>
 
+          <a-form-model-item label="更新日志" ref="changelog" prop="changelog">
+            <a-textarea v-model="form.changelog" />
+          </a-form-model-item>
+
           <a-form-model-item label="备注" ref="remark" prop="remark">
             <a-textarea v-model="form.remark" />
           </a-form-model-item>
@@ -173,6 +171,7 @@
               :action="uploadAcrion"
               @change="handleChange"
               :remove="onRemoveFile"
+              :fileList="fileList"
             >
               <a-button :disabled="fileList.length > 0">
                 <a-icon type="upload" />点击上传资源
@@ -233,6 +232,10 @@
             </a-select>
           </a-form-model-item>
 
+          <a-form-model-item label="更新日志" ref="changelog" prop="changelog">
+            <a-textarea v-model="editForm.changelog" />
+          </a-form-model-item>
+
           <a-form-model-item label="备注" ref="remark" prop="remark">
             <a-textarea v-model="editForm.remark" />
           </a-form-model-item>
@@ -287,7 +290,8 @@ export default {
           title: 'ID',
           dataIndex: 'id',
           scopedSlots: { customRender: 'id' },
-          width: 300,
+          ellipsis: true,
+          width: 80,
         },
         // 版本
         {
@@ -330,6 +334,12 @@ export default {
           scopedSlots: { customRender: 'sourcesType' },
           width: 80,
         },
+        // 更新日志
+        {
+          title: '更新日志',
+          dataIndex: 'changelog',
+          width: 80,
+        },
         // 备注
         {
           title: '备注',
@@ -355,7 +365,7 @@ export default {
           title: '操作',
           fixed: 'right',
           scopedSlots: { customRender: 'action' },
-          width: 150,
+          width: 200,
         },
       ],
       // 资源类型
@@ -385,6 +395,8 @@ export default {
         isForceUpdate: 0,
         // 类型
         type: 1,
+        // 更新日志
+        changelog: '',
         // 备注
         remark: '',
         // 资源包
@@ -426,6 +438,8 @@ export default {
             validator: this.handleValideNativeVersionCode,
           },
         ],
+        // 更新日志
+        changelog: [{ required: true, type: 'string', message: '请输入更新日志！' }],
         // 备注
         remark: [{ required: false, type: 'string', message: '请输入备注！' }],
         // 是否强制更新（0：否 1：是）
@@ -447,7 +461,7 @@ export default {
         url: [
           {
             required: true,
-            message: '请上传资源包！',
+            message: '请上传资源包或填写AppStore地址！',
           },
         ],
       },
@@ -524,11 +538,9 @@ export default {
   },
 
   watch: {
-    'form.type'(newVal) {
-      if (newVal === 4) {
-        this.form.url = ''
-        this.fileList = []
-      }
+    'form.type'() {
+      this.form.url = ''
+      this.fileList = []
     },
   },
 
