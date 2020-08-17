@@ -68,6 +68,7 @@ export default function createRequest(options) {
     // token
     token && (config.headers['Authorization'] = `Bearer ${token}`)
     // 接口加密
+    // console.log(config);
     createSign(config)
     
     return config

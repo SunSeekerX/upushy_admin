@@ -15,6 +15,23 @@ export function formatTime(timeStr) {
   return moment(timeStr).format('YYYY-MM-DD HH:mm:ss')
 }
 
+export function getUrlParams(url) {
+  const obj = {}
+  const index = url.indexOf('?') // 看url有没有参数
+  const params = url.substr(index + 1) // 截取url参数部分 id = 1 & type = 2
+
+  if (index !== -1) {
+    // 有参数时
+    const parr = params.split('&') // 将参数分割成数组 ["id = 1 ", " type = 2"]
+    for (const i of parr) {
+      // 遍历数组
+      const arr = i.split('=') // 1） i id = 1   arr = [id, 1]  2）i type = 2  arr = [type, 2]
+      obj[arr[0]] = arr[1] // obj[arr[0]] = id, obj.id = 1   obj[arr[0]] = type, obj.type = 2
+    }
+  }
+
+  return obj
+}
 
 /**
  * 本算法来源于简书开源代码，详见：https://www.jianshu.com/p/fdbf293d0a85
@@ -27,9 +44,7 @@ export function formatTime(timeStr) {
  * @param {Nubmer} radix 生成uuid的基数(意味着返回的字符串都是这个基数),2-二进制,8-八进制,10-十进制,16-十六进制
  */
 export function guid(len = 32, radix = null) {
-  const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split(
-    '',
-  )
+  const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('')
   const uuid = []
   radix = radix || chars.length
 
@@ -52,7 +67,6 @@ export function guid(len = 32, radix = null) {
   return uuid.join('')
 }
 
-
 /**
  * @name 去除对象中有key为undefined或者null的情况
  * @param { Object } obj
@@ -67,6 +81,3 @@ export function removeEmptyKey(obj = {}) {
   }
   return obj
 }
-
-
-

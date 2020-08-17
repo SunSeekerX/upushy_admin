@@ -9,7 +9,7 @@
 import md5 from 'md5'
 
 import store from '@/store/index'
-import { guid, removeEmptyKey, rsaEncrypted } from '@/utils/index'
+import { guid, removeEmptyKey, rsaEncrypted, getUrlParams } from '@/utils/index'
 
 const VUE_APP_API_RSA_PUBLIC_KEY = process.env.VUE_APP_API_RSA_PUBLIC_KEY
 
@@ -49,11 +49,18 @@ export function createSign(config) {
       break
   }
 
+  const urlParams = getUrlParams(config.url) || {}
+  if (Object.keys(urlParams).length > 0) {
+    keys = keys.concat(Object.keys(urlParams))
+    keys = keys.concat(Object.values(urlParams))
+  }
+
   const signStrArr = []
   for (const item of keys) {
     signStrArr.push(String(item))
   }
 
+  // console.log({ signStrArr })
   const Sign = md5(signStrArr.sort().toString())
   const Nonce = rsaEncrypted(VUE_APP_API_RSA_PUBLIC_KEY, `${uuidStr},${timestampStr}`)
 
