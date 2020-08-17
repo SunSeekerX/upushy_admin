@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-04 09:12:58
+ * @LastEditTime: 2020-08-17 14:22:30
  */
 
 import router from './router'
@@ -28,6 +28,11 @@ router.beforeEach(async (to, from, next) => {
   NProgress.start() // start progress bar
 
   to.meta && typeof to.meta.title !== 'undefined' && setDocumentTitle(`${i18nRender(to.meta.title)} - ${domTitle}`)
+
+  const { config } = store.state
+  if (!config.isUpdated) {
+    await store.dispatch('getConfig')
+  }
 
   /* has token */
   if (storage.get(ACCESS_TOKEN)) {

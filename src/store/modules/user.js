@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-26 17:49:41
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 23:49:40
+ * @LastEditTime: 2020-08-17 10:08:05
  */
 import storage from 'store'
 
@@ -43,7 +43,7 @@ const user = {
         Auth.login(userInfo)
           .then(res => {
             if (res.success) {
-              storage.set(ACCESS_TOKEN, res.data.token, 7 * 24 * 60 * 60 * 1000)
+              storage.set(ACCESS_TOKEN, res.data.token)
               storage.set(USER_INFO, res.data.userInfo)
               commit('SET_TOKEN', res.data.token)
               commit('SET_INFO', res.data.userInfo)

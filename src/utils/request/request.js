@@ -3,7 +3,7 @@
  * @author SunSeekerX
  * @time 2019-08-13 10:29:11
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 22:58:44
+ * @LastEditTime: 2020-08-17 15:13:47
  */
 
 import axios from 'axios'
@@ -12,6 +12,7 @@ import notification from 'ant-design-vue/es/notification'
 
 import store from '@/store'
 import router from '@/router'
+import { createSign } from './request-sign'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 
 /**
@@ -31,17 +32,16 @@ export default function createRequest(options) {
           message: 'Forbidden',
           description: data.message,
         })
-      }
-      if (
-        error.response.status === 401 &&
-        !(data.result && data.result.isLogin)
-      ) {
-        notification.error({
-          message: 'Unauthorized',
-          description: 'Authorization verification failed',
-        })
+      } else if (error.response.status === 401) {
+        // notification.error({
+        //   message: 'Unauthorized',
+        //   description: 'Authorization verification failed',
+        // })
+
         if (token) {
           store.commit('LOGIN_OUT')
+
+          store.commit('RESET_ROUTER')
 
           router.replace('/user/login')
         }
@@ -49,6 +49,7 @@ export default function createRequest(options) {
     }
     return Promise.reject(error)
   }
+  
   // create an axios instance
   const instance = axios.create(
     Object.assign(
@@ -64,11 +65,11 @@ export default function createRequest(options) {
   // Request interceptor
   instance.interceptors.request.use(config => {
     const token = storage.get(ACCESS_TOKEN)
-    // 如果 token 存在
-    // 让每个请求携带自定义 token 请根据实际情况自行修改
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`
-    }
+    // token
+    token && (config.headers['Authorization'] = `Bearer ${token}`)
+    // 接口加密
+    createSign(config)
+    
     return config
   }, errorHandler)
 

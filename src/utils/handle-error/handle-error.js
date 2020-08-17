@@ -3,7 +3,7 @@
  * @author SunSeekerX
  * @time 2019-11-27 15:18:44
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 22:59:19
+ * @LastEditTime: 2020-08-17 14:19:24
  */
 
 import notification from 'ant-design-vue/es/notification'
@@ -21,10 +21,17 @@ function handleApiRequestException(error) {
   //     ((error.response || {}).data || {}).message || '请求出现错误，请稍后再试',
   // })
 
-  notification['error']({
-    message: '错误',
-    description: error.message || '请求出现错误，请稍后再试',
-  })
+  if (error?.response?.status === 401) {
+    notification['warn']({
+      message: '警告',
+      description: '请重新登录',
+    })
+  } else {
+    notification['error']({
+      message: '错误',
+      description: error.message || '请求出现错误，请稍后再试',
+    })
+  }
 }
 
 /**

@@ -189,6 +189,18 @@ npm run build
 
 # 更新日志（Changelog）
 
+## 0.0.1 - 2020-08-17
+
+### Bug 修复 （Bug Fixes）
+
+- 【重要】修复 `token` 失效退出登录重新登录页面空白的问题
+
+### 功能（Features）
+
+- 更好的 `token` 过期提示
+
+
+
 ## 0.0.1 - 2020-08-15
 
 ### Bug 修复 （Bug Fixes）
