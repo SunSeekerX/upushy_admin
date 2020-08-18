@@ -93,6 +93,7 @@
 </template>
 
 <script>
+import * as md5 from 'md5'
 import { deviceMixin } from '@/utils/mixin/device-mixin'
 
 const levelNames = {
@@ -287,7 +288,7 @@ export default {
           this.$api.Auth.register(
             Object.assign({}, this.form, {
               imgCaptcha: this.form.imgCaptcha.toLowerCase(),
-              password: this.$util.md5(this.form.password),
+              password: md5(this.form.password),
             }),
           )
             .then(res => {

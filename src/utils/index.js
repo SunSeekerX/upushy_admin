@@ -3,12 +3,11 @@
  * @author: SunSeekerX
  * @Date: 2020-08-10 10:29:06
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-17 14:29:34
+ * @LastEditTime: 2020-08-18 10:38:20
  */
 
 import moment from 'moment'
 
-export * from './core/md5'
 export * from './core/rsa-encrypt'
 
 export function formatTime(timeStr) {

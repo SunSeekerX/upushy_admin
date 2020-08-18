@@ -78,7 +78,7 @@
 </template>
 
 <script>
-// import md5 from 'md5'
+import * as md5 from 'md5'
 import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
 
@@ -152,13 +152,14 @@ export default {
     // 点击登录
     onLogin() {
       this.state.isLogginBtnLoading = true
+      console.log(md5)
 
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.Login(
             Object.assign({}, this.loginForm, {
               imgCaptcha: this.loginForm.imgCaptcha.toLowerCase(),
-              password: this.$util.md5(this.loginForm.password),
+              password: md5(this.loginForm.password),
             }),
           )
             .then(res => {

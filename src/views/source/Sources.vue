@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-28 09:28:09
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-15 17:28:48
+ * @LastEditTime: 2020-08-18 17:52:23
 -->
 
 <template>
@@ -16,7 +16,7 @@
           </a-col>
 
           <a-col :xs="24" :md="12">
-            <a-tabs v-model="sourcesType" size="small" @change="onGetSources">
+            <a-tabs v-model="sourcesType" size="small" @change="onGetList">
               <a-tab-pane key="1">
                 <span slot="tab">
                   <a-icon type="android" />WGT
@@ -52,7 +52,10 @@
         :loading="state.isTableLoading"
         rowKey="id"
         :pagination="pagination"
-        @change="pageChange"
+        :scroll="{ 
+          // x: true 
+        }"
+        @change="onPageChange"
       >
         <!-- id -->
         <a-tooltip slot="id" slot-scope="id">
@@ -75,9 +78,16 @@
         <!-- 类型 -->
         <span slot="sourcesType" slot-scope="text, record">{{ handleFormatType(record.type) }}</span>
 
+        <!-- 创建时间 -->
+        <template slot="createdTime" slot-scope="createdTime">{{ $util.formatTime(createdTime) }}</template>
+
+        <!-- 更新时间 -->
+        <template slot="updatedTime" slot-scope="updatedTime">{{ $util.formatTime(updatedTime) }}</template>
+
         <!-- 操作 -->
-        <!-- <a-button slot="action" type="primary">查看资源</a-button> -->
         <template slot="action" slot-scope="text, record,index">
+          <a-button @click="onClickViewDesc(record)" type="primary">查看详情</a-button>
+
           <a-button @click="onEdit(record)">编辑</a-button>
 
           <a-popconfirm
@@ -89,12 +99,6 @@
             <a-button type="danger">删除</a-button>
           </a-popconfirm>
         </template>
-
-        <!-- 创建时间 -->
-        <template slot="createdTime" slot-scope="createdTime">{{ $util.formatTime(createdTime) }}</template>
-
-        <!-- 更新时间 -->
-        <template slot="updatedTime" slot-scope="updatedTime">{{ $util.formatTime(updatedTime) }}</template>
       </a-table>
 
       <!-- 新建资源 -->
@@ -152,11 +156,11 @@
           </a-form-model-item>
 
           <a-form-model-item label="更新日志" ref="changelog" prop="changelog">
-            <a-textarea v-model="form.changelog" />
+            <a-textarea :maxLength="255" v-model="form.changelog" />
           </a-form-model-item>
 
           <a-form-model-item label="备注" ref="remark" prop="remark">
-            <a-textarea v-model="form.remark" />
+            <a-textarea :maxLength="255" v-model="form.remark" />
           </a-form-model-item>
 
           <a-form-model-item v-if="form.type === 4" label="资源链接" ref="url" prop="url">
@@ -169,9 +173,10 @@
               accept=".wgt, .apk"
               :headers="headers"
               :action="uploadAcrion"
-              @change="handleChange"
               :remove="onRemoveFile"
               :fileList="fileList"
+              :beforeUpload="beforeUpload"
+              @change="handleChange"
             >
               <a-button :disabled="fileList.length > 0">
                 <a-icon type="upload" />点击上传资源
@@ -187,7 +192,7 @@
         :width="640"
         :visible="state.isEditFormShow"
         :confirmLoading="state.isEditLoading"
-        @ok="onEditConfirm"
+        @ok="onUpdate"
         @cancel="state.isEditFormShow = false"
       >
         <a-form-model
@@ -233,11 +238,11 @@
           </a-form-model-item>
 
           <a-form-model-item label="更新日志" ref="changelog" prop="changelog">
-            <a-textarea v-model="editForm.changelog" />
+            <a-textarea :maxLength="255" v-model="editForm.changelog" />
           </a-form-model-item>
 
           <a-form-model-item label="备注" ref="remark" prop="remark">
-            <a-textarea v-model="editForm.remark" />
+            <a-textarea :maxLength="255" v-model="editForm.remark" />
           </a-form-model-item>
 
           <a-form-model-item label="资源包地址" prop="url">
@@ -246,11 +251,43 @@
         </a-form-model>
       </a-modal>
     </a-card>
+
+    <!-- 查看详情 -->
+    <a-modal
+      title="查看详情"
+      :width="640"
+      :visible="state.isDescShow"
+      @ok="state.isDescShow = false"
+      @cancel="state.isDescShow = false"
+    >
+      <a-card :bordered="false">
+        <a-descriptions :title="descRecord.id">
+          <a-descriptions-item label="版本名">{{ descRecord.version }}</a-descriptions-item>
+          <a-descriptions-item label="版本号">{{ descRecord.versionCode }}</a-descriptions-item>
+          <a-descriptions-item label="原生版本号">{{ descRecord.nativeVersionCode }}</a-descriptions-item>
+          <a-descriptions-item label="更新日志">{{ descRecord.changelog }}</a-descriptions-item>
+        </a-descriptions>
+
+        <a-divider style="margin-bottom: 32px" />
+        
+        <a-descriptions>
+          <a-descriptions-item label="下载地址">{{ descRecord.url }}</a-descriptions-item>
+        </a-descriptions>
+
+        <a-divider style="margin-bottom: 32px" />
+
+        <a-descriptions>
+          <a-descriptions-item label="备注">{{ descRecord.remark }}</a-descriptions-item>
+        </a-descriptions>
+      </a-card>
+    </a-modal>
   </page-header-wrapper>
 </template>
 
 <script>
 import storage from 'store'
+
+import { createPureSign } from '@/utils/request/request-sign'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 
 export default {
@@ -258,18 +295,6 @@ export default {
 
   data() {
     return {
-      labelCol: { xs: { span: 24 }, sm: { span: 7 } },
-      wrapperCol: { xs: { span: 24 }, sm: { span: 13 } },
-      // 字典
-      dict: {
-        // 资源类型
-        sourcesType: {
-          1: 'wgt-android',
-          2: 'wgt-ios',
-          3: 'android',
-          4: 'ios',
-        },
-      },
       // 状态
       state: {
         // 表格是否加载
@@ -282,6 +307,21 @@ export default {
         isEditFormShow: false,
         // 编辑是否加载
         isEditLoading: false,
+        // 查看详情是否显示
+        isDescShow: false,
+      },
+      // 表单布局
+      labelCol: { xs: { span: 24 }, sm: { span: 7 } },
+      wrapperCol: { xs: { span: 24 }, sm: { span: 13 } },
+      // 字典
+      dict: {
+        // 资源类型
+        sourcesType: {
+          1: 'wgt-android',
+          2: 'wgt-ios',
+          3: 'android',
+          4: 'ios',
+        },
       },
       // 表头
       tableColumns: [
@@ -291,65 +331,79 @@ export default {
           dataIndex: 'id',
           scopedSlots: { customRender: 'id' },
           ellipsis: true,
-          width: 80,
+          width: 300,
         },
-        // 版本
+        // 版本名
         {
           title: '版本名',
+          align: 'center',
           dataIndex: 'version',
+          ellipsis: true,
           width: 80,
         },
         // 版本号
         {
           title: '版本号',
+          align: 'center',
           dataIndex: 'versionCode',
           scopedSlots: { customRender: 'versionCode' },
+          ellipsis: true,
           width: 80,
         },
         // 原生版本号
         {
           title: '原生版本号',
+          align: 'center',
           dataIndex: 'nativeVersionCode',
+          ellipsis: true,
           width: 100,
         },
         // 下载地址
-        {
-          title: '下载地址',
-          dataIndex: 'url',
-          scopedSlots: { customRender: 'url' },
-          width: 150,
-          // ellipsis: true,
-        },
+        // {
+        //   title: '下载地址',
+        //   dataIndex: 'url',
+        //   scopedSlots: { customRender: 'url' },
+        //   ellipsis: true,
+        //   width: 150,
+        //   // ellipsis: true,
+        // },
         // 强制更新
         {
           title: '强制更新',
+          align: 'center',
           dataIndex: 'isForceUpdate',
           scopedSlots: { customRender: 'isForceUpdate' },
+          ellipsis: true,
           width: 80,
         },
         // 类型
-        {
-          title: '类型',
-          dataIndex: 'sourcesType',
-          scopedSlots: { customRender: 'sourcesType' },
-          width: 80,
-        },
+        // {
+        //   title: '类型',
+        //   align: 'center',
+        //   dataIndex: 'sourcesType',
+        //   scopedSlots: { customRender: 'sourcesType' },
+        //   ellipsis: true,
+        //   width: 100,
+        // },
         // 更新日志
-        {
-          title: '更新日志',
-          dataIndex: 'changelog',
-          width: 80,
-        },
+        // {
+        //   title: '更新日志',
+        //   dataIndex: 'changelog',
+        //   ellipsis: true,
+        //   width: 80,
+        // },
         // 备注
-        {
-          title: '备注',
-          dataIndex: 'remark',
-          width: 80,
-        },
+        // {
+        //   title: '备注',
+        //   dataIndex: 'remark',
+        //   ellipsis: true,
+        //   width: 80,
+        // },
         // 创建时间
         {
           title: '创建时间',
           dataIndex: 'createdTime',
+          align: 'center',
           scopedSlots: { customRender: 'createdTime' },
           width: 150,
         },
@@ -357,12 +411,14 @@ export default {
         {
           title: '更新时间',
           dataIndex: 'updatedTime',
+          align: 'center',
           scopedSlots: { customRender: 'updatedTime' },
           width: 150,
         },
         // 操作
         {
           title: '操作',
+          align: 'center',
           fixed: 'right',
           scopedSlots: { customRender: 'action' },
           width: 200,
@@ -471,6 +527,8 @@ export default {
       },
       // 编辑的行数据
       editForm: {},
+      // 查看详情条目
+      descRecord: {},
       // 编辑表格rules
       editFormRules: {
         // 项目ID
@@ -545,30 +603,7 @@ export default {
   },
 
   methods: {
-    // 获取资源列表
-    async onGetSources() {
-      try {
-        this.state.isTableLoading = true
-        const res = await this.$api.Source.sources({
-          id: this.form.projectId,
-          type: this.sourcesType,
-          pageNum: this.pagination.pageNum,
-          pageSize: this.pagination.pageSize,
-        })
-        if (res.success) {
-          this.tableData = res.data.records
-          this.pagination.total = res.data.total
-        } else {
-          this.$handleError.handleRequestFail(res.message)
-        }
-      } catch (error) {
-        this.$handleError.handleApiRequestException(error)
-      } finally {
-        this.state.isTableLoading = false
-      }
-    },
-
-    // 新建资源
+    // 创建
     async onCreateSource() {
       this.$refs.createForm.validate(async valid => {
         if (valid) {
@@ -601,91 +636,7 @@ export default {
       })
     },
 
-    selectChange(e) {
-      if (e === 'android') {
-        this.sourcesType = 3
-        this.onGetSources()
-      } else if (e === 'ios') {
-        this.sourcesType = 2
-        this.onGetSources()
-      } else {
-        this.sourcesType = 0
-        this.onGetSources()
-      }
-    },
-
-    // 文件上传状态发生变化
-    handleChange(info) {
-      const status = info.file.status
-
-      if (status === 'done') {
-        this.form.url = info.fileList[0].response.data.customName
-        this.$message.success(`${info.file.name} 上传成功。`)
-      } else if (status === 'error') {
-        this.$message.error(`${info.file.name} 上传失败。`)
-      }
-
-      this.fileList = info.fileList
-    },
-
-    // 移除上传的文件
-    onRemoveFile() {
-      this.form.url = ''
-      return true
-    },
-
-    handleFormatUrl(url) {
-      if (this.sourcesType === '4') {
-        return url
-      } else {
-        return `${process.env.VUE_APP_OSS_BASE_URL}/${url}`
-      }
-    },
-
-    pageChange(e) {
-      this.pagination.pageNum = e.current
-      this.onGetSources()
-    },
-
-    // 点击编辑
-    onEdit(record) {
-      // 合并编辑项
-      this.editForm = Object.assign({}, record)
-      // 显示编辑modal
-      this.state.isEditFormShow = true
-    },
-
-    // 编辑资源确定
-    async onEditConfirm() {
-      this.$refs.editForm.validate(async valid => {
-        if (valid) {
-          try {
-            this.state.isEditLoading = true
-            const res = await this.$api.Source.updateSource(this.editForm)
-            if (res.success) {
-              this.$notification.success({
-                message: '成功',
-                description: res.message,
-              })
-
-              this.state.isEditFormShow = false
-
-              this.onGetSources()
-            } else {
-              this.$handleError.handleRequestFail(res.message)
-            }
-          } catch (error) {
-            this.$handleError.handleApiRequestException(error)
-          } finally {
-            this.state.isEditLoading = false
-          }
-        } else {
-          this.state.isEditLoading = false
-        }
-      })
-    },
-
-    // 删除资源
+    // 删除
     async onDelete(record, index) {
       try {
         const res = await this.$api.Source.deleteSource({
@@ -707,6 +658,115 @@ export default {
       } finally {
         this.state.isCreateLoading = false
       }
+    },
+
+    // 更新
+    async onUpdate() {
+      this.$refs.editForm.validate(async valid => {
+        if (valid) {
+          try {
+            this.state.isEditLoading = true
+            const res = await this.$api.Source.updateSource(this.editForm)
+            if (res.success) {
+              this.$notification.success({
+                message: '成功',
+                description: res.message,
+              })
+
+              this.state.isEditFormShow = false
+
+              this.onGetList()
+            } else {
+              this.$handleError.handleRequestFail(res.message)
+            }
+          } catch (error) {
+            this.$handleError.handleApiRequestException(error)
+          } finally {
+            this.state.isEditLoading = false
+          }
+        } else {
+          this.state.isEditLoading = false
+        }
+      })
+    },
+
+    // 查询
+    async onGetList() {
+      try {
+        this.state.isTableLoading = true
+        const res = await this.$api.Source.sources({
+          id: this.form.projectId,
+          type: this.sourcesType,
+          pageNum: this.pagination.pageNum,
+          pageSize: this.pagination.pageSize,
+        })
+        if (res.success) {
+          this.tableData = res.data.records
+          this.pagination.total = res.data.total
+        } else {
+          this.$handleError.handleRequestFail(res.message)
+        }
+      } catch (error) {
+        this.$handleError.handleApiRequestException(error)
+      } finally {
+        this.state.isTableLoading = false
+      }
+    },
+
+    // 文件上传状态发生变化
+    handleChange(info) {
+      const status = info.file.status
+
+      if (status === 'done') {
+        this.form.url = info.fileList[0].response.data.customName
+        this.$message.success(`${info.file.name} 上传成功。`)
+      } else if (status === 'error') {
+        this.$message.error(`${info.file.name} 上传失败。`)
+      }
+
+      this.fileList = info.fileList
+    },
+
+    // 文件上传之前
+    beforeUpload(file, fileList) {
+      Object.assign(this.headers, createPureSign())
+    },
+
+    // 移除上传的文件
+    onRemoveFile() {
+      this.form.url = ''
+      return true
+    },
+
+    // 格式化url
+    handleFormatUrl(url) {
+      if (this.sourcesType === '4') {
+        return url
+      } else {
+        return `${process.env.VUE_APP_OSS_BASE_URL}/${url}`
+      }
+    },
+
+    // 表格分页改变
+    onPageChange(e) {
+      this.pagination.pageNum = e.current
+      this.onGetList()
+    },
+
+    // 点击编辑
+    onEdit(record) {
+      // 合并编辑项
+      this.editForm = Object.assign({}, record)
+      // 显示编辑modal
+      this.state.isEditFormShow = true
+    },
+
+    // 点击查看详情
+    onClickViewDesc(record) {
+      // 合并项
+      this.descRecord = Object.assign({}, record)
+      // 显示编辑modal
+      this.state.isDescShow = true
     },
 
     // 校验新增原生版本号
@@ -751,16 +811,12 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
     // 获取项目id
     this.form.projectId = this.$route.query.id
-  },
-
-  mounted() {
     // 获取资源列表
-    this.onGetSources()
+    this.onGetList()
   },
 }
 </script>
 
-<style lang="scss" scoped></style>
