@@ -24,7 +24,7 @@ export default {
   },
 
   // 新建资源
-  createSource({ projectId, version, versionCode, nativeVersionCode, url, isForceUpdate, type, changelog, remark }) {
+  createSource({ projectId, version, versionCode, nativeVersionCode, url, isForceUpdate, status, type, changelog, remark }) {
     return request({
       url: '/api/source',
       method: 'POST',
@@ -35,6 +35,7 @@ export default {
         nativeVersionCode,
         url,
         isForceUpdate,
+        status,
         type,
         changelog,
         remark,
@@ -43,7 +44,7 @@ export default {
   },
 
   // 修改资源
-  updateSource({ id, version, versionCode, nativeVersionCode, url, isFullUpdated, isForceUpdate, changelog, remark, type }) {
+  updateSource({ id, version, versionCode, nativeVersionCode, url, isFullUpdated, isForceUpdate, changelog, remark, type, status }) {
     return request({
       url: '/api/source',
       method: 'PUT',
@@ -58,6 +59,7 @@ export default {
         changelog,
         remark,
         type,
+        status,
       },
     })
   },

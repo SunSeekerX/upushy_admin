@@ -1,11 +1,3 @@
-<!--
- * @name: 
- * @author: SunSeekerX
- * @Date: 2020-07-28 09:28:09
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-18 17:52:23
--->
-
 <template>
   <page-header-wrapper>
     <a-card :bordered="false">
@@ -16,28 +8,15 @@
           </a-col>
 
           <a-col :xs="24" :md="12">
-            <a-tabs v-model="sourcesType" size="small" @change="onGetList">
-              <a-tab-pane key="1">
+            <a-tabs
+              v-model="sourcesType"
+              size="small"
+              @change="onTagChange"
+            >
+              <a-tab-pane v-for="item of tabs" :key="item.key" :disabled="state.isTableLoading">
                 <span slot="tab">
-                  <a-icon type="android" />WGT
-                </span>
-              </a-tab-pane>
-
-              <a-tab-pane key="2">
-                <span slot="tab">
-                  <a-icon type="apple" />WGT
-                </span>
-              </a-tab-pane>
-
-              <a-tab-pane key="3">
-                <span slot="tab">
-                  <a-icon type="android" />Android
-                </span>
-              </a-tab-pane>
-
-              <a-tab-pane key="4">
-                <span slot="tab">
-                  <a-icon type="apple" />Apple
+                  <a-icon :type="item.type" />
+                  {{ item.value }}
                 </span>
               </a-tab-pane>
             </a-tabs>
@@ -70,13 +49,36 @@
         </a-tooltip>
 
         <!-- 版本号 -->
-        <a-tag slot="versionCode" slot-scope="versionCode" color="green">{{ versionCode }}</a-tag>
+        <a-tag slot="versionCode" slot-scope="versionCode" color="#87d068">{{ versionCode }}</a-tag>
+
+        <!-- 原生版本号 -->
+        <a-tag slot="nativeVersionCode" slot-scope="text" color="#108ee9">{{ text }}</a-tag>
+
+        <!-- 版本号 -->
+        <!-- <a-tag slot="versionCode" slot-scope="versionCode" color="green">{{ versionCode }}</a-tag> -->
 
         <!-- 强制更新 -->
-        <span slot="isForceUpdate" slot-scope="isForceUpdate">{{ isForceUpdate === 0 ? '否' : '是' }}</span>
+        <!-- <span slot="isForceUpdate" slot-scope="isForceUpdate">{{ isForceUpdate === 0 ? '否' : '是' }}</span> -->
+
+        <template slot="isForceUpdate" slot-scope="text, record">
+          <a-switch
+            @click="(checked) => onUpdateSwitch({checked, record, key: 'isForceUpdate', loadingKey: 'isForceUpdateLoading'})"
+            :checked="text === 1"
+            :loading="record.isForceUpdateLoading"
+          />
+        </template>
 
         <!-- 类型 -->
         <span slot="sourcesType" slot-scope="text, record">{{ handleFormatType(record.type) }}</span>
+
+        <!-- 状态 -->
+        <template slot="status" slot-scope="text, record">
+          <a-switch
+            @click="(checked) => onUpdateSwitch({checked, record, key: 'status', loadingKey: 'isStatusLoading'})"
+            :checked="text === 1"
+            :loading="record.isStatusLoading"
+          />
+        </template>
 
         <!-- 创建时间 -->
         <template slot="createdTime" slot-scope="createdTime">{{ $util.formatTime(createdTime) }}</template>
@@ -140,10 +142,22 @@
           </a-form-model-item>
 
           <a-form-model-item label="是否强制更新" prop="isForceUpdate">
-            <a-radio-group v-model="form.isForceUpdate">
+            <!-- <a-radio-group v-model="form.isForceUpdate">
               <a-radio :value="0">否</a-radio>
               <a-radio :value="1">是</a-radio>
-            </a-radio-group>
+            </a-radio-group>-->
+
+            <a-switch
+              @click="(checked) => {checked ? form.isForceUpdate =1 : form.isForceUpdate = 0}"
+              :checked="form.isForceUpdate === 1"
+            />
+          </a-form-model-item>
+
+          <a-form-model-item label="是否启用" prop="status">
+            <a-switch
+              @click="(checked) => {checked ? form.status =1 : form.status = 0}"
+              :checked="form.status === 1"
+            />
           </a-form-model-item>
 
           <a-form-model-item label="类型" prop="type">
@@ -211,7 +225,10 @@
           </a-form-model-item>
 
           <a-form-model-item label="版本号" prop="versionCode">
-            <a-input disabled="disabled" v-model="editForm.versionCode" />
+            <a-input
+              @change="e => editForm.versionCode = Number(e.target.value.replace(/\D/g, ''))"
+              v-model="editForm.versionCode"
+            />
           </a-form-model-item>
 
           <a-form-model-item label="原生版本号" ref="nativeVersionCode" prop="nativeVersionCode">
@@ -221,15 +238,15 @@
             />
           </a-form-model-item>
 
-          <a-form-model-item label="是否强制更新" prop="isForceUpdate">
+          <!-- <a-form-model-item label="是否强制更新" prop="isForceUpdate">
             <a-radio-group v-model="editForm.isForceUpdate">
               <a-radio :value="0">否</a-radio>
               <a-radio :value="1">是</a-radio>
             </a-radio-group>
-          </a-form-model-item>
+          </a-form-model-item>-->
 
           <a-form-model-item label="类型" prop="type">
-            <a-select v-model="editForm.type">
+            <a-select disabled v-model="editForm.type">
               <a-select-option :value="1">wgt-android</a-select-option>
               <a-select-option :value="2">wgt-ios</a-select-option>
               <a-select-option :value="3">android</a-select-option>
@@ -269,7 +286,7 @@
         </a-descriptions>
 
         <a-divider style="margin-bottom: 32px" />
-        
+
         <a-descriptions>
           <a-descriptions-item label="下载地址">{{ descRecord.url }}</a-descriptions-item>
         </a-descriptions>
@@ -313,6 +330,29 @@ export default {
       // 表单布局
       labelCol: { xs: { span: 24 }, sm: { span: 7 } },
       wrapperCol: { xs: { span: 24 }, sm: { span: 13 } },
+      // tabs
+      tabs: [
+        {
+          key: 1,
+          type: 'android',
+          value: 'WGT',
+        },
+        {
+          key: 2,
+          type: 'apple',
+          value: 'WGT',
+        },
+        {
+          key: 3,
+          type: 'android',
+          value: 'Android',
+        },
+        {
+          key: 4,
+          type: 'apple',
+          value: 'Apple',
+        },
+      ],
       // 字典
       dict: {
         // 资源类型
@@ -355,6 +395,7 @@ export default {
           title: '原生版本号',
           align: 'center',
           dataIndex: 'nativeVersionCode',
+          scopedSlots: { customRender: 'nativeVersionCode' },
           ellipsis: true,
           width: 100,
         },
@@ -385,6 +426,15 @@ export default {
         //   ellipsis: true,
         //   width: 100,
         // },
+        // 状态
+        {
+          title: '状态',
+          align: 'center',
+          dataIndex: 'status',
+          scopedSlots: { customRender: 'status' },
+          ellipsis: false,
+          width: 80,
+        },
         // 更新日志
         // {
         //   title: '更新日志',
@@ -425,7 +475,7 @@ export default {
         },
       ],
       // 资源类型
-      sourcesType: '1',
+      sourcesType: 1,
       // 表格数据
       tableData: [],
       // 文件数据
@@ -434,7 +484,8 @@ export default {
       pagination: {
         total: 0,
         pageSize: 10,
-        defaultCurrent: 1,
+        current: 1,
+        // defaultCurrent: 1,
         pageNum: 1,
       },
       // 新增表格
@@ -449,6 +500,8 @@ export default {
         nativeVersionCode: 0,
         // 是否强制更新
         isForceUpdate: 0,
+        // 资源状态（0：禁用 1：启用）
+        status: 1,
         // 类型
         type: 1,
         // 更新日志
@@ -495,9 +548,25 @@ export default {
           },
         ],
         // 更新日志
-        changelog: [{ required: true, type: 'string', message: '请输入更新日志！' }],
+        changelog: [
+          { required: true, type: 'string', message: '请输入更新日志！' },
+          {
+            min: 1,
+            max: 255,
+            message: '长度在1-255之间',
+            trigger: 'blur',
+          },
+        ],
         // 备注
-        remark: [{ required: false, type: 'string', message: '请输入备注！' }],
+        remark: [
+          { required: false, type: 'string', message: '请输入备注！' },
+          {
+            min: 0,
+            max: 255,
+            message: '长度在0-255之间',
+            trigger: 'blur',
+          },
+        ],
         // 是否强制更新（0：否 1：是）
         isForceUpdate: [
           {
@@ -510,6 +579,14 @@ export default {
           {
             required: true,
             message: '请选择类型！',
+            trigger: 'change',
+          },
+        ],
+        // 资源状态（0：禁用 1：启用）
+        status: [
+          {
+            required: true,
+            message: '请选择资源状态！',
             trigger: 'change',
           },
         ],
@@ -599,6 +676,10 @@ export default {
     'form.type'() {
       this.form.url = ''
       this.fileList = []
+    },
+
+    sourcesType() {
+      this.pagination.pageNum = 1
     },
   },
 
@@ -690,6 +771,26 @@ export default {
       })
     },
 
+    // 根据key更新资源开关信息
+    async onUpdateSwitch({ checked, record, key, loadingKey }) {
+      try {
+        record[loadingKey] = true
+        const res = await this.$api.Source.updateSource({
+          id: record.id,
+          [key]: checked ? 1 : 0,
+        })
+        if (res.success) {
+          checked ? (record[key] = 1) : (record[key] = 0)
+        } else {
+          this.$handleError.handleRequestFail(res.message)
+        }
+      } catch (error) {
+        this.$handleError.handleApiRequestException(error)
+      } finally {
+        record[loadingKey] = false
+      }
+    },
+
     // 查询
     async onGetList() {
       try {
@@ -701,7 +802,12 @@ export default {
           pageSize: this.pagination.pageSize,
         })
         if (res.success) {
-          this.tableData = res.data.records
+          const records = res.data.records
+          for (const item of records) {
+            item.isStatusLoading = false
+            item.isForceUpdateLoading = false
+          }
+          this.tableData = records
           this.pagination.total = res.data.total
         } else {
           this.$handleError.handleRequestFail(res.message)
@@ -750,6 +856,14 @@ export default {
     // 表格分页改变
     onPageChange(e) {
       this.pagination.pageNum = e.current
+      this.pagination.current = e.current
+      this.onGetList()
+    },
+
+    // tab切换
+    onTagChange() {
+      this.pagination.pageNum = 1
+      this.pagination.current = 1
       this.onGetList()
     },
 

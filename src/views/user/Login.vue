@@ -152,8 +152,6 @@ export default {
     // 点击登录
     onLogin() {
       this.state.isLogginBtnLoading = true
-      console.log(md5)
-
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.Login(

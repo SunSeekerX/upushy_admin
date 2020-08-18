@@ -69,7 +69,8 @@
           </a-form-model-item>
 
           <a-form-model-item ref="describe" label="项目描述" prop="describe">
-            <a-input v-model="createForm.describe" :max-length="200" />
+            <a-textarea :maxLength="255" v-model="createForm.describe" />
+            <!-- <a-input v-model="createForm.describe" :max-length="200" /> -->
           </a-form-model-item>
         </a-form-model>
       </a-modal>
@@ -95,7 +96,8 @@
           </a-form-model-item>
 
           <a-form-model-item ref="describe" label="项目描述" prop="describe">
-            <a-input v-model="updateForm.describe" :max-length="200" />
+            <a-textarea :maxLength="255" v-model="updateForm.describe" />
+            <!-- <a-input v-model="updateForm.describe" :max-length="200" /> -->
           </a-form-model-item>
         </a-form-model>
       </a-modal>
@@ -226,8 +228,8 @@ export default {
           },
           {
             min: 0,
-            max: 200,
-            message: 'Length should be 0 to 200',
+            max: 255,
+            message: '长度在0-255之间',
             trigger: 'blur',
           },
         ],
