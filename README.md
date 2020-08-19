@@ -10,6 +10,8 @@
 
 **预览地址**：[https://uni-pushy.yoouu.cn/](https://uni-pushy.yoouu.cn/)
 
+> 自行注册账号使用即可体验
+
 **预览文档**：[https://api.uni-pushy.yoouu.cn/docs/](
 
 > **uni-app App整包升级检测：** https://ask.dcloud.net.cn/article/34972
