@@ -8,11 +8,7 @@
           </a-col>
 
           <a-col :xs="24" :md="12">
-            <a-tabs
-              v-model="sourcesType"
-              size="small"
-              @change="onTagChange"
-            >
+            <a-tabs v-model="sourcesType" size="small" @change="onTagChange">
               <a-tab-pane v-for="item of tabs" :key="item.key" :disabled="state.isTableLoading">
                 <span slot="tab">
                   <a-icon :type="item.type" />
@@ -388,6 +384,7 @@ export default {
           dataIndex: 'versionCode',
           scopedSlots: { customRender: 'versionCode' },
           ellipsis: true,
+          sorter: true,
           width: 80,
         },
         // 原生版本号
@@ -397,7 +394,8 @@ export default {
           dataIndex: 'nativeVersionCode',
           scopedSlots: { customRender: 'nativeVersionCode' },
           ellipsis: true,
-          width: 100,
+          sorter: true,
+          width: 120,
         },
         // 下载地址
         // {
@@ -487,6 +485,11 @@ export default {
         current: 1,
         // defaultCurrent: 1,
         pageNum: 1,
+      },
+      // 查询参数
+      queryParams: {
+        sortKey: '',
+        order: '',
       },
       // 新增表格
       form: {
@@ -800,6 +803,8 @@ export default {
           type: this.sourcesType,
           pageNum: this.pagination.pageNum,
           pageSize: this.pagination.pageSize,
+          sortKey: this.queryParams.sortKey,
+          order: this.queryParams.order,
         })
         if (res.success) {
           const records = res.data.records
@@ -854,9 +859,19 @@ export default {
     },
 
     // 表格分页改变
-    onPageChange(e) {
-      this.pagination.pageNum = e.current
-      this.pagination.current = e.current
+    onPageChange(pagination, filters, { order, columnKey }) {
+      // console.log({ pagination, filters, sorter: { order, columnKey } })
+      // 分页
+      this.pagination.pageNum = pagination.current
+      this.pagination.current = pagination.current
+      // 排序
+      if (order) {
+        this.queryParams.sortKey = columnKey
+        this.queryParams.order = order === 'ascend' ? 'ASC' : 'DESC'
+      } else {
+        this.queryParams.sortKey = ''
+        this.queryParams.order = ''
+      }
       this.onGetList()
     },
 

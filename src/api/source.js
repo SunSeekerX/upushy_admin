@@ -3,14 +3,14 @@
  * @author: SunSeekerX
  * @Date: 2020-07-28 09:52:25
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-15 13:31:40
+ * @LastEditTime: 2020-08-19 10:22:34
  */
 
 import { request } from '@/utils/request/index'
 
 export default {
   // 资源列表
-  sources({ id, type, pageNum, pageSize }) {
+  sources({ id, type, pageNum, pageSize, sortKey, order }) {
     return request({
       url: '/api/source',
       method: 'GET',
@@ -19,6 +19,8 @@ export default {
         type,
         pageNum,
         pageSize,
+        sortKey,
+        order,
       },
     })
   },
