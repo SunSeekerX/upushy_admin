@@ -6,11 +6,25 @@
 
 基于 `antd-vue-pro` 的 uni-app 热更新后台控制系统
 
-配套后端：[uni-pushy-server](https://github.com/SunSeekerX/uni-pushy-server)
+**配套后端**：[uni-pushy-server](https://github.com/SunSeekerX/uni-pushy-server)
+
+**预览地址**：[https://uni-pushy.yoouu.cn/](https://uni-pushy.yoouu.cn/)
+
+**预览文档**：[https://api.uni-pushy.yoouu.cn/docs/](
 
 > **uni-app App整包升级检测：** https://ask.dcloud.net.cn/article/34972
 >
 > **uni-app App资源热更新：** https://ask.dcloud.net.cn/article/35667
+
+**预览图**
+
+![login](assets/login.png)
+
+![project](assets/project.png)
+
+
+
+![source](assets/source.png)
 
 
 
@@ -64,9 +78,9 @@ VUE_APP_PREVIEW=true
 # 请求地址前缀，不带“/”！
 VUE_APP_API_BASE_URL=
 
-# 资源访问前缀，不带“/”！
-VUE_APP_OSS_BASE_URL=
- 
+# Api 加密rsa公钥
+VUE_APP_API_RSA_PUBLIC_KEY=
+
 ```
 
 **示例**
@@ -81,9 +95,9 @@ VUE_APP_PREVIEW=true
 # 请求地址前缀，不带“/”！
 VUE_APP_API_BASE_URL=http://192.192.192.192:3000
 
-# 资源访问前缀，不带“/”！
-VUE_APP_OSS_BASE_URL=https://uni-pushy.oss-cn-hangzhou.aliyuncs.com
- 
+# Api 加密rsa公钥
+VUE_APP_API_RSA_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC75U1dRtG/6uNG2G8/89nFd7UtdKMRYhpK+2mzuxxdKqezV62TE8Y/9PfLFRd9iITqpYkDj/XOGq3BBYKR6+5oXpOY9MSke7tdQ12OmxSn4TlV3YZfXubN5nOZoWj4A9evLcZumtJPuk8kIxz9qSm8yYrOeLbIX5kdy3stl3xrNwIDAQAB-----END PUBLIC KEY-----
+
 ```
 
 
