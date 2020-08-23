@@ -40,8 +40,8 @@
 
         <!-- url -->
         <a-tooltip slot="url" slot-scope="url">
-          <template slot="title">{{ handleFormatUrl(url) }}</template>
-          {{ handleFormatUrl(url) }}
+          <template slot="title">{{ url }}</template>
+          {{ url }}
         </a-tooltip>
 
         <!-- 版本号 -->
@@ -178,11 +178,7 @@
           </a-form-model-item>
 
           <a-form-model-item v-else label="资源包" prop="url">
-            <oss-part-upload
-              
-              @on-upload-complete="onUploadComplete"
-              @on-remove="form.url = ''"
-            ></oss-part-upload>
+            <oss-part-upload @on-upload-complete="onUploadComplete" @on-remove="form.url = ''"></oss-part-upload>
             <!-- <a-upload
               name="file"
               accept=".wgt, .apk"
@@ -862,15 +858,6 @@ export default {
     onRemoveFile() {
       this.form.url = ''
       return true
-    },
-
-    // 格式化url
-    handleFormatUrl(url) {
-      if (this.sourcesType === '4') {
-        return url
-      } else {
-        return `${process.env.VUE_APP_OSS_BASE_URL}/${url}`
-      }
     },
 
     // 表格分页改变
