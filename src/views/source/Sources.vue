@@ -178,7 +178,12 @@
           </a-form-model-item>
 
           <a-form-model-item v-else label="资源包" prop="url">
-            <a-upload
+            <oss-part-upload
+              
+              @on-upload-complete="onUploadComplete"
+              @on-remove="form.url = ''"
+            ></oss-part-upload>
+            <!-- <a-upload
               name="file"
               accept=".wgt, .apk"
               :headers="headers"
@@ -191,7 +196,7 @@
               <a-button :disabled="fileList.length > 0">
                 <a-icon type="upload" />点击上传资源
               </a-button>
-            </a-upload>
+            </a-upload>-->
           </a-form-model-item>
         </a-form-model>
       </a-modal>
@@ -302,9 +307,14 @@ import storage from 'store'
 
 import { createPureSign } from '@/utils/request/request-sign'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
+import OssPartUpload from '@/components/OSSPartUpload/OSSPartUpload'
 
 export default {
   name: 'BasicSource',
+
+  components: {
+    OssPartUpload,
+  },
 
   data() {
     return {
@@ -822,6 +832,11 @@ export default {
       } finally {
         this.state.isTableLoading = false
       }
+    },
+
+    // 文件上传成功
+    onUploadComplete(res) {
+      this.form.url = res.name
     },
 
     // 文件上传状态发生变化

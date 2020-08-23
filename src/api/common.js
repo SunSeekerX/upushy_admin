@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-28 11:30:36
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-17 10:00:46
+ * @LastEditTime: 2020-08-23 19:03:15
  */
 
 import { request } from '@/utils/request/index'
@@ -28,3 +28,10 @@ export function getConfig() {
   })
 }
 
+// OSS临时访问
+export function getOSSStsConfig() {
+  return request({
+    url: '/api/oss-sts',
+    method: 'GET',
+  })
+}
