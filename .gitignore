@@ -23,3 +23,7 @@ yarn-error.log*
 # Env
 .env.development
 .env.production
+
+# another files
+package-lock.json
+yarn.lock

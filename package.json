@@ -8,7 +8,7 @@
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "lint:nofix": "vue-cli-service lint --no-fix",
-    "gc": "git add -A && git cz && git pull && git push",
+    "gc": "git add -A && git-cz && git pull && git push",
     "up": "yarn upgrade-interactive"
   },
   "dependencies": {
@@ -40,7 +40,6 @@
     "babel-eslint": "^10.1.0",
     "babel-plugin-import": "^1.13.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
-    "cz-conventional-changelog": "^3.2.0",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-html": "^5.0.0",
@@ -50,11 +49,6 @@
     "vue-svg-icon-loader": "^2.1.1",
     "vue-template-compiler": "^2.6.12",
     "webpack-theme-color-replacer": "^1.3.14"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   },
   "browserslist": [
     "> 1%",
