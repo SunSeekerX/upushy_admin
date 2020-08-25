@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-08-23 17:33:28
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-23 20:12:15
+ * @LastEditTime: 2020-08-25 15:28:22
 -->
 <template>
   <div>
@@ -100,6 +100,19 @@ export default {
 
       // 传递到父组件
       this.$emit('on-remove')
+    },
+
+    // 清空文件
+    onCleanFile() {
+      this.fileList = []
+
+      // 取消分片上传
+      if (this.state.isUploading) {
+        this.client.cancel()
+      }
+
+      // 进度条重置
+      this.state.uploadPercent = 0
     },
 
     // 上传之前

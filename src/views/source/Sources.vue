@@ -178,7 +178,11 @@
           </a-form-model-item>
 
           <a-form-model-item v-else label="资源包" prop="url">
-            <oss-part-upload @on-upload-complete="onUploadComplete" @on-remove="form.url = ''"></oss-part-upload>
+            <oss-part-upload
+              ref="OSSPartUpload"
+              @on-upload-complete="onUploadComplete"
+              @on-remove="form.url = ''"
+            ></oss-part-upload>
             <!-- <a-upload
               name="file"
               accept=".wgt, .apk"
@@ -682,9 +686,23 @@ export default {
   },
 
   watch: {
-    'form.type'() {
-      this.form.url = ''
-      this.fileList = []
+    'form.type'(newVal, oldVal) {
+      if ((oldVal !== 4 && newVal === 4) || oldVal === 4) {
+        this.form.url = ''
+        this.fileList = []
+
+        // this.$nextTick(() => {
+        //   this.$refs?.OSSPartUpload.onClearFile()
+        // })
+
+        // this.$nextTick(() => {
+        //   this.$refs?.OSSPartUpload.onClearFile()
+        // })
+        // this.$refs.OSSPartUpload.onCleanFile()
+      }
+      // console.log({ newVal })
+      // this.form.url = ''
+      // this.fileList = []
     },
 
     sourcesType() {
