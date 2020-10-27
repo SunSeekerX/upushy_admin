@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-10-27 18:00:49
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-10-27 22:22:49
+ * @LastEditTime: 2020-10-27 22:34:40
 -->
 
 <template>
@@ -65,10 +65,10 @@
               {{ v8Info.runningTime }}
             </a-descriptions-item>
             <a-descriptions-item label="安装路径">
-              {{ v8Info.NODE }}
+              {{ v8Info.execPath }}
             </a-descriptions-item>
             <a-descriptions-item label="项目路径">
-              {{ v8Info.execPath }}
+              {{ v8Info.cwd }}
             </a-descriptions-item>
           </a-descriptions>
         </a-card>
@@ -333,8 +333,8 @@ export default {
             version: process.versions.node,
             uptime: this.$util.formatTime(serviceTime - process.uptime * 1000),
             runningTime: `${runningInfo.day}天${runningInfo.hour}时${runningInfo.min}分${runningInfo.sec}秒`,
-            NODE: process.NODE,
             execPath: process.execPath,
+            cwd: process.cwd,
           }
 
           // 处理磁盘信息
