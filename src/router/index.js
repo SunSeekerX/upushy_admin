@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-13 19:29:14
+ * @LastEditTime: 2020-10-27 18:17:56
  */
 
 import Vue from 'vue'
@@ -94,6 +94,19 @@ export const asyncRouterMap = [
             },
           },
         ],
+      },
+
+      // 系统监控
+      {
+        path: '/monitor/server',
+        name: 'MonitorServer',
+        component: () => import('@/views/monitor/server'),
+        meta: {
+          title: '系统监控',
+          icon: 'area-chart',
+          keepAlive: true,
+          permission: ['dashboard'],
+        },
       },
     ],
   },

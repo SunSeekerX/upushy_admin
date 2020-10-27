@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-28 11:30:36
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-23 19:03:15
+ * @LastEditTime: 2020-10-27 20:06:30
  */
 
 import { request } from '@/utils/request/index'
@@ -32,6 +32,14 @@ export function getConfig() {
 export function getOSSStsConfig() {
   return request({
     url: '/api/oss-sts',
+    method: 'GET',
+  })
+}
+
+// 系统信息
+export function getSystemConfig(){
+  return request({
+    url: '/api/systemConfig',
     method: 'GET',
   })
 }

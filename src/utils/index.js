@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-08-10 10:29:06
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-18 10:38:20
+ * @LastEditTime: 2020-10-27 21:27:35
  */
 
 import moment from 'moment'
@@ -43,7 +43,9 @@ export function getUrlParams(url) {
  * @param {Nubmer} radix 生成uuid的基数(意味着返回的字符串都是这个基数),2-二进制,8-八进制,10-十进制,16-十六进制
  */
 export function guid(len = 32, radix = null) {
-  const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('')
+  const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split(
+    '',
+  )
   const uuid = []
   radix = radix || chars.length
 
@@ -79,4 +81,42 @@ export function removeEmptyKey(obj = {}) {
     }
   }
   return obj
+}
+
+/**
+ * Convert Bytes to Human-Readable Format
+ * @param { Number } bytes
+ * @returns { String }
+ */
+export function bytesToSize(bytes) {
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+
+  if (bytes === 0) {
+    return 'n/a'
+  }
+
+  const i = parseInt(String(Math.floor(Math.log(bytes) / Math.log(1024))))
+
+  if (i === 0) {
+    return bytes + ' ' + sizes[i]
+  }
+
+  return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i]
+}
+
+/**
+ * 秒数转换为具体时间
+ * @param { Number } second 秒
+ */
+export function secToTime(second) {
+  const sec = second % 60
+  const min = (second / 60) % 60 >> 0
+  const hour = (second / 60 / 60) % 24 >> 0
+  const day = (second / 60 / 60 / 24) >> 0
+  return {
+    sec,
+    min,
+    hour,
+    day,
+  }
 }

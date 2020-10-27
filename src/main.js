@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-26 17:49:41
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-13 21:25:06
+ * @LastEditTime: 2020-10-27 20:44:00
  */
 
 /**
@@ -13,6 +13,7 @@
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 import Vue from 'vue'
+import moment from 'moment'
 
 /**
  * @name 引入文件
@@ -50,6 +51,7 @@ Vue.component('page-header-wrapper', PageHeaderWrapper)
  */
 Vue.prototype.$api = api
 Vue.prototype.$util = util
+Vue.prototype.$moment = moment
 
 window.umi_plugin_ant_themeVar = themePluginConfig.theme
 
