@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-10-27 18:00:49
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-10-27 21:56:25
+ * @LastEditTime: 2020-10-27 22:09:10
 -->
 
 <template>
@@ -237,9 +237,9 @@ export default {
   methods: {
     // 获取系统信息
     async onGetSystemConfig() {
+      this.isRunningTimer = true
       try {
         // this.isLoading = true
-        this.isRunningTimer = true
         const res = await this.$api.Common.getSystemConfig()
         if (res.success) {
           // 处理 Cpu 数据
@@ -359,6 +359,7 @@ export default {
 
   mounted() {
     // 获取系统信息
+    this.onGetSystemConfig()
     this.timer = setInterval(() => {
       if(this.isRunningTimer){
         return
