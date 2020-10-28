@@ -70,6 +70,9 @@ export default {
         {
           title: '登录状态',
           dataIndex: 'status',
+          customRender(text) {
+            return text === '1' ? '成功' : '失败'
+          },
         },
         // 操作信息
         {
