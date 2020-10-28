@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-08-17 09:41:41
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-18 15:28:37
+ * @LastEditTime: 2020-10-28 22:56:38
  */
 
 import md5 from 'md5'
@@ -41,7 +41,6 @@ export function createSign(config) {
       }
       break
     case 'GET':
-      // 处理参数为undefined情况
       removeEmptyKey(config.params)
       // 合并get参数
       keys = keys.concat(Object.keys(config.params ?? {}))

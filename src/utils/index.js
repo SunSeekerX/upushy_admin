@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-08-10 10:29:06
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-10-27 21:27:35
+ * @LastEditTime: 2020-10-28 22:56:18
  */
 
 import moment from 'moment'
@@ -69,19 +69,20 @@ export function guid(len = 32, radix = null) {
 }
 
 /**
- * @name 去除对象中有key为undefined或者null的情况
+ * @name 去除对象中有 [undefined, null, ''] 的情况
  * @param { Object } obj
  * @returns { Object } 处理完成之后的对象
  */
 export function removeEmptyKey(obj = {}) {
-  // 处理参数为undefined情况
+  // 处理参数为 [undefined, null, ''] 情况
   for (const [key, value] of Object.entries(obj)) {
-    if (value === null || value === undefined) {
+    if ([undefined, null, ''].includes(value)) {
       delete obj[key]
     }
   }
   return obj
 }
+
 
 /**
  * Convert Bytes to Human-Readable Format

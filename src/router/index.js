@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-10-27 18:17:56
+ * @LastEditTime: 2020-10-28 22:27:19
  */
 
 import Vue from 'vue'
@@ -103,6 +103,19 @@ export const asyncRouterMap = [
         component: () => import('@/views/monitor/server'),
         meta: {
           title: '系统监控',
+          icon: 'area-chart',
+          keepAlive: true,
+          permission: ['dashboard'],
+        },
+      },
+
+      // 登录日志
+      {
+        path: '/system/log/login',
+        name: 'SystemLogLogin',
+        component: () => import('@/views/system/log/login/index'),
+        meta: {
+          title: '登录日志',
           icon: 'area-chart',
           keepAlive: true,
           permission: ['dashboard'],
