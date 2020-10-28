@@ -392,6 +392,7 @@ export default {
           title: '版本号',
           align: 'center',
           dataIndex: 'versionCode',
+          defaultSortOrder: 'descend',
           scopedSlots: { customRender: 'versionCode' },
           ellipsis: true,
           sorter: true,
@@ -498,8 +499,8 @@ export default {
       },
       // 查询参数
       queryParams: {
-        sortKey: '',
-        order: '',
+        sortKey: 'versionCode',
+        order: 'DESC',
       },
       // 新增表格
       form: {
