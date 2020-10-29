@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-10-27 18:00:49
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-10-27 22:34:40
+ * @LastEditTime: 2020-10-29 17:19:55
 -->
 
 <template>
@@ -40,8 +40,11 @@
             <a-descriptions-item label="操作系统">
               {{ systemInfo.type }}
             </a-descriptions-item>
-            <a-descriptions-item label="服务器IP">
-              {{ systemInfo.ip }}
+            <a-descriptions-item label="服务器公网IP">
+              {{ systemInfo.publicIpIpv4 }}
+            </a-descriptions-item>
+            <a-descriptions-item label="服务器内网IP">
+              {{ systemInfo.internalIpIpv4 }}
             </a-descriptions-item>
             <a-descriptions-item label="系统架构">
               {{ systemInfo.arch }}
@@ -94,7 +97,7 @@
 import { bytesToSize } from '@/utils/index'
 export default {
   name: 'MonitorServer',
-  
+
   data() {
     return {
       // Cpu 表头
@@ -168,6 +171,8 @@ export default {
         type: '',
         ip: '',
         arch: '',
+        publicIpIpv4: '',
+        internalIpIpv4: '',
       },
       v8Info: {
         version: '',
@@ -251,6 +256,8 @@ export default {
             type,
             ip,
             arch,
+            publicIpIpv4,
+            internalIpIpv4,
           } = res.data.os
           let user = 0
           let sys = 0
@@ -323,6 +330,8 @@ export default {
             type,
             ip,
             arch,
+            publicIpIpv4,
+            internalIpIpv4,
           }
 
           // 处理 V8 信息
@@ -361,7 +370,7 @@ export default {
     // 获取系统信息
     this.onGetSystemConfig()
     this.timer = setInterval(() => {
-      if(this.isRunningTimer){
+      if (this.isRunningTimer) {
         return
       }
       this.onGetSystemConfig()
