@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-08-17 09:41:41
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-10-28 22:56:38
+ * @LastEditTime: 2020-10-29 17:45:46
  */
 
 import md5 from 'md5'
@@ -25,7 +25,7 @@ export function createSign(config) {
     case 'DELETE':
     case 'PUT':
       // 处理参数为undefined情况
-      removeEmptyKey(config.data)
+      removeEmptyKey(config.data, [undefined, null])
       const entries = Object.entries(config.data || {})
       if (entries.length) {
         const obj = {}
@@ -41,7 +41,7 @@ export function createSign(config) {
       }
       break
     case 'GET':
-      removeEmptyKey(config.params)
+      removeEmptyKey(config.params, [undefined, null])
       // 合并get参数
       keys = keys.concat(Object.keys(config.params ?? {}))
       keys = keys.concat(Object.values(config.params ?? {}))

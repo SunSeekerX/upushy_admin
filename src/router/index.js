@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-10-28 22:27:19
+ * @LastEditTime: 2020-10-29 18:02:47
  */
 
 import Vue from 'vue'
@@ -54,25 +54,25 @@ export const asyncRouterMap = [
       },
 
       // project
-      {
-        path: '/project',
-        name: 'project',
-        component: RouteView,
-        redirect: '/project/projects',
-        meta: { title: '项目', icon: 'table', permission: ['project'] },
-        children: [
-          {
-            path: '/project/projects',
-            name: 'BasicProject',
-            component: () => import('@/views/project/Projects'),
-            meta: {
-              title: '所有项目',
-              keepAlive: true,
-              permission: ['project'],
-            },
-          },
-        ],
-      },
+      // {
+      //   path: '/project',
+      //   name: 'project',
+      //   component: RouteView,
+      //   redirect: '/project/projects',
+      //   meta: { title: '项目', icon: 'table', permission: ['project'] },
+      //   children: [
+      //     {
+      //       path: '/project/projects',
+      //       name: 'BasicProject',
+      //       component: () => import('@/views/project/Projects'),
+      //       meta: {
+      //         title: '所有项目',
+      //         keepAlive: true,
+      //         permission: ['project'],
+      //       },
+      //     },
+      //   ],
+      // },
 
       // source
       {
@@ -96,6 +96,19 @@ export const asyncRouterMap = [
         ],
       },
 
+      // 我的项目
+      {
+        path: '/project/projects',
+        name: 'BasicProject',
+        component: () => import('@/views/project/Projects'),
+        meta: {
+          title: '我的项目',
+          icon: 'appstore',
+          keepAlive: true,
+          permission: ['project'],
+        },
+      },
+
       // 系统监控
       {
         path: '/monitor/server',
@@ -116,7 +129,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/system/log/login/index'),
         meta: {
           title: '登录日志',
-          icon: 'area-chart',
+          icon: 'file-done',
           keepAlive: true,
           permission: ['dashboard'],
         },

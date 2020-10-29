@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-08-10 10:29:06
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-10-28 22:56:18
+ * @LastEditTime: 2020-10-29 17:47:07
  */
 
 import moment from 'moment'
@@ -73,10 +73,11 @@ export function guid(len = 32, radix = null) {
  * @param { Object } obj
  * @returns { Object } 处理完成之后的对象
  */
-export function removeEmptyKey(obj = {}) {
+export function removeEmptyKey(obj = {}, rule = [undefined, null, '']) {
+  
   // 处理参数为 [undefined, null, ''] 情况
   for (const [key, value] of Object.entries(obj)) {
-    if ([undefined, null, ''].includes(value)) {
+    if (rule.includes(value)) {
       delete obj[key]
     }
   }
