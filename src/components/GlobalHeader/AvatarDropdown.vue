@@ -3,10 +3,13 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-04 09:16:22
---> 
+ * @LastEditTime: 2020-11-01 20:30:08
+-->
 <template>
-  <a-dropdown v-if="currentUser && currentUser.nickname" placement="bottomRight">
+  <a-dropdown
+    v-if="currentUser && currentUser.nickname"
+    placement="bottomRight"
+  >
     <span class="ant-pro-account-avatar">
       <a-avatar
         size="small"
@@ -19,7 +22,8 @@
     <template v-slot:overlay>
       <a-menu class="ant-pro-drop-down menu" :selected-keys="[]">
         <a-menu-item key="logout" @click="handleLogout">
-          <a-icon type="logout" />退出登录
+          <a-icon type="logout" />
+          退出登录
         </a-menu-item>
       </a-menu>
     </template>
@@ -31,6 +35,7 @@
 
 <script>
 import { Modal } from 'ant-design-vue'
+import { LOGIN_OUT, RESET_ROUTERS } from '@/store/mutation-types'
 
 export default {
   name: 'AvatarDropdown',
@@ -50,10 +55,8 @@ export default {
         title: '提示',
         content: '确定退出登录吗？',
         onOk: () => {
-          this.$store.commit('LOGIN_OUT')
-          
-          this.$store.commit('RESET_ROUTER')
-
+          this.$store.commit(LOGIN_OUT)
+          this.$store.commit(RESET_ROUTERS)
           this.$router.push({ name: 'login' })
         },
         onCancel() {},

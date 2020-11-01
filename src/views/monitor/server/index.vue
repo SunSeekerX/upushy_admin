@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-10-27 18:00:49
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-10-29 17:19:55
+ * @LastEditTime: 2020-11-01 22:30:35
 -->
 
 <template>
@@ -95,6 +95,7 @@
 
 <script>
 import { bytesToSize } from '@/utils/index'
+
 export default {
   name: 'MonitorServer',
 
@@ -243,121 +244,117 @@ export default {
     // 获取系统信息
     async onGetSystemConfig() {
       this.isRunningTimer = true
-      try {
-        // this.isLoading = true
-        const res = await this.$api.Common.getSystemConfig()
-        if (res.success) {
-          // 处理 Cpu 数据
-          const {
-            cpus,
-            totalmem,
-            freemem,
-            hostname,
-            type,
-            ip,
-            arch,
-            publicIpIpv4,
-            internalIpIpv4,
-          } = res.data.os
-          let user = 0
-          let sys = 0
-          let idle = 0
-          for (const cpu of cpus) {
-            user += cpu.times.user
-            sys += cpu.times.sys
-            idle += cpu.times.idle
-          }
-          const total = user + sys + idle
-          this.cpuData = [
-            {
-              key: '1',
-              name: '核心数',
-              value: cpus.length,
-            },
-            {
-              key: '2',
-              name: '用户使用率',
-              value: `${((user / total) * 100).toFixed(2)}%`,
-            },
-            {
-              key: '3',
-              name: '系统使用率',
-              value: `${((sys / total) * 100).toFixed(2)}%`,
-            },
-            {
-              key: '4',
-              name: '当前空闲率',
-              value: `${((idle / total) * 100).toFixed(2)}%`,
-            },
-          ]
 
-          // 处理内存数据
-          const { v8 } = res.data
-          this.memData = [
-            {
-              key: '1',
-              name: '总内存',
-              mem: bytesToSize(totalmem),
-              v8: bytesToSize(v8.getHeapStatistics.heap_size_limit),
-            },
-            {
-              key: '2',
-              name: '已用内存',
-              mem: bytesToSize(totalmem - freemem),
-              v8: bytesToSize(v8.getHeapStatistics.used_heap_size),
-            },
-            {
-              key: '3',
-              name: '剩余内存',
-              mem: bytesToSize(freemem),
-              v8: bytesToSize(v8.getHeapStatistics.total_available_size),
-            },
-            {
-              key: '4',
-              name: '使用率',
-              mem: `${(((totalmem - freemem) / totalmem) * 100).toFixed(2)}%`,
-              v8: `${(
-                (v8.getHeapStatistics.used_heap_size /
-                  v8.getHeapStatistics.heap_size_limit) *
-                100
-              ).toFixed(2)}%`,
-            },
-          ]
-
-          // 处理服务器信息
-          this.systemInfo = {
-            hostname,
-            type,
-            ip,
-            arch,
-            publicIpIpv4,
-            internalIpIpv4,
-          }
-
-          // 处理 V8 信息
-          const { process, serviceTime } = res.data
-          const runningInfo = this.$util.secToTime(process.uptime)
-
-          this.v8Info = {
-            version: process.versions.node,
-            uptime: this.$util.formatTime(serviceTime - process.uptime * 1000),
-            runningTime: `${runningInfo.day}天${runningInfo.hour}时${runningInfo.min}分${runningInfo.sec}秒`,
-            execPath: process.execPath,
-            cwd: process.cwd,
-          }
-
-          // 处理磁盘信息
-          this.disksData = res.data.disks
-        } else {
-          this.$handleError.handleRequestFail(res.message)
+      const res = await this.$api.getSystemConfig()
+      if (res.success) {
+        // 处理 Cpu 数据
+        const {
+          cpus,
+          totalmem,
+          freemem,
+          hostname,
+          type,
+          ip,
+          arch,
+          publicIpIpv4,
+          internalIpIpv4,
+        } = res.data.os
+        let user = 0
+        let sys = 0
+        let idle = 0
+        for (const cpu of cpus) {
+          user += cpu.times.user
+          sys += cpu.times.sys
+          idle += cpu.times.idle
         }
-      } catch (error) {
-        this.$handleError.handleApiRequestException(error)
-      } finally {
-        this.isLoading && (this.isLoading = false)
-        // 执行完毕
-        this.isRunningTimer = false
+        const total = user + sys + idle
+        this.cpuData = [
+          {
+            key: '1',
+            name: '核心数',
+            value: cpus.length,
+          },
+          {
+            key: '2',
+            name: '用户使用率',
+            value: `${((user / total) * 100).toFixed(2)}%`,
+          },
+          {
+            key: '3',
+            name: '系统使用率',
+            value: `${((sys / total) * 100).toFixed(2)}%`,
+          },
+          {
+            key: '4',
+            name: '当前空闲率',
+            value: `${((idle / total) * 100).toFixed(2)}%`,
+          },
+        ]
+
+        // 处理内存数据
+        const { v8 } = res.data
+        this.memData = [
+          {
+            key: '1',
+            name: '总内存',
+            mem: bytesToSize(totalmem),
+            v8: bytesToSize(v8.getHeapStatistics.heap_size_limit),
+          },
+          {
+            key: '2',
+            name: '已用内存',
+            mem: bytesToSize(totalmem - freemem),
+            v8: bytesToSize(v8.getHeapStatistics.used_heap_size),
+          },
+          {
+            key: '3',
+            name: '剩余内存',
+            mem: bytesToSize(freemem),
+            v8: bytesToSize(v8.getHeapStatistics.total_available_size),
+          },
+          {
+            key: '4',
+            name: '使用率',
+            mem: `${(((totalmem - freemem) / totalmem) * 100).toFixed(2)}%`,
+            v8: `${(
+              (v8.getHeapStatistics.used_heap_size /
+                v8.getHeapStatistics.heap_size_limit) *
+              100
+            ).toFixed(2)}%`,
+          },
+        ]
+
+        // 处理服务器信息
+        this.systemInfo = {
+          hostname,
+          type,
+          ip,
+          arch,
+          publicIpIpv4,
+          internalIpIpv4,
+        }
+
+        // 处理 V8 信息
+        const { process, serviceTime } = res.data
+        const runningInfo = this.$util.secToTime(process.uptime)
+
+        this.v8Info = {
+          version: process.versions.node,
+          uptime: this.$util.formatTime(serviceTime - process.uptime * 1000),
+          runningTime: `${runningInfo.day}天${runningInfo.hour}时${runningInfo.min}分${runningInfo.sec}秒`,
+          execPath: process.execPath,
+          cwd: process.cwd,
+        }
+
+        // 处理磁盘信息
+        this.disksData = res.data.disks
+      } else {
+        this.$handleError.handleRequestFail(res)
       }
+
+      this.isLoading && (this.isLoading = false)
+      // 执行完毕
+      this.isRunningTimer = false
     },
 
     // Convert Bytes to Human-Readable Format

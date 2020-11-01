@@ -3,50 +3,64 @@
  * @author: SunSeekerX
  * @Date: 2020-07-26 17:49:41
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-17 10:08:05
+ * @LastEditTime: 2020-11-01 23:21:16
  */
+
 import storage from 'store'
 
-import { Auth } from '@/api/index'
-import { ACCESS_TOKEN, USER_INFO } from '@/store/mutation-types'
+import { login } from '@/api/index'
+import {
+  ACCESS_TOKEN,
+  ACCESS_REFRESH_TOKEN,
+  USER_INFO,
+  LOGIN_OUT,
+} from '@/store/mutation-types'
 import { resetRouter } from '@/router/index'
 
 const user = {
   state: {
-    token: '',
-
-    info: {},
+    // token
+    token: storage.get(ACCESS_TOKEN) || '',
+    // refresh token
+    refreshToken: storage.get(ACCESS_REFRESH_TOKEN) || '',
+    // userInfo
+    info: storage.get(USER_INFO) || {},
   },
 
   mutations: {
-    SET_TOKEN: (state, token) => {
+    [ACCESS_TOKEN]: (state, token) => {
       state.token = token
+      storage.set(ACCESS_TOKEN, token)
     },
-
-    SET_INFO(state, info) {
+    [ACCESS_REFRESH_TOKEN]: (state, refreshToken) => {
+      state.refreshToken = refreshToken
+      storage.set(ACCESS_REFRESH_TOKEN, refreshToken)
+    },
+    [USER_INFO](state, info) {
       state.info = info
+      storage.set(USER_INFO, info)
     },
-
-    LOGIN_OUT(state) {
+    [LOGIN_OUT](state) {
       state.token = ''
+      state.refreshToken = ''
       storage.remove(ACCESS_TOKEN)
-
-      // 重置路由
+      storage.remove(ACCESS_REFRESH_TOKEN)
+      storage.remove(USER_INFO)
+      // Reset router
       resetRouter()
     },
   },
 
   actions: {
-    // 登录
+    // Login
     Login({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
-        Auth.login(userInfo)
+        login(userInfo)
           .then(res => {
             if (res.success) {
-              storage.set(ACCESS_TOKEN, res.data.token)
-              storage.set(USER_INFO, res.data.userInfo)
-              commit('SET_TOKEN', res.data.token)
-              commit('SET_INFO', res.data.userInfo)
+              commit(ACCESS_TOKEN, res.data.token)
+              commit(ACCESS_REFRESH_TOKEN, res.data.refreshToken)
+              commit(USER_INFO, res.data.userInfo)
               resolve(res)
             } else {
               reject(res)

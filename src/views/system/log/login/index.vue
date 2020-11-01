@@ -111,25 +111,20 @@ export default {
   methods: {
     // 查询
     async onGetList() {
-      try {
-        this.state.isTableLoading = true
-        const res = await this.$api.System.logginLogs({
-          pageNum: this.pagination.pageNum,
-          pageSize: this.pagination.pageSize,
-          sortKey: this.queryParams.sortKey,
-          order: this.queryParams.order,
-        })
-        if (res.success) {
-          this.tableData = res.data.records
-          this.pagination.total = res.data.total
-        } else {
-          this.$handleError.handleRequestFail(res.message)
-        }
-      } catch (error) {
-        this.$handleError.handleApiRequestException(error)
-      } finally {
-        this.state.isTableLoading = false
+      this.state.isTableLoading = true
+      const res = await this.$api.logginLogs({
+        pageNum: this.pagination.pageNum,
+        pageSize: this.pagination.pageSize,
+        sortKey: this.queryParams.sortKey,
+        order: this.queryParams.order,
+      })
+      if (res.success) {
+        this.tableData = res.data.records
+        this.pagination.total = res.data.total
+      } else {
+        this.$handleError.handleRequestFail(res)
       }
+      this.state.isTableLoading = false
     },
 
     // 表格分页改变

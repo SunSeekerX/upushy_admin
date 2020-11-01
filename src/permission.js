@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-17 14:22:30
+ * @LastEditTime: 2020-11-01 22:36:37
  */
 
 import router from './router'
@@ -13,8 +13,9 @@ import NProgress from 'nprogress' // progress bar
 import '@/components/NProgress/nprogress.less' // progress bar custom style
 // import notification from 'ant-design-vue/es/notification'
 
+import { handleRequestFail } from '@/utils/handle-error/handle-error'
 import { setDocumentTitle, domTitle } from '@/utils/domUtil'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { ACCESS_TOKEN, GENERATE_ROUTERS } from '@/store/mutation-types'
 import { i18nRender } from '@/locales'
 // import { asyncRouterMap } from '@/router/index'
 
@@ -27,11 +28,17 @@ const defaultRoutePath = '/dashboard/workplace'
 router.beforeEach(async (to, from, next) => {
   NProgress.start() // start progress bar
 
-  to.meta && typeof to.meta.title !== 'undefined' && setDocumentTitle(`${i18nRender(to.meta.title)} - ${domTitle}`)
+  to.meta &&
+    typeof to.meta.title !== 'undefined' &&
+    setDocumentTitle(`${i18nRender(to.meta.title)} - ${domTitle}`)
 
   const { config } = store.state
   if (!config.isUpdated) {
-    await store.dispatch('getConfig')
+    try {
+      await store.dispatch('getConfig')
+    } catch (error) {
+      handleRequestFail(error)
+    }
   }
 
   /* has token */
@@ -41,7 +48,7 @@ router.beforeEach(async (to, from, next) => {
       NProgress.done()
     } else {
       if (store.getters.addRouters.length === 0) {
-        store.commit('GENNERAT_ROUTES')
+        store.commit(GENERATE_ROUTERS)
         router.addRoutes(store.getters.addRouters)
         next({ ...to, replace: true })
       } else {

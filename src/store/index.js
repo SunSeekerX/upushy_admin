@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-26 17:49:41
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-17 09:59:52
+ * @LastEditTime: 2020-11-01 21:22:52
  */
 
 import Vue from 'vue'
@@ -29,6 +29,7 @@ export default new Vuex.Store({
     theme: state => state.app.theme,
     color: state => state.app.color,
     token: state => state.user.token,
+    refreshToken: state => state.user.refreshToken,
     userInfo: state => state.user.info,
     addRouters: state => state.permission.addRouters,
   },

@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-08-23 17:33:28
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-25 15:28:22
+ * @LastEditTime: 2020-11-01 20:54:46
 -->
 <template>
   <div>
@@ -56,7 +56,7 @@ export default {
     // 使用临时凭据初始化OSS客户端
     async onInitOSSClient() {
       try {
-        const res = await this.$api.Common.getOSSStsConfig()
+        const res = await this.$api.getOSSStsConfig()
         if (res.success) {
           const { AccessKeyId, AccessKeySecret, SecurityToken, bucket, region } = res.data
           this.client = new OSS({

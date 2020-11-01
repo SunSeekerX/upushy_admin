@@ -2,7 +2,9 @@
   <page-header-wrapper>
     <a-card :bordered="false">
       <div class="table-operator">
-        <a-button type="primary" icon="plus" @click="state.isCreateShow = true">新建</a-button>
+        <a-button type="primary" icon="plus" @click="state.isCreateShow = true">
+          新建
+        </a-button>
       </div>
 
       <!-- 资源表格 -->
@@ -22,18 +24,26 @@
 
         <!-- 项目名称 -->
         <template slot="name" slot-scope="text, { id, name }">
-          <router-link :to="{ name: 'BasicSource', query: {id: id}}">{{ name }}</router-link>
+          <router-link :to="{ name: 'BasicSource', query: { id: id } }">
+            {{ name }}
+          </router-link>
         </template>
 
         <!-- 创建时间 -->
-        <template slot="createdTime" slot-scope="createdTime">{{ $util.formatTime(createdTime) }}</template>
+        <template slot="createdTime" slot-scope="createdTime">
+          {{ $util.formatTime(createdTime) }}
+        </template>
 
         <!-- 更新时间 -->
-        <template slot="updatedTime" slot-scope="updatedTime">{{ $util.formatTime(updatedTime) }}</template>
+        <template slot="updatedTime" slot-scope="updatedTime">
+          {{ $util.formatTime(updatedTime) }}
+        </template>
 
         <!-- 操作 -->
         <span slot="action" slot-scope="text, record">
-          <a-button @click="onClickViewDesc(record)" type="primary">查看详情</a-button>
+          <a-button @click="onClickViewDesc(record)" type="primary">
+            查看详情
+          </a-button>
 
           <a-button @click="onClickUpdate(record)">修改</a-button>
 
@@ -113,13 +123,17 @@
     >
       <a-card :bordered="false">
         <a-descriptions :title="descRecord.id">
-          <a-descriptions-item label="项目名称">{{ descRecord.name }}</a-descriptions-item>
+          <a-descriptions-item label="项目名称">
+            {{ descRecord.name }}
+          </a-descriptions-item>
         </a-descriptions>
 
         <a-divider style="margin-bottom: 32px" />
 
         <a-descriptions>
-          <a-descriptions-item label="项目描述">{{ descRecord.describe }}</a-descriptions-item>
+          <a-descriptions-item label="项目描述">
+            {{ descRecord.describe }}
+          </a-descriptions-item>
         </a-descriptions>
       </a-card>
     </a-modal>
@@ -271,24 +285,19 @@ export default {
 
       this.$refs.createForm.validate(async valid => {
         if (valid) {
-          try {
-            const res = await this.$api.Project.createProject(this.createForm)
-            if (res.success) {
-              this.$notification.success({
-                message: '成功',
-                description: res.message,
-              })
-              this.state.isCreateShow = false
-              // 添加数据
-              this.tableData.push(res.data)
-            } else {
-              this.$handleError.handleRequestFail(res.message)
-            }
-          } catch (error) {
-            this.$handleError.handleApiRequestException(error)
-          } finally {
-            this.state.isCreateLoading = false
+          const res = await this.$api.createProject(this.createForm)
+          if (res.success) {
+            this.$notification.success({
+              message: '成功',
+              description: res.message,
+            })
+            this.state.isCreateShow = false
+            // 添加数据
+            this.tableData.push(res.data)
+          } else {
+            this.$handleError.handleRequestFail(res)
           }
+          this.state.isCreateLoading = false
         } else {
           this.state.isCreateLoading = false
         }
@@ -297,21 +306,17 @@ export default {
 
     // 删除
     async onDelete(id) {
-      try {
-        const res = await this.$api.Project.deleteProject({
-          id: id,
+      const res = await this.$api.deleteProject({
+        id: id,
+      })
+      if (res.success) {
+        this.$notification.success({
+          message: '成功',
+          description: res.message,
         })
-        if (res.success) {
-          this.$notification.success({
-            message: '成功',
-            description: res.message,
-          })
-          this.onGetList()
-        } else {
-          this.$handleError.handleRequestFail(res.message)
-        }
-      } catch (error) {
-        this.$handleError.handleApiRequestException(error)
+        this.onGetList()
+      } else {
+        this.$handleError.handleRequestFail(res)
       }
     },
 
@@ -321,23 +326,18 @@ export default {
 
       this.$refs.updateForm.validate(async valid => {
         if (valid) {
-          try {
-            const res = await this.$api.Project.updateProject(this.updateForm)
-            if (res.success) {
-              this.$notification.success({
-                message: '成功',
-                description: res.message,
-              })
-              this.state.isUpdateShow = false
-              this.onGetList()
-            } else {
-              this.$handleError.handleRequestFail(res.message)
-            }
-          } catch (error) {
-            this.$handleError.handleApiRequestException(error)
-          } finally {
-            this.state.isUpdateLoading = false
+          const res = await this.$api.updateProject(this.updateForm)
+          if (res.success) {
+            this.$notification.success({
+              message: '成功',
+              description: res.message,
+            })
+            this.state.isUpdateShow = false
+            this.onGetList()
+          } else {
+            this.$handleError.handleRequestFail(res)
           }
+          this.state.isUpdateLoading = false
         } else {
           this.state.isUpdateLoading = false
         }
@@ -346,23 +346,18 @@ export default {
 
     // 查询
     async onGetList() {
-      try {
-        this.state.isTableLoading = true
-        const res = await this.$api.Project.projects({
-          pageNum: this.pagination.pageNum,
-          pageSize: this.pagination.pageSize,
-        })
-        if (res.success) {
-          this.tableData = res.data.records
-          this.pagination.total = res.data.total
-        } else {
-          this.$handleError.handleRequestFail(res.message)
-        }
-      } catch (error) {
-        this.$handleError.handleApiRequestException(error)
-      } finally {
-        this.state.isTableLoading = false
+      this.state.isTableLoading = true
+      const res = await this.$api.projects({
+        pageNum: this.pagination.pageNum,
+        pageSize: this.pagination.pageSize,
+      })
+      if (res.success) {
+        this.tableData = res.data.records
+        this.pagination.total = res.data.total
+      } else {
+        this.$handleError.handleRequestFail(res)
       }
+      this.state.isTableLoading = false
     },
 
     // 表格分页改变

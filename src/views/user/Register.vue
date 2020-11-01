@@ -7,15 +7,30 @@
     <!-- 注册表单 -->
     <a-form-model ref="registerForm" :model="form" :rules="rules">
       <a-form-model-item ref="nickname" prop="nickname">
-        <a-input size="large" type="text" placeholder="昵称" v-model="form.nickname"></a-input>
+        <a-input
+          size="large"
+          type="text"
+          placeholder="昵称"
+          v-model="form.nickname"
+        ></a-input>
       </a-form-model-item>
 
       <a-form-model-item ref="username" prop="username">
-        <a-input size="large" type="text" placeholder="账号" v-model="form.username"></a-input>
+        <a-input
+          size="large"
+          type="text"
+          placeholder="账号"
+          v-model="form.username"
+        ></a-input>
       </a-form-model-item>
 
       <a-form-model-item ref="email" prop="email">
-        <a-input size="large" type="text" placeholder="邮箱" v-model="form.email"></a-input>
+        <a-input
+          size="large"
+          type="text"
+          placeholder="邮箱"
+          v-model="form.email"
+        ></a-input>
       </a-form-model-item>
 
       <a-popover
@@ -53,7 +68,11 @@
       </a-popover>
 
       <a-form-model-item ref="password2" prop="password2">
-        <a-input-password size="large" placeholder="确认密码" v-model="form.password2"></a-input-password>
+        <a-input-password
+          size="large"
+          placeholder="确认密码"
+          v-model="form.password2"
+        ></a-input-password>
       </a-form-model-item>
 
       <a-form-model-item ref="imgCaptcha" prop="imgCaptcha">
@@ -70,7 +89,11 @@
 
           <a-col :span="10">
             <a-spin :spinning="state.isCaptchaImgLoading">
-              <div @click="onGetCaptchaImg" class="captcha-img" v-html="imgCaptchaUrl"></div>
+              <div
+                @click="onGetCaptchaImg"
+                class="captcha-img"
+                v-html="imgCaptchaUrl"
+              ></div>
             </a-spin>
           </a-col>
         </a-row>
@@ -85,8 +108,12 @@
           @click="onRegister"
           :loading="state.isRegisterBtnLoading"
           :disabled="state.isRegisterBtnLoading"
-        >确定</a-button>
-        <router-link class="login" :to="{ name: 'login' }">使用已有账户登录</router-link>
+        >
+          确定
+        </a-button>
+        <router-link class="login" :to="{ name: 'login' }">
+          使用已有账户登录
+        </router-link>
       </a-form-model-item>
     </a-form-model>
   </div>
@@ -162,9 +189,23 @@ export default {
         // 邮箱
         email: [{ required: true, message: '请输入邮箱地址', trigger: 'blur' }],
         // 密码
-        password: [{ required: true, message: '至少6位密码，区分大小写', trigger: 'blur' }, { validator: this.handlePasswordLevel }],
+        password: [
+          {
+            required: true,
+            message: '至少6位密码，区分大小写',
+            trigger: 'blur',
+          },
+          { validator: this.handlePasswordLevel },
+        ],
         // 确认密码
-        password2: [{ required: true, message: '至少6位密码，区分大小写', trigger: 'blur' }, { validator: this.handlePasswordCheck }],
+        password2: [
+          {
+            required: true,
+            message: '至少6位密码，区分大小写',
+            trigger: 'blur',
+          },
+          { validator: this.handlePasswordCheck },
+        ],
         // 图片验证码
         imgCaptcha: [
           {
@@ -264,49 +305,41 @@ export default {
     async onGetCaptchaImg() {
       this.state.isCaptchaImgLoading = true
 
-      try {
-        const res = await this.$api.Auth.registerCaptcha()
-        if (res.success) {
-          this.imgCaptchaUrl = res.data.img
-          this.form.imgCaptchaKey = res.data.uuid
-        } else {
-          this.$handleError.handleRequestFail(res.message)
-        }
-      } catch (error) {
-        this.$handleError.handleApiRequestException(error)
-      } finally {
-        this.state.isCaptchaImgLoading = false
+      const res = await this.$api.registerCaptcha()
+      if (res.success) {
+        this.imgCaptchaUrl = res.data.img
+        this.form.imgCaptchaKey = res.data.uuid
+      } else {
+        this.$handleError.handleRequestFail(res)
       }
+      this.state.isCaptchaImgLoading = false
     },
 
     // 注册
     async onRegister() {
       this.state.isRegisterBtnLoading = true
 
-      this.$refs.registerForm.validate(valid => {
+      this.$refs.registerForm.validate(async valid => {
         if (valid) {
-          this.$api.Auth.register(
+          const res = await this.$api.register(
             Object.assign({}, this.form, {
               imgCaptcha: this.form.imgCaptcha.toLowerCase(),
               password: md5(this.form.password),
             }),
           )
-            .then(res => {
-              if (res.success) {
-                this.$notification.success({
-                  message: '成功',
-                  description: res.message,
-                })
 
-                this.$router.replace('/user/login')
-              } else {
-                this.$handleError.handleRequestFail(res.message)
-              }
+          if (res.success) {
+            this.$notification.success({
+              message: '成功',
+              description: res.message,
             })
-            .catch(err => this.$handleError.handleApiRequestException(err))
-            .finally(() => {
-              this.state.isRegisterBtnLoading = false
-            })
+
+            this.$router.replace('/user/login')
+          } else {
+            this.$handleError.handleRequestFail(res)
+          }
+
+          this.state.isRegisterBtnLoading = false
         } else {
           this.state.isRegisterBtnLoading = false
           return false

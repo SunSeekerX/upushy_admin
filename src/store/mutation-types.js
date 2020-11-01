@@ -1,15 +1,22 @@
 /**
- * @name: 
+ * @name:
  * @author: SunSeekerX
  * @Date: 2020-07-26 17:49:41
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-17 09:53:07
+ * @LastEditTime: 2020-11-01 20:28:52
  */
 
+// User
 export const ACCESS_TOKEN = 'Access-Token'
+export const ACCESS_REFRESH_TOKEN = 'Access-Refresh-Token'
 export const USER_INFO = 'User-info'
+export const LOGIN_OUT = 'Login-out'
 
+// Permission
+export const GENERATE_ROUTERS = 'Generate_routers'
+export const RESET_ROUTERS = 'Reset_routers'
 
+// App
 export const SIDEBAR_TYPE = 'sidebar_type'
 export const TOGGLE_MOBILE_TYPE = 'is_mobile'
 export const TOGGLE_NAV_THEME = 'nav_theme'
@@ -27,5 +34,5 @@ export const SET_TDOA = 'set_tdoa'
 
 export const CONTENT_WIDTH_TYPE = {
   Fluid: 'Fluid',
-  Fixed: 'Fixed'
+  Fixed: 'Fixed',
 }

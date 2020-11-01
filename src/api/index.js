@@ -3,14 +3,12 @@
  * @author: SunSeekerX
  * @Date: 2020-07-26 18:38:38
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-10-28 22:14:46
+ * @LastEditTime: 2020-11-01 20:52:16
  */
 
-import Auth from './auth'
-import Project from './project'
-import Source from './source'
-import * as Common from './common'
-import Dict from './dict'
-import System from './system'
-
-export { Auth, Project, Source, Common, Dict, System }
+export * from './auth'
+export * from './common'
+export * from './dict'
+export * from './project'
+export * from './source'
+export * from './system'

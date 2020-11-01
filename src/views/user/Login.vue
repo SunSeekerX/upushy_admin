@@ -1,6 +1,11 @@
 <template>
   <div class="main">
-    <a-form-model class="user-layout-login" ref="loginForm" :model="loginForm" :rules="rules">
+    <a-form-model
+      class="user-layout-login"
+      ref="loginForm"
+      :model="loginForm"
+      :rules="rules"
+    >
       <a-alert
         v-if="isLoginError"
         type="error"
@@ -10,14 +15,31 @@
       />
 
       <a-form-model-item ref="username" prop="username">
-        <a-input size="large" type="text" placeholder="用户名" v-model="loginForm.username">
-          <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }" />
+        <a-input
+          size="large"
+          type="text"
+          placeholder="用户名"
+          v-model="loginForm.username"
+        >
+          <a-icon
+            slot="prefix"
+            type="user"
+            :style="{ color: 'rgba(0,0,0,.25)' }"
+          />
         </a-input>
       </a-form-model-item>
 
       <a-form-model-item ref="password" prop="password">
-        <a-input-password size="large" placeholder="密码" v-model="loginForm.password">
-          <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }" />
+        <a-input-password
+          size="large"
+          placeholder="密码"
+          v-model="loginForm.password"
+        >
+          <a-icon
+            slot="prefix"
+            type="lock"
+            :style="{ color: 'rgba(0,0,0,.25)' }"
+          />
         </a-input-password>
       </a-form-model-item>
 
@@ -35,7 +57,11 @@
 
           <a-col :span="10">
             <a-spin :spinning="state.isCaptchaImgLoading">
-              <div @click="onGetCaptchaImg" class="captcha-img" v-html="imgCaptchaUrl"></div>
+              <div
+                @click="onGetCaptchaImg"
+                class="captcha-img"
+                v-html="imgCaptchaUrl"
+              ></div>
               <!-- <img
                 class="captcha-img"
                 @click="onGetCaptchaImg"
@@ -57,7 +83,9 @@
           @click="onLogin"
           :loading="state.isLogginBtnLoading"
           :disabled="state.isLogginBtnLoading"
-        >确定</a-button>
+        >
+          确定
+        </a-button>
       </a-form-model-item>
 
       <div class="user-login-other">
@@ -71,7 +99,9 @@
         <a>
           <a-icon class="item-icon" type="weibo-circle"></a-icon>
         </a>-->
-        <router-link class="register" :to="{ name: 'register' }">注册账户</router-link>
+        <router-link class="register" :to="{ name: 'register' }">
+          注册账户
+        </router-link>
       </div>
     </a-form-model>
   </div>
@@ -173,7 +203,7 @@ export default {
                 this.isLoginError = false
               } else {
                 this.isLoginError = true
-                this.$handleError.handleRequestFail(res.message)
+                this.$handleError.handleRequestFail(res)
               }
             })
             .catch(err => this.$handleError.handleApiRequestException(err))
@@ -191,19 +221,14 @@ export default {
     async onGetCaptchaImg() {
       this.state.isCaptchaImgLoading = true
 
-      try {
-        const res = await this.$api.Auth.loginCaptcha()
-        if (res.success) {
-          this.imgCaptchaUrl = res.data.img
-          this.loginForm.loginCaptchaKey = res.data.uuid
-        } else {
-          this.$handleError.handleRequestFail(res.message)
-        }
-      } catch (error) {
-        this.$handleError.handleApiRequestException(error)
-      } finally {
-        this.state.isCaptchaImgLoading = false
+      const res = await this.$api.loginCaptcha()
+      if (res.success) {
+        this.imgCaptchaUrl = res.data.img
+        this.loginForm.loginCaptchaKey = res.data.uuid
+      } else {
+        this.$handleError.handleRequestFail(res)
       }
+      this.state.isCaptchaImgLoading = false
     },
   },
 

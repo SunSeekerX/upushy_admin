@@ -3,17 +3,16 @@
  * @author SunSeekerX
  * @time 2019-08-13 10:29:11
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-17 15:13:47
+ * @LastEditTime: 2020-11-01 23:34:19
  */
 
 import axios from 'axios'
-import storage from 'store'
-import notification from 'ant-design-vue/es/notification'
 
 import store from '@/store'
 import router from '@/router'
 import { createSign } from './request-sign'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { ACCESS_TOKEN, LOGIN_OUT, RESET_ROUTERS } from '@/store/mutation-types'
+// import { getNewToken } from '@/api/index'
 
 /**
  * @name Create request object
@@ -21,35 +20,6 @@ import { ACCESS_TOKEN } from '@/store/mutation-types'
  * @returns { Function } request function
  */
 export default function createRequest(options) {
-  // 异常拦截处理器
-  const errorHandler = error => {
-    if (error.response) {
-      const data = error.response.data
-      // 从 localstorage 获取 token
-      const token = storage.get(ACCESS_TOKEN)
-      if (error.response.status === 403) {
-        notification.error({
-          message: 'Forbidden',
-          description: data.message,
-        })
-      } else if (error.response.status === 401) {
-        // notification.error({
-        //   message: 'Unauthorized',
-        //   description: 'Authorization verification failed',
-        // })
-
-        if (token) {
-          store.commit('LOGIN_OUT')
-
-          store.commit('RESET_ROUTER')
-
-          router.replace('/user/login')
-        }
-      }
-    }
-    return Promise.reject(error)
-  }
-  
   // create an axios instance
   const instance = axios.create(
     Object.assign(
@@ -62,20 +32,86 @@ export default function createRequest(options) {
     ),
   )
 
+  // Error handler
+  const errorHandler = async error =>
+    Promise.resolve({
+      success: false,
+      message: error.message,
+      error: error,
+      type: 'error',
+    })
+  // const errorHandler = async error => {
+  //   if (error.response) {
+  //     const { config, data } = error.response
+  //     if (data.statusCode === 401) {
+  //       // Get new token
+  //       const { refreshToken } = store.getters
+  //       const res = await getNewToken({ refreshToken })
+  //       if (res.success) {
+  //         store.commit(ACCESS_TOKEN, res.data)
+  //         const reRes = await instance(config)
+  //         return reRes
+  //       } else if (res.statusCode === 401) {
+  //         store.commit(LOGIN_OUT)
+  //         store.commit(RESET_ROUTERS)
+  //         router.replace('/user/login')
+  //       }
+  //     }
+  //     return Promise.resolve({
+  //       success: false,
+  //       message: data.message,
+  //       error: error,
+  //       type: 'warn',
+  //     })
+  //   } else {
+  //     return Promise.resolve({
+  //       success: false,
+  //       message: error.message,
+  //       error: error,
+  //       type: 'error',
+  //     })
+  //   }
+  // }
+
   // Request interceptor
   instance.interceptors.request.use(config => {
-    const token = storage.get(ACCESS_TOKEN)
-    // token
+    const { token } = store.getters
     token && (config.headers['Authorization'] = `Bearer ${token}`)
-    // 接口加密
-    // console.log(config);
+    // You can't return createSign(config) directly
     createSign(config)
-    
     return config
   }, errorHandler)
 
   // Response interceptor
   instance.interceptors.response.use(response => response.data, errorHandler)
 
-  return instance
+  // Definition get new token api
+  const getNewToken = ({ refreshToken }) =>
+    instance({
+      url: '/api/user/token',
+      method: 'POST',
+      data: {
+        refreshToken,
+      },
+    })
+
+  const request = async function(config) {
+    const res = await instance(config)
+    if (res.statusCode === 401) {
+      const { refreshToken } = store.getters
+      const getNewTokenRes = await getNewToken({ refreshToken })
+      if (getNewTokenRes.success) {
+        store.commit(ACCESS_TOKEN, getNewTokenRes.data)
+        const reRes = await instance(config)
+        return reRes
+      } else {
+        store.commit(LOGIN_OUT)
+        store.commit(RESET_ROUTERS)
+        router.replace('/user/login')
+      }
+    }
+
+    return res
+  }
+  return request
 }

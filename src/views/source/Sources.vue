@@ -4,12 +4,22 @@
       <div class="table-operator">
         <a-row align="middle" type="flex">
           <a-col :xs="24" :md="12">
-            <a-button type="primary" icon="plus" @click="state.isCreateShow = true">新建</a-button>
+            <a-button
+              type="primary"
+              icon="plus"
+              @click="state.isCreateShow = true"
+            >
+              新建
+            </a-button>
           </a-col>
 
           <a-col :xs="24" :md="12">
             <a-tabs v-model="sourcesType" size="small" @change="onTagChange">
-              <a-tab-pane v-for="item of tabs" :key="item.key" :disabled="state.isTableLoading">
+              <a-tab-pane
+                v-for="item of tabs"
+                :key="item.key"
+                :disabled="state.isTableLoading"
+              >
                 <span slot="tab">
                   <a-icon :type="item.type" />
                   {{ item.value }}
@@ -27,8 +37,8 @@
         :loading="state.isTableLoading"
         rowKey="id"
         :pagination="pagination"
-        :scroll="{ 
-          // x: true 
+        :scroll="{
+          // x: true
         }"
         @change="onPageChange"
       >
@@ -45,10 +55,14 @@
         </a-tooltip>
 
         <!-- 版本号 -->
-        <a-tag slot="versionCode" slot-scope="versionCode" color="#87d068">{{ versionCode }}</a-tag>
+        <a-tag slot="versionCode" slot-scope="versionCode" color="#87d068">
+          {{ versionCode }}
+        </a-tag>
 
         <!-- 原生版本号 -->
-        <a-tag slot="nativeVersionCode" slot-scope="text" color="#108ee9">{{ text }}</a-tag>
+        <a-tag slot="nativeVersionCode" slot-scope="text" color="#108ee9">
+          {{ text }}
+        </a-tag>
 
         <!-- 版本号 -->
         <!-- <a-tag slot="versionCode" slot-scope="versionCode" color="green">{{ versionCode }}</a-tag> -->
@@ -58,33 +72,57 @@
 
         <template slot="isForceUpdate" slot-scope="text, record">
           <a-switch
-            @click="(checked) => onUpdateSwitch({checked, record, key: 'isForceUpdate', loadingKey: 'isForceUpdateLoading'})"
+            @click="
+              checked =>
+                onUpdateSwitch({
+                  checked,
+                  record,
+                  key: 'isForceUpdate',
+                  loadingKey: 'isForceUpdateLoading',
+                })
+            "
             :checked="text === 1"
             :loading="record.isForceUpdateLoading"
           />
         </template>
 
         <!-- 类型 -->
-        <span slot="sourcesType" slot-scope="text, record">{{ handleFormatType(record.type) }}</span>
+        <span slot="sourcesType" slot-scope="text, record">
+          {{ handleFormatType(record.type) }}
+        </span>
 
         <!-- 状态 -->
         <template slot="status" slot-scope="text, record">
           <a-switch
-            @click="(checked) => onUpdateSwitch({checked, record, key: 'status', loadingKey: 'isStatusLoading'})"
+            @click="
+              checked =>
+                onUpdateSwitch({
+                  checked,
+                  record,
+                  key: 'status',
+                  loadingKey: 'isStatusLoading',
+                })
+            "
             :checked="text === 1"
             :loading="record.isStatusLoading"
           />
         </template>
 
         <!-- 创建时间 -->
-        <template slot="createdTime" slot-scope="createdTime">{{ $util.formatTime(createdTime) }}</template>
+        <template slot="createdTime" slot-scope="createdTime">
+          {{ $util.formatTime(createdTime) }}
+        </template>
 
         <!-- 更新时间 -->
-        <template slot="updatedTime" slot-scope="updatedTime">{{ $util.formatTime(updatedTime) }}</template>
+        <template slot="updatedTime" slot-scope="updatedTime">
+          {{ $util.formatTime(updatedTime) }}
+        </template>
 
         <!-- 操作 -->
-        <template slot="action" slot-scope="text, record,index">
-          <a-button @click="onClickViewDesc(record)" type="primary">查看详情</a-button>
+        <template slot="action" slot-scope="text, record, index">
+          <a-button @click="onClickViewDesc(record)" type="primary">
+            查看详情
+          </a-button>
 
           <a-button @click="onEdit(record)">编辑</a-button>
 
@@ -123,16 +161,32 @@
             <a-input v-model="form.version" />
           </a-form-model-item>
 
-          <a-form-model-item label="版本号" ref="versionCode" prop="versionCode">
+          <a-form-model-item
+            label="版本号"
+            ref="versionCode"
+            prop="versionCode"
+          >
             <a-input
-              @change="e => form.versionCode = Number(e.target.value.replace(/\D/g, ''))"
+              @change="
+                e =>
+                  (form.versionCode = Number(e.target.value.replace(/\D/g, '')))
+              "
               v-model="form.versionCode"
             />
           </a-form-model-item>
 
-          <a-form-model-item label="原生版本号" ref="nativeVersionCode" prop="nativeVersionCode">
+          <a-form-model-item
+            label="原生版本号"
+            ref="nativeVersionCode"
+            prop="nativeVersionCode"
+          >
             <a-input
-              @change="e => form.nativeVersionCode = Number(e.target.value.replace(/\D/g, ''))"
+              @change="
+                e =>
+                  (form.nativeVersionCode = Number(
+                    e.target.value.replace(/\D/g, ''),
+                  ))
+              "
               v-model="form.nativeVersionCode"
             />
           </a-form-model-item>
@@ -144,14 +198,22 @@
             </a-radio-group>-->
 
             <a-switch
-              @click="(checked) => {checked ? form.isForceUpdate =1 : form.isForceUpdate = 0}"
+              @click="
+                checked => {
+                  checked ? (form.isForceUpdate = 1) : (form.isForceUpdate = 0)
+                }
+              "
               :checked="form.isForceUpdate === 1"
             />
           </a-form-model-item>
 
           <a-form-model-item label="是否启用" prop="status">
             <a-switch
-              @click="(checked) => {checked ? form.status =1 : form.status = 0}"
+              @click="
+                checked => {
+                  checked ? (form.status = 1) : (form.status = 0)
+                }
+              "
               :checked="form.status === 1"
             />
           </a-form-model-item>
@@ -173,7 +235,12 @@
             <a-textarea :maxLength="255" v-model="form.remark" />
           </a-form-model-item>
 
-          <a-form-model-item v-if="form.type === 4" label="资源链接" ref="url" prop="url">
+          <a-form-model-item
+            v-if="form.type === 4"
+            label="资源链接"
+            ref="url"
+            prop="url"
+          >
             <a-input v-model="form.url" />
           </a-form-model-item>
 
@@ -227,14 +294,28 @@
 
           <a-form-model-item label="版本号" prop="versionCode">
             <a-input
-              @change="e => editForm.versionCode = Number(e.target.value.replace(/\D/g, ''))"
+              @change="
+                e =>
+                  (editForm.versionCode = Number(
+                    e.target.value.replace(/\D/g, ''),
+                  ))
+              "
               v-model="editForm.versionCode"
             />
           </a-form-model-item>
 
-          <a-form-model-item label="原生版本号" ref="nativeVersionCode" prop="nativeVersionCode">
+          <a-form-model-item
+            label="原生版本号"
+            ref="nativeVersionCode"
+            prop="nativeVersionCode"
+          >
             <a-input
-              @change="e => editForm.nativeVersionCode = Number(e.target.value.replace(/\D/g, ''))"
+              @change="
+                e =>
+                  (editForm.nativeVersionCode = Number(
+                    e.target.value.replace(/\D/g, ''),
+                  ))
+              "
               v-model="editForm.nativeVersionCode"
             />
           </a-form-model-item>
@@ -280,22 +361,34 @@
     >
       <a-card :bordered="false">
         <a-descriptions :title="descRecord.id">
-          <a-descriptions-item label="版本名">{{ descRecord.version }}</a-descriptions-item>
-          <a-descriptions-item label="版本号">{{ descRecord.versionCode }}</a-descriptions-item>
-          <a-descriptions-item label="原生版本号">{{ descRecord.nativeVersionCode }}</a-descriptions-item>
-          <a-descriptions-item label="更新日志">{{ descRecord.changelog }}</a-descriptions-item>
+          <a-descriptions-item label="版本名">
+            {{ descRecord.version }}
+          </a-descriptions-item>
+          <a-descriptions-item label="版本号">
+            {{ descRecord.versionCode }}
+          </a-descriptions-item>
+          <a-descriptions-item label="原生版本号">
+            {{ descRecord.nativeVersionCode }}
+          </a-descriptions-item>
+          <a-descriptions-item label="更新日志">
+            {{ descRecord.changelog }}
+          </a-descriptions-item>
         </a-descriptions>
 
         <a-divider style="margin-bottom: 32px" />
 
         <a-descriptions>
-          <a-descriptions-item label="下载地址">{{ descRecord.url }}</a-descriptions-item>
+          <a-descriptions-item label="下载地址">
+            {{ descRecord.url }}
+          </a-descriptions-item>
         </a-descriptions>
 
         <a-divider style="margin-bottom: 32px" />
 
         <a-descriptions>
-          <a-descriptions-item label="备注">{{ descRecord.remark }}</a-descriptions-item>
+          <a-descriptions-item label="备注">
+            {{ descRecord.remark }}
+          </a-descriptions-item>
         </a-descriptions>
       </a-card>
     </a-modal>
@@ -716,29 +809,24 @@ export default {
     async onCreateSource() {
       this.$refs.createForm.validate(async valid => {
         if (valid) {
-          try {
-            this.state.isCreateLoading = true
-            const res = await this.$api.Source.createSource(this.form)
-            if (res.success) {
-              this.$notification.success({
-                message: '成功',
-                description: res.message,
-              })
-              this.state.isCreateShow = false
-              this.state.isCreateLoading = false
-
-              if (this.form.type === Number(this.sourcesType)) {
-                // 添加数据
-                this.tableData.push(res.data)
-              }
-            } else {
-              this.$handleError.handleRequestFail(res.message)
-            }
-          } catch (error) {
-            this.$handleError.handleApiRequestException(error)
-          } finally {
+          this.state.isCreateLoading = true
+          const res = await this.$api.createSource(this.form)
+          if (res.success) {
+            this.$notification.success({
+              message: '成功',
+              description: res.message,
+            })
+            this.state.isCreateShow = false
             this.state.isCreateLoading = false
+
+            if (this.form.type === Number(this.sourcesType)) {
+              // 添加数据
+              this.tableData.push(res.data)
+            }
+          } else {
+            this.$handleError.handleRequestFail(res)
           }
+          this.state.isCreateLoading = false
         } else {
           this.state.isCreateLoading = false
         }
@@ -747,52 +835,42 @@ export default {
 
     // 删除
     async onDelete(record, index) {
-      try {
-        const res = await this.$api.Source.deleteSource({
-          id: record.id,
+      const res = await this.$api.deleteSource({
+        id: record.id,
+      })
+
+      if (res.success) {
+        this.$notification.success({
+          message: '成功',
+          description: res.message,
         })
 
-        if (res.success) {
-          this.$notification.success({
-            message: '成功',
-            description: res.message,
-          })
-
-          this.tableData.splice(index, 1)
-        } else {
-          this.$handleError.handleRequestFail(res.message)
-        }
-      } catch (error) {
-        this.$handleError.handleApiRequestException(error)
-      } finally {
-        this.state.isCreateLoading = false
+        this.tableData.splice(index, 1)
+      } else {
+        this.$handleError.handleRequestFail(res)
       }
+      this.state.isCreateLoading = false
     },
 
     // 更新
     async onUpdate() {
       this.$refs.editForm.validate(async valid => {
         if (valid) {
-          try {
-            this.state.isEditLoading = true
-            const res = await this.$api.Source.updateSource(this.editForm)
-            if (res.success) {
-              this.$notification.success({
-                message: '成功',
-                description: res.message,
-              })
+          this.state.isEditLoading = true
+          const res = await this.$api.updateSource(this.editForm)
+          if (res.success) {
+            this.$notification.success({
+              message: '成功',
+              description: res.message,
+            })
 
-              this.state.isEditFormShow = false
+            this.state.isEditFormShow = false
 
-              this.onGetList()
-            } else {
-              this.$handleError.handleRequestFail(res.message)
-            }
-          } catch (error) {
-            this.$handleError.handleApiRequestException(error)
-          } finally {
-            this.state.isEditLoading = false
+            this.onGetList()
+          } else {
+            this.$handleError.handleRequestFail(res)
           }
+          this.state.isEditLoading = false
         } else {
           this.state.isEditLoading = false
         }
@@ -801,52 +879,42 @@ export default {
 
     // 根据key更新资源开关信息
     async onUpdateSwitch({ checked, record, key, loadingKey }) {
-      try {
-        record[loadingKey] = true
-        const res = await this.$api.Source.updateSource({
-          id: record.id,
-          [key]: checked ? 1 : 0,
-        })
-        if (res.success) {
-          checked ? (record[key] = 1) : (record[key] = 0)
-        } else {
-          this.$handleError.handleRequestFail(res.message)
-        }
-      } catch (error) {
-        this.$handleError.handleApiRequestException(error)
-      } finally {
-        record[loadingKey] = false
+      record[loadingKey] = true
+      const res = await this.$api.updateSource({
+        id: record.id,
+        [key]: checked ? 1 : 0,
+      })
+      if (res.success) {
+        checked ? (record[key] = 1) : (record[key] = 0)
+      } else {
+        this.$handleError.handleRequestFail(res)
       }
+      record[loadingKey] = false
     },
 
     // 查询
     async onGetList() {
-      try {
-        this.state.isTableLoading = true
-        const res = await this.$api.Source.sources({
-          id: this.form.projectId,
-          type: this.sourcesType,
-          pageNum: this.pagination.pageNum,
-          pageSize: this.pagination.pageSize,
-          sortKey: this.queryParams.sortKey,
-          order: this.queryParams.order,
-        })
-        if (res.success) {
-          const records = res.data.records
-          for (const item of records) {
-            item.isStatusLoading = false
-            item.isForceUpdateLoading = false
-          }
-          this.tableData = records
-          this.pagination.total = res.data.total
-        } else {
-          this.$handleError.handleRequestFail(res.message)
+      this.state.isTableLoading = true
+      const res = await this.$api.sources({
+        id: this.form.projectId,
+        type: this.sourcesType,
+        pageNum: this.pagination.pageNum,
+        pageSize: this.pagination.pageSize,
+        sortKey: this.queryParams.sortKey,
+        order: this.queryParams.order,
+      })
+      if (res.success) {
+        const records = res.data.records
+        for (const item of records) {
+          item.isStatusLoading = false
+          item.isForceUpdateLoading = false
         }
-      } catch (error) {
-        this.$handleError.handleApiRequestException(error)
-      } finally {
-        this.state.isTableLoading = false
+        this.tableData = records
+        this.pagination.total = res.data.total
+      } else {
+        this.$handleError.handleRequestFail(res)
       }
+      this.state.isTableLoading = false
     },
 
     // 文件上传成功
@@ -969,4 +1037,3 @@ export default {
   },
 }
 </script>
-

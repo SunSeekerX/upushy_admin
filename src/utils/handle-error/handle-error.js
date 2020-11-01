@@ -3,7 +3,7 @@
  * @author SunSeekerX
  * @time 2019-11-27 15:18:44
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-17 14:19:24
+ * @LastEditTime: 2020-11-01 23:31:54
  */
 
 import notification from 'ant-design-vue/es/notification'
@@ -15,23 +15,10 @@ import notification from 'ant-design-vue/es/notification'
  * @returns void
  */
 function handleApiRequestException(error) {
-  // notification['error']({
-  //   message: '错误',
-  //   description:
-  //     ((error.response || {}).data || {}).message || '请求出现错误，请稍后再试',
-  // })
-
-  if (error?.response?.status === 401) {
-    notification['warn']({
-      message: '警告',
-      description: '请重新登录',
-    })
-  } else {
-    notification['error']({
-      message: '错误',
-      description: error.message || '请求出现错误，请稍后再试',
-    })
-  }
+  notification['error']({
+    message: '错误',
+    description: error.message || '请求出现错误，请稍后再试',
+  })
 }
 
 /**
@@ -58,10 +45,11 @@ function handleApplicationException(e) {
  * @name Hanle when request result success no true
  * @param { String } msg tips message
  */
-function handleRequestFail(msg) {
-  notification.warn({
+function handleRequestFail(res) {
+  const type = res.type ? res.type : 'warn'
+  notification[type]({
     message: '警告',
-    description: msg,
+    description: res.message ? res.message : res,
   })
 }
 
