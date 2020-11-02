@@ -15,6 +15,8 @@
         rowKey="id"
         :pagination="pagination"
         @change="onPageChange"
+        :scroll="{ x: 1500 }"
+        :bordered="true"
       >
         <!-- id -->
         <a-tooltip slot="id" slot-scope="id">
@@ -41,7 +43,37 @@
 
         <!-- 操作 -->
         <span slot="action" slot-scope="text, record">
-          <a-button @click="onClickViewDesc(record)" type="primary">
+          <a-row>
+            <a-col :span="8">
+              <a-button
+                @click="onClickViewDesc(record)"
+                type="primary"
+                shape="circle"
+                icon="search"
+              >
+                <!-- 查看详情 -->
+              </a-button>
+            </a-col>
+            <a-col :span="8">
+              <a-button
+                @click="onClickUpdate(record)"
+                shape="circle"
+                icon="edit"
+              ></a-button>
+            </a-col>
+            <a-col :span="8">
+              <a-popconfirm
+                title="确定要删除该项目吗?"
+                ok-text="确认"
+                cancel-text="取消"
+                @confirm="onDelete(record.id)"
+              >
+                <a-button type="danger" shape="circle" icon="delete"></a-button>
+              </a-popconfirm>
+            </a-col>
+          </a-row>
+
+          <!-- <a-button @click="onClickViewDesc(record)" type="primary">
             查看详情
           </a-button>
 
@@ -54,7 +86,7 @@
             @confirm="onDelete(record.id)"
           >
             <a-button type="danger">删除</a-button>
-          </a-popconfirm>
+          </a-popconfirm> -->
         </span>
       </a-table>
 
@@ -171,8 +203,8 @@ export default {
           title: 'ID',
           dataIndex: 'id',
           scopedSlots: { customRender: 'id' },
-          ellipsis: true,
-          width: 300,
+          ellipsis: false,
+          width: 280,
         },
         // 项目名称
         {
@@ -180,14 +212,14 @@ export default {
           dataIndex: 'name',
           scopedSlots: { customRender: 'name' },
           ellipsis: true,
-          width: 250,
+          width: 200,
         },
         // 项目描述
         {
           title: '项目描述',
           dataIndex: 'describe',
           ellipsis: true,
-          width: 250,
+          width: 200,
         },
         // 创建时间
         {
@@ -195,8 +227,8 @@ export default {
           dataIndex: 'createdTime',
           align: 'center',
           scopedSlots: { customRender: 'createdTime' },
-          ellipsis: true,
-          width: 150,
+          ellipsis: false,
+          width: 200,
         },
         // 更新时间
         {
@@ -205,8 +237,8 @@ export default {
           dataIndex: 'updatedTime',
           align: 'center',
           scopedSlots: { customRender: 'updatedTime' },
-          ellipsis: true,
-          width: 150,
+          ellipsis: false,
+          width: 200,
         },
         // 操作
         {
@@ -214,7 +246,9 @@ export default {
           align: 'center',
           fixed: 'right',
           scopedSlots: { customRender: 'action' },
-          width: 200,
+          ellipsis: false,
+          width: 150,
+          // width: 200,s
         },
       ],
       // 表单校验规则

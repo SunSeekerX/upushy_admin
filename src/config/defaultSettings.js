@@ -1,9 +1,9 @@
 /**
- * @name: 
+ * @name:
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 19:34:31
+ * @LastEditTime: 2020-11-02 17:20:35
  */
 /**
  * 项目默认配置项
@@ -20,18 +20,20 @@
  */
 
 export default {
-  navTheme: 'dark', 
-  primaryColor: '#722ED1', // primary color of ant design
+  navTheme: 'light',
+  primaryColor: '#2F54EB', // primary color of ant design
   layout: 'sidemenu', // nav menu position: `sidemenu` or `topmenu`
   contentWidth: 'Fluid', // layout of content: `Fluid` or `Fixed`, only works when layout is topmenu
   fixedHeader: true, // sticky header
   fixSiderbar: true, // sticky siderbar
   colorWeak: false,
   menu: {
-    locale: true
+    locale: true,
   },
   title: 'Uni Pushy',
   pwa: false,
   iconfontUrl: '',
-  production: process.env.NODE_ENV === 'production' && process.env.VUE_APP_PREVIEW !== 'true'
+  production:
+    process.env.NODE_ENV === 'production' &&
+    process.env.VUE_APP_PREVIEW !== 'true',
 }

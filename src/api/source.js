@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-28 09:52:25
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-11-01 20:50:10
+ * @LastEditTime: 2020-11-02 17:08:27
  */
 
 import { request } from '@/utils/request/index'
@@ -31,7 +31,7 @@ export function createSource({
   versionCode,
   nativeVersionCode,
   url,
-  isForceUpdate,
+  updateType,
   status,
   type,
   changelog,
@@ -46,7 +46,7 @@ export function createSource({
       versionCode,
       nativeVersionCode,
       url,
-      isForceUpdate,
+      updateType,
       status,
       type,
       changelog,
@@ -62,8 +62,7 @@ export function updateSource({
   versionCode,
   nativeVersionCode,
   url,
-  isFullUpdated,
-  isForceUpdate,
+  updateType,
   changelog,
   remark,
   type,
@@ -78,8 +77,7 @@ export function updateSource({
       versionCode,
       nativeVersionCode,
       url,
-      isFullUpdated,
-      isForceUpdate,
+      updateType,
       changelog,
       remark,
       type,

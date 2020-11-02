@@ -37,10 +37,9 @@
         :loading="state.isTableLoading"
         rowKey="id"
         :pagination="pagination"
-        :scroll="{
-          // x: true
-        }"
+        :scroll="{ x: 1500 }"
         @change="onPageChange"
+        :bordered="true"
       >
         <!-- id -->
         <a-tooltip slot="id" slot-scope="id">
@@ -70,7 +69,7 @@
         <!-- 强制更新 -->
         <!-- <span slot="isForceUpdate" slot-scope="isForceUpdate">{{ isForceUpdate === 0 ? '否' : '是' }}</span> -->
 
-        <template slot="isForceUpdate" slot-scope="text, record">
+        <!-- <template slot="isForceUpdate" slot-scope="text, record">
           <a-switch
             @click="
               checked =>
@@ -84,7 +83,7 @@
             :checked="text === 1"
             :loading="record.isForceUpdateLoading"
           />
-        </template>
+        </template> -->
 
         <!-- 类型 -->
         <span slot="sourcesType" slot-scope="text, record">
@@ -120,20 +119,35 @@
 
         <!-- 操作 -->
         <template slot="action" slot-scope="text, record, index">
-          <a-button @click="onClickViewDesc(record)" type="primary">
-            查看详情
-          </a-button>
-
-          <a-button @click="onEdit(record)">编辑</a-button>
-
-          <a-popconfirm
-            title="确定删除该资源?"
-            ok-text="确定"
-            cancel-text="取消"
-            @confirm="onDelete(record, index)"
-          >
-            <a-button type="danger">删除</a-button>
-          </a-popconfirm>
+          <a-row>
+            <a-col :span="8">
+              <a-button
+                @click="onClickViewDesc(record)"
+                type="primary"
+                shape="circle"
+                icon="search"
+              >
+                <!-- 查看详情 -->
+              </a-button>
+            </a-col>
+            <a-col :span="8">
+              <a-button
+                @click="onEdit(record)"
+                shape="circle"
+                icon="edit"
+              ></a-button>
+            </a-col>
+            <a-col :span="8">
+              <a-popconfirm
+                title="确定删除该资源?"
+                ok-text="确定"
+                cancel-text="取消"
+                @confirm="onDelete(record, index)"
+              >
+                <a-button type="danger" shape="circle" icon="delete"></a-button>
+              </a-popconfirm>
+            </a-col>
+          </a-row>
         </template>
       </a-table>
 
@@ -191,12 +205,7 @@
             />
           </a-form-model-item>
 
-          <a-form-model-item label="是否强制更新" prop="isForceUpdate">
-            <!-- <a-radio-group v-model="form.isForceUpdate">
-              <a-radio :value="0">否</a-radio>
-              <a-radio :value="1">是</a-radio>
-            </a-radio-group>-->
-
+          <!-- <a-form-model-item label="是否强制更新" prop="isForceUpdate">
             <a-switch
               @click="
                 checked => {
@@ -205,6 +214,23 @@
               "
               :checked="form.isForceUpdate === 1"
             />
+          </a-form-model-item> -->
+
+          <a-form-model-item label="更新类型" prop="updateType">
+            <a-select
+              v-model="form.updateType"
+              placeholder="请选择更新类型"
+            >
+              <a-select-option :value="1">
+                用户同意更新（用户感知）
+              </a-select-option>
+              <a-select-option :value="2">
+                强制更新（用户感知）
+              </a-select-option>
+              <a-select-option :value="3">
+                静默更新（用户不感知，下次启动生效）
+              </a-select-option>
+            </a-select>
           </a-form-model-item>
 
           <a-form-model-item label="是否启用" prop="status">
@@ -326,6 +352,24 @@
               <a-radio :value="1">是</a-radio>
             </a-radio-group>
           </a-form-model-item>-->
+
+
+          <a-form-model-item label="更新类型" prop="updateType">
+            <a-select
+              v-model="editForm.updateType"
+              placeholder="请选择更新类型"
+            >
+              <a-select-option :value="1">
+                用户同意更新（用户感知）
+              </a-select-option>
+              <a-select-option :value="2">
+                强制更新（用户感知）
+              </a-select-option>
+              <a-select-option :value="3">
+                静默更新（用户不感知，下次启动生效）
+              </a-select-option>
+            </a-select>
+          </a-form-model-item>
 
           <a-form-model-item label="类型" prop="type">
             <a-select disabled v-model="editForm.type">
@@ -469,15 +513,15 @@ export default {
           title: 'ID',
           dataIndex: 'id',
           scopedSlots: { customRender: 'id' },
-          ellipsis: true,
-          width: 300,
+          // ellipsis: false,
+          width: 280,
         },
         // 版本名
         {
           title: '版本名',
           align: 'center',
           dataIndex: 'version',
-          ellipsis: true,
+          // ellipsis: false,
           width: 80,
         },
         // 版本号
@@ -486,10 +530,10 @@ export default {
           align: 'center',
           dataIndex: 'versionCode',
           scopedSlots: { customRender: 'versionCode' },
-          ellipsis: true,
           defaultSortOrder: 'descend',
+          // ellipsis: false,
           sorter: true,
-          width: 80,
+          // width: 120,
         },
         // 原生版本号
         {
@@ -497,9 +541,9 @@ export default {
           align: 'center',
           dataIndex: 'nativeVersionCode',
           scopedSlots: { customRender: 'nativeVersionCode' },
-          ellipsis: true,
+          // ellipsis: true,
           sorter: true,
-          width: 120,
+          // width: 120,
         },
         // 下载地址
         // {
@@ -511,13 +555,34 @@ export default {
         //   // ellipsis: true,
         // },
         // 强制更新
+        // {
+        //   title: '强制更新',
+        //   align: 'center',
+        //   dataIndex: 'isForceUpdate',
+        //   scopedSlots: { customRender: 'isForceUpdate' },
+        //   ellipsis: true,
+        //   width: 80,
+        // },
+        // 更新类型（1：用户同意更新，2：强制更新，3：静默更新）
         {
-          title: '强制更新',
+          title: '更新类型',
           align: 'center',
-          dataIndex: 'isForceUpdate',
+          dataIndex: 'updateType',
           scopedSlots: { customRender: 'isForceUpdate' },
-          ellipsis: true,
-          width: 80,
+          customRender:(text) => {
+            switch (text) {
+              case 1:
+                return '用户同意更新'
+              case 2:
+                return '强制更新'
+              case 3:
+                return '静默更新'
+              default:
+                return ''
+            }
+          },
+          // ellipsis: false,
+          // width: 200,
         },
         // 类型
         // {
@@ -534,8 +599,8 @@ export default {
           align: 'center',
           dataIndex: 'status',
           scopedSlots: { customRender: 'status' },
-          ellipsis: false,
-          width: 80,
+          // ellipsis: false,
+          // width: 80,
         },
         // 更新日志
         // {
@@ -557,7 +622,8 @@ export default {
           dataIndex: 'createdTime',
           align: 'center',
           scopedSlots: { customRender: 'createdTime' },
-          width: 150,
+          // ellipsis: false,
+          // width: 200,
         },
         // 更新时间
         {
@@ -565,7 +631,8 @@ export default {
           dataIndex: 'updatedTime',
           align: 'center',
           scopedSlots: { customRender: 'updatedTime' },
-          width: 150,
+          // ellipsis: false,
+          // width: 200,
         },
         // 操作
         {
@@ -573,7 +640,8 @@ export default {
           align: 'center',
           fixed: 'right',
           scopedSlots: { customRender: 'action' },
-          width: 200,
+          // ellipsis: false,
+          width: 150,
         },
       ],
       // 资源类型
@@ -606,7 +674,9 @@ export default {
         // 原生版本号
         nativeVersionCode: 0,
         // 是否强制更新
-        isForceUpdate: 0,
+        // isForceUpdate: 0,
+        // 更新类型（1：用户同意更新，2：强制更新，3：静默更新）
+        updateType: 1,
         // 资源状态（0：禁用 1：启用）
         status: 1,
         // 类型
@@ -675,10 +745,17 @@ export default {
           },
         ],
         // 是否强制更新（0：否 1：是）
-        isForceUpdate: [
+        // isForceUpdate: [
+        //   {
+        //     required: true,
+        //     message: '请选择是否强制更新！',
+        //   },
+        // ],
+        // 更新类型（1：用户同意更新，2：强制更新，3：静默更新）
+        updateType: [
           {
             required: true,
-            message: '请选择是否强制更新！',
+            message: '请选择更新类型！',
           },
         ],
         // 资源类型（1：wgt-android 2：wgt-ios  3：android，4：ios）
@@ -752,10 +829,17 @@ export default {
         // 备注
         remark: [{ required: false, type: 'string', message: '请输入备注！' }],
         // 是否强制更新（0：否 1：是）
-        isForceUpdate: [
+        // isForceUpdate: [
+        //   {
+        //     required: true,
+        //     message: '请选择是否强制更新！',
+        //   },
+        // ],
+        // 更新类型（1：用户同意更新，2：强制更新，3：静默更新）
+        updateType: [
           {
             required: true,
-            message: '请选择是否强制更新！',
+            message: '请选择更新类型！',
           },
         ],
         // 资源类型（1：wgt-android 2：wgt-ios  3：android，4：ios）

@@ -9,6 +9,7 @@
         rowKey="id"
         :pagination="pagination"
         @change="onPageChange"
+        :bordered="true"
       >
         <!-- 登录日期 -->
         <template slot="loginTime" slot-scope="loginTime">
