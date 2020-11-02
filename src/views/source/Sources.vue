@@ -217,10 +217,7 @@
           </a-form-model-item> -->
 
           <a-form-model-item label="更新类型" prop="updateType">
-            <a-select
-              v-model="form.updateType"
-              placeholder="请选择更新类型"
-            >
+            <a-select v-model="form.updateType" placeholder="请选择更新类型">
               <a-select-option :value="1">
                 用户同意更新（用户感知）
               </a-select-option>
@@ -353,7 +350,6 @@
             </a-radio-group>
           </a-form-model-item>-->
 
-
           <a-form-model-item label="更新类型" prop="updateType">
             <a-select
               v-model="editForm.updateType"
@@ -404,7 +400,7 @@
       @cancel="state.isDescShow = false"
     >
       <a-card :bordered="false">
-        <a-descriptions :title="descRecord.id">
+        <a-descriptions :title="`id：${descRecord.id}`">
           <a-descriptions-item label="版本名">
             {{ descRecord.version }}
           </a-descriptions-item>
@@ -417,13 +413,16 @@
           <a-descriptions-item label="更新日志">
             {{ descRecord.changelog }}
           </a-descriptions-item>
+          <a-descriptions-item label="下载地址">
+            {{ descRecord.url }}
+          </a-descriptions-item>
         </a-descriptions>
 
         <a-divider style="margin-bottom: 32px" />
 
-        <a-descriptions>
-          <a-descriptions-item label="下载地址">
-            {{ descRecord.url }}
+        <a-descriptions :column="1">
+          <a-descriptions-item label="">
+            <img width="200" height="200" :src="descRecord.qrcodeUrl" />
           </a-descriptions-item>
         </a-descriptions>
 
@@ -569,7 +568,7 @@ export default {
           align: 'center',
           dataIndex: 'updateType',
           scopedSlots: { customRender: 'isForceUpdate' },
-          customRender:(text) => {
+          customRender: text => {
             switch (text) {
               case 1:
                 return '用户同意更新'
@@ -1064,9 +1063,16 @@ export default {
     },
 
     // 点击查看详情
-    onClickViewDesc(record) {
+    async onClickViewDesc(record) {
       // 合并项
       this.descRecord = Object.assign({}, record)
+      // 创建二维码
+      this.descRecord.qrcodeUrl = await this.$util.strToQrcodeBase64(
+        record.url,
+        {
+          colorDark: '#666666',
+        },
+      )
       // 显示编辑modal
       this.state.isDescShow = true
     },
