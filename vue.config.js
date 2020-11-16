@@ -1,21 +1,10 @@
 const path = require('path')
 const webpack = require('webpack')
-// const GitRevisionPlugin = require('git-revision-webpack-plugin')
-// const GitRevision = new GitRevisionPlugin()
-// const buildDate = JSON.stringify(new Date().toLocaleString())
 const createThemeColorReplacerPlugin = require('./config/plugin.config')
 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
-
-// check Git
-// function getGitHash() {
-//   try {
-//     return GitRevision.version()
-//   } catch (e) {}
-//   return 'unknown'
-// }
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -28,7 +17,6 @@ const assetsCDN = {
     axios: 'axios',
   },
   css: [],
-  // https://unpkg.com/browse/vue@2.6.10/
   js: [
     '//cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js',
     '//cdn.jsdelivr.net/npm/vue-router@3.4.9/dist/vue-router.min.js',
