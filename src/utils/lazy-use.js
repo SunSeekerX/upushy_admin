@@ -46,6 +46,7 @@ import {
   message,
   notification
 } from 'ant-design-vue'
+import Viser from 'viser-vue'
 
 import Dialog from '@/components/Dialog'
 
@@ -100,4 +101,5 @@ Vue.prototype.$success = Modal.success
 Vue.prototype.$error = Modal.error
 Vue.prototype.$warning = Modal.warning
 
+Vue.use(Viser)
 Vue.use(Dialog)

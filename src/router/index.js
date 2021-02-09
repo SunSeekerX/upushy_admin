@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-10-29 18:02:47
+ * @LastEditTime: 2021-02-09 15:14:12
  */
 
 import Vue from 'vue'
@@ -25,33 +25,33 @@ export const asyncRouterMap = [
     name: 'index',
     component: BasicLayout,
     meta: { title: 'menu.home' },
-    redirect: '/dashboard/dashboard',
+    redirect: '/charts',
     children: [
       // dashboard
-      {
-        path: '/dashboard',
-        name: 'dashboard',
-        redirect: '/dashboard/dashboard',
-        component: RouteView,
-        meta: {
-          title: 'menu.dashboard',
-          keepAlive: true,
-          icon: 'appstore',
-          permission: ['dashboard'],
-        },
-        children: [
-          {
-            path: '/dashboard/dashboard',
-            name: 'Dashboard',
-            component: () => import('@/views/dashboard/dashboard'),
-            meta: {
-              title: 'Dashboard',
-              keepAlive: false,
-              permission: ['dashboard'],
-            },
-          },
-        ],
-      },
+      // {
+      //   path: '/dashboard',
+      //   name: 'dashboard',
+      //   redirect: '/dashboard/dashboard',
+      //   component: RouteView,
+      //   meta: {
+      //     title: 'menu.dashboard',
+      //     keepAlive: true,
+      //     icon: 'appstore',
+      //     permission: ['dashboard'],
+      //   },
+      //   children: [
+      //     {
+      //       path: '/dashboard/dashboard',
+      //       name: 'Dashboard',
+      //       component: () => import('@/views/dashboard/dashboard'),
+      //       meta: {
+      //         title: 'Dashboard',
+      //         keepAlive: false,
+      //         permission: ['dashboard'],
+      //       },
+      //     },
+      //   ],
+      // },
 
       // project
       // {
@@ -73,6 +73,19 @@ export const asyncRouterMap = [
       //     },
       //   ],
       // },
+
+      // 图表
+      {
+        path: '/charts',
+        name: 'Charts',
+        component: () => import('@/views/dashboard/charts'),
+        meta: {
+          title: '统计图表',
+          icon: 'pie-chart',
+          keepAlive: true,
+          permission: ['charts'],
+        },
+      },
 
       // source
       {

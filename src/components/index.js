@@ -3,24 +3,25 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 23:25:25
+ * @LastEditTime: 2021-02-09 16:32:29
  */
+
 // chart
 import Bar from '@/components/Charts/Bar'
 import ChartCard from '@/components/Charts/ChartCard'
-import Liquid from '@/components/Charts/Liquid'
+// import Liquid from '@/components/Charts/Liquid'
 import MiniArea from '@/components/Charts/MiniArea'
-import MiniSmoothArea from '@/components/Charts/MiniSmoothArea'
+// import MiniSmoothArea from '@/components/Charts/MiniSmoothArea'
 import MiniBar from '@/components/Charts/MiniBar'
-import MiniProgress from '@/components/Charts/MiniProgress'
-import Radar from '@/components/Charts/Radar'
+// import MiniProgress from '@/components/Charts/MiniProgress'
+// import Radar from '@/components/Charts/Radar'
 import RankList from '@/components/Charts/RankList'
-import TransferBar from '@/components/Charts/TransferBar'
+// import TransferBar from '@/components/Charts/TransferBar'
 
 // pro components
 // import FooterToolbar from '@/components/FooterToolbar'
 // import Tree from '@/components/Tree/Tree'
-// import Trend from '@/components/Trend'
+import Trend from '@/components/Trend'
 // import MultiTab from '@/components/MultiTab'
 
 import Dialog from '@/components/Dialog'
@@ -28,15 +29,15 @@ import Dialog from '@/components/Dialog'
 export {
   Bar,
   ChartCard,
-  Liquid,
+  // Liquid,
   MiniArea,
-  MiniSmoothArea,
+  // MiniSmoothArea,
   MiniBar,
-  MiniProgress,
-  Radar,
+  // MiniProgress,
+  // Radar,
   RankList,
-  TransferBar,
-  // Trend,
+  // TransferBar,
+  Trend,
   // FooterToolbar,
   // Tree,
   // MultiTab,

@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-26 17:49:41
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-10-27 20:44:00
+ * @LastEditTime: 2021-02-09 16:04:36
  */
 
 /**
@@ -32,6 +32,7 @@ import HandleError from './utils/handle-error/index'
 import bootstrap from './utils/bootstrap'
 import './utils/lazy-use'
 import './permission' // permission control
+import './utils/filter' // global filter
 import './global.less'
 
 /**

@@ -3,10 +3,10 @@
  * @author: SunSeekerX
  * @Date: 2020-08-17 09:40:10
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-17 15:07:08
+ * @LastEditTime: 2021-02-09 15:05:33
  */
 
-import { JSEncrypt } from 'jsencrypt'
+import JSEncrypt from 'jsencrypt/bin/jsencrypt.min.js'
 
 const encryptor = new JSEncrypt()
 
