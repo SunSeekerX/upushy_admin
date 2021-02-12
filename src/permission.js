@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-11-01 22:36:37
+ * @LastEditTime: 2021-02-12 21:37:46
  */
 
 import router from './router'
@@ -49,7 +49,11 @@ router.beforeEach(async (to, from, next) => {
     } else {
       if (store.getters.addRouters.length === 0) {
         store.commit(GENERATE_ROUTERS)
-        router.addRoutes(store.getters.addRouters)
+        // router.addRoutes(store.getters.addRouters)
+        for (const route of store.getters.addRouters) {
+          router.addRoute(route)
+        }
+        
         next({ ...to, replace: true })
       } else {
         next()

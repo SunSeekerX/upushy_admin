@@ -3,8 +3,9 @@
  * @author: SunSeekerX
  * @Date: 2020-08-23 17:33:28
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-11-01 20:54:46
+ * @LastEditTime: 2021-02-12 23:15:53
 -->
+
 <template>
   <div>
     <a-upload
@@ -14,19 +15,12 @@
       :before-upload="beforeUpload"
     >
       <a-button :disabled="fileList.length > 0">
-        <a-icon type="upload" />选择文件
+        <a-icon type="upload" />
+        选择文件
       </a-button>
     </a-upload>
 
     <a-progress :percent="state.uploadPercent" />
-
-    <!-- <a-button
-      type="primary"
-      :disabled="fileList.length === 0"
-      :loading="state.isUploading"
-      style="margin-top: 16px"
-      @click="handleUpload"
-    >{{ state.isUploading ? 'Uploading' : 'Start Upload' }}</a-button>-->
   </div>
 </template>
 
@@ -49,32 +43,38 @@ export default {
       fileList: [],
       // OSS 客户端
       client: null,
+      // 凭据过期时间
+      expiration: null,
     }
   },
 
   methods: {
     // 使用临时凭据初始化OSS客户端
     async onInitOSSClient() {
-      try {
-        const res = await this.$api.getOSSStsConfig()
-        if (res.success) {
-          const { AccessKeyId, AccessKeySecret, SecurityToken, bucket, region } = res.data
-          this.client = new OSS({
-            accessKeyId: AccessKeyId,
-            accessKeySecret: AccessKeySecret,
-            stsToken: SecurityToken,
-            bucket,
-            region,
-          })
-          // this.$notification.success({
-          //   message: '成功',
-          //   description: '初始化OSS客户端成功',
-          // })
-        } else {
-          this.$handleError.handleRequestFail(res.message)
-        }
-      } catch (error) {
-        this.$handleError.handleApiRequestException(error)
+      const res = await this.$api.getOSSStsConfig()
+      if (res.success) {
+        const {
+          AccessKeyId,
+          AccessKeySecret,
+          SecurityToken,
+          bucket,
+          region,
+          Expiration,
+        } = res.data
+        this.expiration = Expiration
+        this.client = new OSS({
+          accessKeyId: AccessKeyId,
+          accessKeySecret: AccessKeySecret,
+          stsToken: SecurityToken,
+          bucket,
+          region,
+        })
+        this.$notification.success({
+          message: '成功',
+          description: '初始化OSS客户端成功',
+        })
+      } else {
+        this.$handleError.handleRequestFail(res)
       }
     },
 
@@ -128,13 +128,22 @@ export default {
       const { fileList } = this
 
       this.state.isUploading = true
+      await this.handleVerifyExpiration()
       try {
         const date = new Date()
-        const fileName = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}/${date.getTime()}.${fileList[0].name}`
+        const fileName = `${this.$moment(date).format(
+          'YYYY-MM',
+        )}/${this.$moment(date).format(
+          'YYYY-MM-DD HH:mm:SS',
+        )}.${date.getTime()}.${fileList[0].name}`
         // object-name可以自定义为文件名（例如file.txt）或目录（例如abc/test/file.txt）的形式，实现将文件上传至当前Bucket或Bucket下的指定目录。
-        const result = await this.client.multipartUpload(fileName, fileList[0], {
-          progress: this.handleProgressDiaplay,
-        })
+        const result = await this.client.multipartUpload(
+          fileName,
+          fileList[0],
+          {
+            progress: this.handleProgressDiaplay,
+          },
+        )
 
         this.$emit('on-upload-complete', result)
       } catch (e) {
@@ -153,6 +162,17 @@ export default {
       }
     },
 
+    // 验证过期时间
+    async handleVerifyExpiration() {
+      if (this.expiration) {
+        const nowDate = new Date()
+        if (!this.$moment(nowDate).isBefore(this.$moment(this.expiration))) {
+          await this.onInitOSSClient()
+        }
+      }
+      return Promise.resolve()
+    },
+
     // 取消文件上传
     // async onAbortMultipartUpload() {
     //   const result = await this.client.abortMultipartUpload(name, uploadId)
@@ -165,6 +185,3 @@ export default {
   },
 }
 </script>
-
-<style>
-</style>

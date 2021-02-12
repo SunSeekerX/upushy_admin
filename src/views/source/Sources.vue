@@ -7,7 +7,7 @@
             <a-button
               type="primary"
               icon="plus"
-              @click="state.isCreateShow = true"
+              @click="onCreateSourceModelOpen"
             >
               新建
             </a-button>
@@ -190,6 +190,7 @@
           </a-form-model-item>
 
           <a-form-model-item
+            v-if="[1, 2].includes(form.type)"
             label="原生版本号"
             ref="nativeVersionCode"
             prop="nativeVersionCode"
@@ -251,11 +252,19 @@
           </a-form-model-item>
 
           <a-form-model-item label="更新日志" ref="changelog" prop="changelog">
-            <a-textarea :maxLength="255" v-model="form.changelog" />
+            <a-textarea
+              :auto-size="{ minRows: 9, maxRows: 15 }"
+              :maxLength="255"
+              v-model="form.changelog"
+            />
           </a-form-model-item>
 
           <a-form-model-item label="备注" ref="remark" prop="remark">
-            <a-textarea :maxLength="255" v-model="form.remark" />
+            <a-textarea
+              :auto-size="{ minRows: 9, maxRows: 15 }"
+              :maxLength="255"
+              v-model="form.remark"
+            />
           </a-form-model-item>
 
           <a-form-model-item
@@ -273,20 +282,6 @@
               @on-upload-complete="onUploadComplete"
               @on-remove="form.url = ''"
             ></oss-part-upload>
-            <!-- <a-upload
-              name="file"
-              accept=".wgt, .apk"
-              :headers="headers"
-              :action="uploadAcrion"
-              :remove="onRemoveFile"
-              :fileList="fileList"
-              :beforeUpload="beforeUpload"
-              @change="handleChange"
-            >
-              <a-button :disabled="fileList.length > 0">
-                <a-icon type="upload" />点击上传资源
-              </a-button>
-            </a-upload>-->
           </a-form-model-item>
         </a-form-model>
       </a-modal>
@@ -328,6 +323,7 @@
           </a-form-model-item>
 
           <a-form-model-item
+            v-if="[1, 2].includes(editForm.type)"
             label="原生版本号"
             ref="nativeVersionCode"
             prop="nativeVersionCode"
@@ -377,11 +373,19 @@
           </a-form-model-item>
 
           <a-form-model-item label="更新日志" ref="changelog" prop="changelog">
-            <a-textarea :maxLength="255" v-model="editForm.changelog" />
+            <a-textarea
+              :auto-size="{ minRows: 9, maxRows: 15 }"
+              :maxLength="255"
+              v-model="editForm.changelog"
+            />
           </a-form-model-item>
 
           <a-form-model-item label="备注" ref="remark" prop="remark">
-            <a-textarea :maxLength="255" v-model="editForm.remark" />
+            <a-textarea
+              :auto-size="{ minRows: 9, maxRows: 15 }"
+              :maxLength="255"
+              v-model="editForm.remark"
+            />
           </a-form-model-item>
 
           <a-form-model-item label="资源包地址" prop="url">
@@ -398,6 +402,7 @@
       :visible="state.isDescShow"
       @ok="state.isDescShow = false"
       @cancel="state.isDescShow = false"
+      :footer="null"
     >
       <a-card :bordered="false">
         <a-descriptions :title="`id：${descRecord.id}`">
@@ -407,18 +412,37 @@
           <a-descriptions-item label="版本号">
             {{ descRecord.versionCode }}
           </a-descriptions-item>
-          <a-descriptions-item label="原生版本号">
+          <a-descriptions-item
+            v-if="[1, 2].includes(sourcesType)"
+            label="原生版本号"
+          >
             {{ descRecord.nativeVersionCode }}
           </a-descriptions-item>
-          <a-descriptions-item label="更新日志">
+          <!-- <a-descriptions-item label="更新日志">
             {{ descRecord.changelog }}
           </a-descriptions-item>
           <a-descriptions-item label="下载地址">
             {{ descRecord.url }}
+          </a-descriptions-item> -->
+        </a-descriptions>
+
+        <a-divider style="margin-bottom: 32px" />
+
+        <a-descriptions title="更新日志">
+          <a-descriptions-item>
+            <div style="white-space: pre-line;">
+              {{ descRecord.changelog }}
+            </div>
           </a-descriptions-item>
         </a-descriptions>
 
         <a-divider style="margin-bottom: 32px" />
+
+        <a-descriptions title="下载地址">
+          <a-descriptions-item>
+            {{ descRecord.url }}
+          </a-descriptions-item>
+        </a-descriptions>
 
         <a-descriptions :column="1">
           <a-descriptions-item label="">
@@ -428,9 +452,11 @@
 
         <a-divider style="margin-bottom: 32px" />
 
-        <a-descriptions>
-          <a-descriptions-item label="备注">
-            {{ descRecord.remark }}
+        <a-descriptions title="备注">
+          <a-descriptions-item>
+            <div style="white-space: pre-line;">
+              {{ descRecord.remark }}
+            </div>
           </a-descriptions-item>
         </a-descriptions>
       </a-card>
@@ -441,7 +467,6 @@
 <script>
 import storage from 'store'
 
-import { createPureSign } from '@/utils/request/request-sign'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import OssPartUpload from '@/components/OSSPartUpload/OSSPartUpload'
 
@@ -450,6 +475,226 @@ export default {
 
   components: {
     OssPartUpload,
+  },
+
+  computed: {
+    // 表头
+    tableColumns() {
+      if ([3, 4].includes(this.sourcesType)) {
+        return [
+          // ID
+          {
+            title: 'ID',
+            dataIndex: 'id',
+            scopedSlots: { customRender: 'id' },
+            width: 280,
+          },
+          // 版本名
+          {
+            title: '版本名',
+            align: 'center',
+            dataIndex: 'version',
+            width: 80,
+          },
+          // 版本号
+          {
+            title: '版本号',
+            align: 'center',
+            dataIndex: 'versionCode',
+            scopedSlots: { customRender: 'versionCode' },
+            defaultSortOrder: 'descend',
+            sorter: true,
+          },
+          {
+            title: '更新类型',
+            align: 'center',
+            dataIndex: 'updateType',
+            scopedSlots: { customRender: 'isForceUpdate' },
+            customRender: text => {
+              switch (text) {
+                case 1:
+                  return '用户同意更新'
+                case 2:
+                  return '强制更新'
+                case 3:
+                  return '静默更新'
+                default:
+                  return ''
+              }
+            },
+          },
+          // 状态
+          {
+            title: '状态',
+            align: 'center',
+            dataIndex: 'status',
+            scopedSlots: { customRender: 'status' },
+            // ellipsis: false,
+            // width: 80,
+          },
+          // 创建时间
+          {
+            title: '创建时间',
+            dataIndex: 'createdTime',
+            align: 'center',
+            scopedSlots: { customRender: 'createdTime' },
+          },
+          // 更新时间
+          {
+            title: '更新时间',
+            dataIndex: 'updatedTime',
+            align: 'center',
+            scopedSlots: { customRender: 'updatedTime' },
+          },
+          // 操作
+          {
+            title: '操作',
+            align: 'center',
+            fixed: 'right',
+            scopedSlots: { customRender: 'action' },
+            width: 150,
+          },
+        ]
+      } else {
+        return [
+          // ID
+          {
+            title: 'ID',
+            dataIndex: 'id',
+            scopedSlots: { customRender: 'id' },
+            // ellipsis: false,
+            width: 280,
+          },
+          // 版本名
+          {
+            title: '版本名',
+            align: 'center',
+            dataIndex: 'version',
+            // ellipsis: false,
+            width: 80,
+          },
+          // 版本号
+          {
+            title: '版本号',
+            align: 'center',
+            dataIndex: 'versionCode',
+            scopedSlots: { customRender: 'versionCode' },
+            defaultSortOrder: 'descend',
+            // ellipsis: false,
+            sorter: true,
+            // width: 120,
+          },
+          // 原生版本号
+          {
+            title: '原生版本号',
+            align: 'center',
+            dataIndex: 'nativeVersionCode',
+            scopedSlots: { customRender: 'nativeVersionCode' },
+            // ellipsis: true,
+            // sorter: true,
+            // width: 120,
+          },
+          // 下载地址
+          // {
+          //   title: '下载地址',
+          //   dataIndex: 'url',
+          //   scopedSlots: { customRender: 'url' },
+          //   ellipsis: true,
+          //   width: 150,
+          //   // ellipsis: true,
+          // },
+          // 强制更新
+          // {
+          //   title: '强制更新',
+          //   align: 'center',
+          //   dataIndex: 'isForceUpdate',
+          //   scopedSlots: { customRender: 'isForceUpdate' },
+          //   ellipsis: true,
+          //   width: 80,
+          // },
+          // 更新类型（1：用户同意更新，2：强制更新，3：静默更新）
+          {
+            title: '更新类型',
+            align: 'center',
+            dataIndex: 'updateType',
+            scopedSlots: { customRender: 'isForceUpdate' },
+            customRender: text => {
+              switch (text) {
+                case 1:
+                  return '用户同意更新'
+                case 2:
+                  return '强制更新'
+                case 3:
+                  return '静默更新'
+                default:
+                  return ''
+              }
+            },
+            // ellipsis: false,
+            // width: 200,
+          },
+          // 类型
+          // {
+          //   title: '类型',
+          //   align: 'center',
+          //   dataIndex: 'sourcesType',
+          //   scopedSlots: { customRender: 'sourcesType' },
+          //   ellipsis: true,
+          //   width: 100,
+          // },
+          // 状态
+          {
+            title: '状态',
+            align: 'center',
+            dataIndex: 'status',
+            scopedSlots: { customRender: 'status' },
+            // ellipsis: false,
+            // width: 80,
+          },
+          // 更新日志
+          // {
+          //   title: '更新日志',
+          //   dataIndex: 'changelog',
+          //   ellipsis: true,
+          //   width: 80,
+          // },
+          // 备注
+          // {
+          //   title: '备注',
+          //   dataIndex: 'remark',
+          //   ellipsis: true,
+          //   width: 80,
+          // },
+          // 创建时间
+          {
+            title: '创建时间',
+            dataIndex: 'createdTime',
+            align: 'center',
+            scopedSlots: { customRender: 'createdTime' },
+            // ellipsis: false,
+            // width: 200,
+          },
+          // 更新时间
+          {
+            title: '更新时间',
+            dataIndex: 'updatedTime',
+            align: 'center',
+            scopedSlots: { customRender: 'updatedTime' },
+            // ellipsis: false,
+            // width: 200,
+          },
+          // 操作
+          {
+            title: '操作',
+            align: 'center',
+            fixed: 'right',
+            scopedSlots: { customRender: 'action' },
+            // ellipsis: false,
+            width: 150,
+          },
+        ]
+      }
+    },
   },
 
   data() {
@@ -505,144 +750,7 @@ export default {
           4: 'ios',
         },
       },
-      // 表头
-      tableColumns: [
-        // ID
-        {
-          title: 'ID',
-          dataIndex: 'id',
-          scopedSlots: { customRender: 'id' },
-          // ellipsis: false,
-          width: 280,
-        },
-        // 版本名
-        {
-          title: '版本名',
-          align: 'center',
-          dataIndex: 'version',
-          // ellipsis: false,
-          width: 80,
-        },
-        // 版本号
-        {
-          title: '版本号',
-          align: 'center',
-          dataIndex: 'versionCode',
-          scopedSlots: { customRender: 'versionCode' },
-          defaultSortOrder: 'descend',
-          // ellipsis: false,
-          sorter: true,
-          // width: 120,
-        },
-        // 原生版本号
-        {
-          title: '原生版本号',
-          align: 'center',
-          dataIndex: 'nativeVersionCode',
-          scopedSlots: { customRender: 'nativeVersionCode' },
-          // ellipsis: true,
-          sorter: true,
-          // width: 120,
-        },
-        // 下载地址
-        // {
-        //   title: '下载地址',
-        //   dataIndex: 'url',
-        //   scopedSlots: { customRender: 'url' },
-        //   ellipsis: true,
-        //   width: 150,
-        //   // ellipsis: true,
-        // },
-        // 强制更新
-        // {
-        //   title: '强制更新',
-        //   align: 'center',
-        //   dataIndex: 'isForceUpdate',
-        //   scopedSlots: { customRender: 'isForceUpdate' },
-        //   ellipsis: true,
-        //   width: 80,
-        // },
-        // 更新类型（1：用户同意更新，2：强制更新，3：静默更新）
-        {
-          title: '更新类型',
-          align: 'center',
-          dataIndex: 'updateType',
-          scopedSlots: { customRender: 'isForceUpdate' },
-          customRender: text => {
-            switch (text) {
-              case 1:
-                return '用户同意更新'
-              case 2:
-                return '强制更新'
-              case 3:
-                return '静默更新'
-              default:
-                return ''
-            }
-          },
-          // ellipsis: false,
-          // width: 200,
-        },
-        // 类型
-        // {
-        //   title: '类型',
-        //   align: 'center',
-        //   dataIndex: 'sourcesType',
-        //   scopedSlots: { customRender: 'sourcesType' },
-        //   ellipsis: true,
-        //   width: 100,
-        // },
-        // 状态
-        {
-          title: '状态',
-          align: 'center',
-          dataIndex: 'status',
-          scopedSlots: { customRender: 'status' },
-          // ellipsis: false,
-          // width: 80,
-        },
-        // 更新日志
-        // {
-        //   title: '更新日志',
-        //   dataIndex: 'changelog',
-        //   ellipsis: true,
-        //   width: 80,
-        // },
-        // 备注
-        // {
-        //   title: '备注',
-        //   dataIndex: 'remark',
-        //   ellipsis: true,
-        //   width: 80,
-        // },
-        // 创建时间
-        {
-          title: '创建时间',
-          dataIndex: 'createdTime',
-          align: 'center',
-          scopedSlots: { customRender: 'createdTime' },
-          // ellipsis: false,
-          // width: 200,
-        },
-        // 更新时间
-        {
-          title: '更新时间',
-          dataIndex: 'updatedTime',
-          align: 'center',
-          scopedSlots: { customRender: 'updatedTime' },
-          // ellipsis: false,
-          // width: 200,
-        },
-        // 操作
-        {
-          title: '操作',
-          align: 'center',
-          fixed: 'right',
-          scopedSlots: { customRender: 'action' },
-          // ellipsis: false,
-          width: 150,
-        },
-      ],
+
       // 资源类型
       sourcesType: 1,
       // 表格数据
@@ -893,7 +1001,13 @@ export default {
       this.$refs.createForm.validate(async valid => {
         if (valid) {
           this.state.isCreateLoading = true
-          const res = await this.$api.createSource(this.form)
+          const res = await this.$api.createSource(
+            Object.assign({}, this.form, {
+              nativeVersionCode: [1, 2].includes(this.form.type)
+                ? this.form.nativeVersionCode
+                : '',
+            }),
+          )
           if (res.success) {
             this.$notification.success({
               message: '成功',
@@ -1000,34 +1114,19 @@ export default {
       this.state.isTableLoading = false
     },
 
+    // 新建资源 modal 打开
+    async onCreateSourceModelOpen() {
+      // 新建资源是否显示
+      this.state.isCreateShow = true
+      // 验证过期时间
+      // this.$nextTick(() => {
+      //   this.$refs.OSSPartUpload.handleVerifyExpiration()
+      // })
+    },
+
     // 文件上传成功
     onUploadComplete(res) {
       this.form.url = res.name
-    },
-
-    // 文件上传状态发生变化
-    handleChange(info) {
-      const status = info.file.status
-
-      if (status === 'done') {
-        this.form.url = info.fileList[0].response.data.customName
-        this.$message.success(`${info.file.name} 上传成功。`)
-      } else if (status === 'error') {
-        this.$message.error(`${info.file.name} 上传失败。`)
-      }
-
-      this.fileList = info.fileList
-    },
-
-    // 文件上传之前
-    beforeUpload(file, fileList) {
-      Object.assign(this.headers, createPureSign())
-    },
-
-    // 移除上传的文件
-    onRemoveFile() {
-      this.form.url = ''
-      return true
     },
 
     // 表格分页改变

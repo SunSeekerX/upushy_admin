@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-02-09 15:14:12
+ * @LastEditTime: 2021-02-12 21:34:35
  */
 
 import Vue from 'vue'
@@ -213,7 +213,6 @@ const createRouter = () =>
   })
 
 const router = createRouter()
-// router.addRoutes(asyncRouterMap)
 
 export function resetRouter() {
   const newRouter = createRouter()

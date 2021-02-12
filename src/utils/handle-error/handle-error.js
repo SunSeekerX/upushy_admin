@@ -3,7 +3,7 @@
  * @author SunSeekerX
  * @time 2019-11-27 15:18:44
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-11-01 23:31:54
+ * @LastEditTime: 2021-02-12 21:43:07
  */
 
 import notification from 'ant-design-vue/es/notification'
@@ -42,7 +42,7 @@ function handleApplicationException(e) {
 }
 
 /**
- * @name Hanle when request result success no true
+ * @name Handle when request result success no true
  * @param { String } msg tips message
  */
 function handleRequestFail(res) {
