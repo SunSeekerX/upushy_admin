@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-28 09:52:25
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-11-02 17:08:27
+ * @LastEditTime: 2021-02-14 21:04:17
  */
 
 import { request } from '@/utils/request/index'
@@ -94,6 +94,18 @@ export function deleteSource({ id }) {
     data: {
       // 资源id
       id,
+    },
+  })
+}
+
+// 查询最新的原生版本
+export function getLatestNativeSource({ projectId }) {
+  return request({
+    url: '/api/source/native/latest',
+    method: 'GET',
+    params: {
+      // 项目id
+      projectId,
     },
   })
 }

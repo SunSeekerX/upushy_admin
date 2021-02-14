@@ -26,7 +26,7 @@
 
         <!-- 项目名称 -->
         <template slot="name" slot-scope="text, { id, name }">
-          <router-link :to="{ name: 'BasicSource', query: { id: id } }">
+          <router-link :to="{ name: 'ProjectSources', query: { id: id } }">
             {{ name }}
           </router-link>
         </template>

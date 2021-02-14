@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-02-12 21:34:35
+ * @LastEditTime: 2021-02-14 20:29:51
  */
 
 import Vue from 'vue'
@@ -88,38 +88,60 @@ export const asyncRouterMap = [
       },
 
       // source
-      {
-        path: '/source',
-        name: 'source',
-        hidden: true,
-        component: RouteView,
-        redirect: '/source/sources',
-        meta: { title: '资源', icon: 'table', permission: ['source'] },
-        children: [
-          {
-            path: '/source/sources/:id([1-9]\\d*)?',
-            name: 'BasicSource',
-            component: () => import('@/views/source/Sources'),
-            meta: {
-              title: '所有资源',
-              keepAlive: true,
-              permission: ['source'],
-            },
-          },
-        ],
-      },
+      // {
+      //   path: '/source',
+      //   name: 'source',
+      //   hidden: true,
+      //   component: RouteView,
+      //   redirect: '/source/sources',
+      //   meta: { title: '资源', icon: 'table', permission: ['source'] },
+      //   children: [
+      //     {
+      //       path: '/source/sources/:id([1-9]\\d*)?',
+      //       name: 'BasicSource',
+      //       component: () => import('@/views/source/Sources'),
+      //       meta: {
+      //         title: '所有资源',
+      //         keepAlive: true,
+      //         permission: ['source'],
+      //       },
+      //     },
+      //   ],
+      // },
 
       // 我的项目
       {
-        path: '/project/projects',
-        name: 'BasicProject',
-        component: () => import('@/views/project/Projects'),
+        path: '/project',
+        name: 'Project',
+        redirect: '/project/projects',
+        hideChildrenInMenu: true,
+        // component: () => import('@/views/project/Projects'),
+        component: RouteView,
         meta: {
           title: '我的项目',
           icon: 'appstore',
-          keepAlive: true,
           permission: ['project'],
         },
+        children: [
+          {
+            path: 'projects',
+            name: 'Projects',
+            component: () => import('@/views/project/Projects'),
+            meta: {
+              title: '项目列表',
+              permission: ['project'],
+            },
+          },
+          {
+            path: 'sources',
+            name: 'ProjectSources',
+            component: () => import('@/views/source/Sources'),
+            meta: {
+              title: '资源列表',
+              permission: ['project'],
+            },
+          },
+        ],
       },
 
       // 系统监控
@@ -170,17 +192,20 @@ export const constantRouterMap = [
       {
         path: 'login',
         name: 'login',
-        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Login'),
+        component: () =>
+          import(/* webpackChunkName: "user" */ '@/views/user/Login'),
       },
       {
         path: 'register',
         name: 'register',
-        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Register'),
+        component: () =>
+          import(/* webpackChunkName: "user" */ '@/views/user/Register'),
       },
       {
         path: 'register-result',
         name: 'registerResult',
-        component: () => import(/* webpackChunkName: "user" */ '@/views/user/RegisterResult'),
+        component: () =>
+          import(/* webpackChunkName: "user" */ '@/views/user/RegisterResult'),
       },
       {
         path: 'recover',
@@ -192,14 +217,16 @@ export const constantRouterMap = [
 
   {
     path: '/404',
-    component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/404'),
+    component: () =>
+      import(/* webpackChunkName: "fail" */ '@/views/exception/404'),
   },
 ]
 
 // hack router push callback
 const originalPush = Router.prototype.push
 Router.prototype.push = function push(location, onResolve, onReject) {
-  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
+  if (onResolve || onReject)
+    return originalPush.call(this, location, onResolve, onReject)
   return originalPush.call(this, location).catch(err => err)
 }
 

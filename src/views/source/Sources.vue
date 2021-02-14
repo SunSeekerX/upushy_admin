@@ -786,7 +786,7 @@ export default {
         updateType: 1,
         // 资源状态（0：禁用 1：启用）
         status: 1,
-        // 类型
+        // 资源类型（1：wgt-android 2：wgt-ios  3：android，4：ios）
         type: 1,
         // 更新日志
         changelog: '',
@@ -795,6 +795,10 @@ export default {
         // 资源包
         url: '',
       },
+      // 最新的安卓版本号
+      latestAndroidVersionCode: null,
+      // 最新的 ios 版本号
+      latestIosVersionCode: null,
       // 新增表格rules
       rules: {
         // 项目ID
@@ -985,6 +989,18 @@ export default {
         // })
         // this.$refs.OSSPartUpload.onCleanFile()
       }
+
+      switch (newVal) {
+        case 1:
+          if (this.latestAndroidVersionCode) {
+            this.form.nativeVersionCode = this.latestAndroidVersionCode
+          }
+          break
+        case 2:
+          if (this.latestIosVersionCode) {
+            this.form.nativeVersionCode = this.latestIosVersionCode
+          }
+      }
       // console.log({ newVal })
       // this.form.url = ''
       // this.fileList = []
@@ -1114,6 +1130,24 @@ export default {
       this.state.isTableLoading = false
     },
 
+    // 获取最新的原生版本号
+    async onGetLatestNativeSource() {
+      const res = await this.$api.getLatestNativeSource({
+        projectId: this.form.projectId,
+      })
+
+      if (res.success) {
+        const { android, ios } = res.data
+        this.latestAndroidVersionCode = android
+        this.latestIosVersionCode = ios
+        if (android) {
+          this.form.nativeVersionCode = android
+        }
+      } else {
+        this.$handleError.handleRequestFail(res)
+      }
+    },
+
     // 新建资源 modal 打开
     async onCreateSourceModelOpen() {
       // 新建资源是否显示
@@ -1223,6 +1257,8 @@ export default {
     this.form.projectId = this.$route.query.id
     // 获取资源列表
     this.onGetList()
+    // 获取最新的原生版本号
+    this.onGetLatestNativeSource()
   },
 }
 </script>
