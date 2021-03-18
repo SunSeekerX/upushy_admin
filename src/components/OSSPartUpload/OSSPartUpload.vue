@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-08-23 17:33:28
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-02-12 23:15:53
+ * @LastEditTime: 2021-03-18 20:19:29
 -->
 
 <template>
@@ -131,11 +131,14 @@ export default {
       await this.handleVerifyExpiration()
       try {
         const date = new Date()
-        const fileName = `${this.$moment(date).format(
-          'YYYY-MM',
-        )}/${this.$moment(date).format(
-          'YYYY-MM-DD HH:mm:SS',
-        )}.${date.getTime()}.${fileList[0].name}`
+        // const fileName = `${this.$moment(date).format(
+        //   'YYYY-MM',
+        // )}/${this.$moment(date).format(
+        //   'YYYY-MM-DD HH:mm:SS',
+        // )}.${date.getTime()}.${fileList[0].name}`
+
+        const fileName = `${date.getTime()}.${fileList[0].name}`
+        
         // object-name可以自定义为文件名（例如file.txt）或目录（例如abc/test/file.txt）的形式，实现将文件上传至当前Bucket或Bucket下的指定目录。
         const result = await this.client.multipartUpload(
           fileName,
