@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-03-18 20:37:15
+ * @LastEditTime: 2021-03-25 17:50:47
 -->
 
 <template>
@@ -34,7 +34,7 @@ export default {
 
   mounted() {
     this.$notification.info({
-      description: 'uni-pushy 计划于 3-21 搬迁服务器，届时可能无法访问，影响时长大概几分钟。应该会在下午迁移🤪🤪',
+      description: 'uni-pushy 服务器迁移完毕😎',
     })
   },
 }
