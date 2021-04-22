@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-04-22 23:53:58
+ * @LastEditTime: 2021-04-23 00:30:45
  */
 
 import Vue from 'vue'
@@ -56,7 +56,7 @@ export const asyncRouterMap = [
           {
             path: 'projects',
             name: 'Projects',
-            component: () => import('@/views/project/projects'),
+            component: () => import('@/views/project/Projects'),
             meta: {
               title: '项目列表',
               permission: ['project'],
@@ -65,7 +65,7 @@ export const asyncRouterMap = [
           {
             path: 'sources',
             name: 'ProjectSources',
-            component: () => import('@/views/source/sources'),
+            component: () => import('@/views/source/Sources'),
             meta: {
               title: '资源列表',
               permission: ['project'],
@@ -123,19 +123,19 @@ export const constantRouterMap = [
         path: 'login',
         name: 'login',
         component: () =>
-          import(/* webpackChunkName: "user" */ '@/views/user/login'),
+          import(/* webpackChunkName: "user" */ '@/views/user/Login'),
       },
       {
         path: 'register',
         name: 'register',
         component: () =>
-          import(/* webpackChunkName: "user" */ '@/views/user/register'),
+          import(/* webpackChunkName: "user" */ '@/views/user/Register'),
       },
       {
         path: 'register-result',
         name: 'registerResult',
         component: () =>
-          import(/* webpackChunkName: "user" */ '@/views/user/register-result'),
+          import(/* webpackChunkName: "user" */ '@/views/user/RegisterResult'),
       },
       {
         path: 'recover',
