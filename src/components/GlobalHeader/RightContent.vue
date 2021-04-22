@@ -1,3 +1,10 @@
+<!--
+ * @name: 
+ * @author: SunSeekerX
+ * @Date: 2021-02-09 13:29:18
+ * @LastEditors: SunSeekerX
+ * @LastEditTime: 2021-04-23 00:09:28
+-->
 <template>
   <div :class="wrpCls">
     <avatar-dropdown :menu="showMenu" :current-user="currentUser" :class="prefixCls" />

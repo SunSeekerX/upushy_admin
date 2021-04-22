@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-02-14 20:29:51
+ * @LastEditTime: 2021-04-22 23:53:58
  */
 
 import Vue from 'vue'
@@ -27,53 +27,6 @@ export const asyncRouterMap = [
     meta: { title: 'menu.home' },
     redirect: '/charts',
     children: [
-      // dashboard
-      // {
-      //   path: '/dashboard',
-      //   name: 'dashboard',
-      //   redirect: '/dashboard/dashboard',
-      //   component: RouteView,
-      //   meta: {
-      //     title: 'menu.dashboard',
-      //     keepAlive: true,
-      //     icon: 'appstore',
-      //     permission: ['dashboard'],
-      //   },
-      //   children: [
-      //     {
-      //       path: '/dashboard/dashboard',
-      //       name: 'Dashboard',
-      //       component: () => import('@/views/dashboard/dashboard'),
-      //       meta: {
-      //         title: 'Dashboard',
-      //         keepAlive: false,
-      //         permission: ['dashboard'],
-      //       },
-      //     },
-      //   ],
-      // },
-
-      // project
-      // {
-      //   path: '/project',
-      //   name: 'project',
-      //   component: RouteView,
-      //   redirect: '/project/projects',
-      //   meta: { title: '项目', icon: 'table', permission: ['project'] },
-      //   children: [
-      //     {
-      //       path: '/project/projects',
-      //       name: 'BasicProject',
-      //       component: () => import('@/views/project/Projects'),
-      //       meta: {
-      //         title: '所有项目',
-      //         keepAlive: true,
-      //         permission: ['project'],
-      //       },
-      //     },
-      //   ],
-      // },
-
       // 图表
       {
         path: '/charts',
@@ -87,35 +40,12 @@ export const asyncRouterMap = [
         },
       },
 
-      // source
-      // {
-      //   path: '/source',
-      //   name: 'source',
-      //   hidden: true,
-      //   component: RouteView,
-      //   redirect: '/source/sources',
-      //   meta: { title: '资源', icon: 'table', permission: ['source'] },
-      //   children: [
-      //     {
-      //       path: '/source/sources/:id([1-9]\\d*)?',
-      //       name: 'BasicSource',
-      //       component: () => import('@/views/source/Sources'),
-      //       meta: {
-      //         title: '所有资源',
-      //         keepAlive: true,
-      //         permission: ['source'],
-      //       },
-      //     },
-      //   ],
-      // },
-
       // 我的项目
       {
         path: '/project',
         name: 'Project',
         redirect: '/project/projects',
         hideChildrenInMenu: true,
-        // component: () => import('@/views/project/Projects'),
         component: RouteView,
         meta: {
           title: '我的项目',
@@ -126,7 +56,7 @@ export const asyncRouterMap = [
           {
             path: 'projects',
             name: 'Projects',
-            component: () => import('@/views/project/Projects'),
+            component: () => import('@/views/project/projects'),
             meta: {
               title: '项目列表',
               permission: ['project'],
@@ -135,7 +65,7 @@ export const asyncRouterMap = [
           {
             path: 'sources',
             name: 'ProjectSources',
-            component: () => import('@/views/source/Sources'),
+            component: () => import('@/views/source/sources'),
             meta: {
               title: '资源列表',
               permission: ['project'],
@@ -193,19 +123,19 @@ export const constantRouterMap = [
         path: 'login',
         name: 'login',
         component: () =>
-          import(/* webpackChunkName: "user" */ '@/views/user/Login'),
+          import(/* webpackChunkName: "user" */ '@/views/user/login'),
       },
       {
         path: 'register',
         name: 'register',
         component: () =>
-          import(/* webpackChunkName: "user" */ '@/views/user/Register'),
+          import(/* webpackChunkName: "user" */ '@/views/user/register'),
       },
       {
         path: 'register-result',
         name: 'registerResult',
         component: () =>
-          import(/* webpackChunkName: "user" */ '@/views/user/RegisterResult'),
+          import(/* webpackChunkName: "user" */ '@/views/user/register-result'),
       },
       {
         path: 'recover',

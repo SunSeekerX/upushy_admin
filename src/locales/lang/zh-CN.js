@@ -1,5 +1,16 @@
+/**
+ * @name: 
+ * @author: SunSeekerX
+ * @Date: 2021-02-09 13:29:18
+ * @LastEditors: SunSeekerX
+ * @LastEditTime: 2021-04-23 00:05:06
+ */
+
 import antd from 'ant-design-vue/es/locale-provider/zh_CN'
 import momentCN from 'moment/locale/zh-cn'
+
+import menu from './zh-CN/menu'
+import setting from './zh-CN/setting'
 
 const components = {
   antLocale: antd,
@@ -18,5 +29,7 @@ const locale = {
 
 export default {
   ...components,
-  ...locale
+  ...locale,
+  ...menu,
+  ...setting,
 }

@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-03-25 17:50:47
+ * @LastEditTime: 2021-04-22 23:36:38
 -->
 
 <template>
@@ -30,12 +30,6 @@ export default {
 
       return this.$i18n.getLocaleMessage(this.$store.getters.lang).antLocale
     },
-  },
-
-  mounted() {
-    this.$notification.info({
-      description: 'uni-pushy 服务器迁移完毕😎',
-    })
   },
 }
 </script>

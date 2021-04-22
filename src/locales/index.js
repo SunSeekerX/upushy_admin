@@ -1,16 +1,22 @@
+/**
+ * @name: i18n
+ * @author: SunSeekerX
+ * @Date: 2021-02-09 13:29:18
+ * @LastEditors: SunSeekerX
+ * @LastEditTime: 2021-04-22 23:58:33
+ */
+
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import storage from 'store'
 import moment from 'moment'
 
-// default lang
 import enUS from './lang/en-US'
 import zhCN from './lang/zh-CN'
 
 Vue.use(VueI18n)
 
-export const defaultLang = 'en-US'
-// export const defaultLang = 'zh-CN'
+export const defaultLang = 'zh-CN'
 
 const messages = {
   'en-US': {
