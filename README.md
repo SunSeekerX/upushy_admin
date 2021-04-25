@@ -62,6 +62,8 @@ yarn
 
 ## 开发（Dev）
 
+### 环境变量
+
 配置环境变量（Set env），根目录下执行
 
 ```bash
@@ -85,6 +87,19 @@ VUE_APP_API_BASE_URL=
 
 # Api 加密 Rsa 公钥（需要和 server 配对） 示例：-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCvXIVLxIsV/+maFOQBKdpFj83af47DB1fhSGDy+FtWX9cC1AW+vrEraAryJSHxjAQwkvsBjoYbww5H5emNW+qquEg217vx16I95cMU9c39e36CPwtsw4Tk92YkwoGgsGkfIwAoEOGYX12QTGQCwt6dgCs0knitX/QqE3MVJAjvQwIDAQAB-----END PUBLIC KEY-----
 VUE_APP_API_RSA_PUBLIC_KEY=
+
+# 前端 OSS 信息配置，环境变量为未进行判断，上传失败请查看控制台是否有报错
+# 是否使用前端配置oss信息 (true|false) default：false
+VUE_APP_WEB_OSS=
+# OSS 地域，示例：oss-cn-hangzhou
+VUE_APP_ALIYUN_OSS_REGION=
+# OSS 存储桶名 示例：uni-pushy
+VUE_APP_ALIYUN_OSS_BUCKET=
+# 阿里云账号 ACCESS_KEY_ID
+VUE_APP_ALIYUN_ACCESS_KEY_ID=
+# 阿里云账号 KEY_SECRET
+VUE_APP_ALIYUN_ACCESS_KEY_SECRET=
+
 ```
 
 **启动**
@@ -160,6 +175,16 @@ npm run build
 - 画出流程图
 
 # 更新日志（Changelog）
+
+## 0.0.3 - 2021-04-26
+
+### 功能（Features）
+
+- 增加 `VUE_APP_WEB_OSS` 环境变量，用来标识由前端直接访问 oss，不通过后台生成临时访问凭据。❗ 该方式有泄露阿里云账号 `ACCESS_KEY_ID` 和 `KEY_SECRET` 的风险
+- 增加 `VUE_APP_ALIYUN_OSS_REGION` 环境变量
+- 增加 `VUE_APP_ALIYUN_OSS_BUCKET` 环境变量
+- 增加 `VUE_APP_ALIYUN_ACCESS_KEY_ID` 环境变量
+- 增加 `VUE_APP_ALIYUN_ACCESS_KEY_SECRET` 环境变量
 
 ## 0.0.2 - 2021-04-23
 
