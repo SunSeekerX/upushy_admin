@@ -1,10 +1,3 @@
-/**
- * @name:
- * @author: SunSeekerX
- * @Date: 2021-04-26 00:46:14
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-07-11 12:34:10
- */
 const path = require('path')
 const webpack = require('webpack')
 const createThemeColorReplacerPlugin = require('./config/plugin.config')
