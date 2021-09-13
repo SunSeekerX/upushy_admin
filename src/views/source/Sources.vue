@@ -1,3 +1,10 @@
+<!--
+ * @name: 
+ * @author: SunSeekerX
+ * @Date: 2021-04-26 00:46:14
+ * @LastEditors: SunSeekerX
+ * @LastEditTime: 2021-09-13 23:44:51
+-->
 <template>
   <page-header-wrapper>
     <a-card :bordered="false">
@@ -969,8 +976,6 @@ export default {
           },
         ],
       },
-      // 上传文件地址
-      uploadAcrion: `${process.env.VUE_APP_API_BASE_URL}/api/upload`,
     }
   },
 

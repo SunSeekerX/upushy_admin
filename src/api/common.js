@@ -3,27 +3,15 @@
  * @author: SunSeekerX
  * @Date: 2020-07-28 11:30:36
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-11-03 10:49:43
+ * @LastEditTime: 2021-09-13 23:45:09
  */
 
 import { request } from '@/utils/request/index'
 
-// 文件上传
-export function upload(data) {
-  return request({
-    url: '/api/upload',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-    data,
-  })
-}
-
 // 系统配置
 export function getConfig() {
   return request({
-    url: '/api/config',
+    url: '/api/basic/config',
     method: 'GET',
   })
 }
@@ -31,7 +19,7 @@ export function getConfig() {
 // OSS临时访问
 export function getOSSStsConfig() {
   return request({
-    url: '/api/oss-sts',
+    url: '/api/basic/oss-sts',
     method: 'GET',
   })
 }
@@ -39,7 +27,7 @@ export function getOSSStsConfig() {
 // 系统信息
 export function getSystemConfig(){
   return request({
-    url: '/api/config/system',
+    url: '/api/basic/config/system',
     method: 'GET',
   })
 }
