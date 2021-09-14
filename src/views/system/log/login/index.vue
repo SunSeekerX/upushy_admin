@@ -1,3 +1,10 @@
+<!--
+ * @name: 
+ * @author: SunSeekerX
+ * @Date: 2021-09-14 09:56:50
+ * @LastEditors: SunSeekerX
+ * @LastEditTime: 2021-09-14 18:43:30
+-->
 <template>
   <page-header-wrapper>
     <a-card :bordered="false">
@@ -119,7 +126,7 @@ export default {
         sortKey: this.queryParams.sortKey,
         order: this.queryParams.order,
       })
-      if (res.success) {
+      if (res.code === 200) {
         this.tableData = res.data.records
         this.pagination.total = res.data.total
       } else {

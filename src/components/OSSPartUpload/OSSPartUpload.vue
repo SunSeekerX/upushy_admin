@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-08-23 17:33:28
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-13 23:45:08
+ * @LastEditTime: 2021-09-14 18:42:30
 -->
 
 <template>
@@ -52,7 +52,7 @@ export default {
     // 使用临时凭据初始化OSS客户端
     async onInitOSSClient() {
       const res = await this.$api.getOSSStsConfig()
-      if (res.success) {
+      if (res.code === 200) {
         const {
           AccessKeyId,
           AccessKeySecret,

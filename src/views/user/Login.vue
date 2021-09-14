@@ -1,3 +1,10 @@
+<!--
+ * @name: 
+ * @author: SunSeekerX
+ * @Date: 2021-09-14 09:56:50
+ * @LastEditors: SunSeekerX
+ * @LastEditTime: 2021-09-14 18:43:34
+-->
 <template>
   <div class="main">
     <a-form-model
@@ -191,7 +198,7 @@ export default {
             }),
           )
             .then(res => {
-              if (res.success) {
+              if (res.code === 200) {
                 this.$router.push({ path: '/' })
                 // 延迟 1 秒显示欢迎信息
                 setTimeout(() => {
@@ -222,7 +229,7 @@ export default {
       this.state.isCaptchaImgLoading = true
 
       const res = await this.$api.loginCaptcha()
-      if (res.success) {
+      if (res.code === 200) {
         this.imgCaptchaUrl = res.data.img
         this.loginForm.loginCaptchaKey = res.data.uuid
       } else {

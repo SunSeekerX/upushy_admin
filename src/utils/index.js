@@ -3,13 +3,14 @@
  * @author: SunSeekerX
  * @Date: 2020-08-10 10:29:06
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-11-02 20:33:17
+ * @LastEditTime: 2021-09-14 15:59:07
  */
 
 import moment from 'moment'
 import QRCode from 'qrcode'
 
 export * from './core/rsa-encrypt'
+export * from './core/encode'
 
 export function formatTime(timeStr) {
   return moment(timeStr).format('YYYY-MM-DD HH:mm:ss')

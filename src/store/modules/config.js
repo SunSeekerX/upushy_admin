@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-08-17 09:50:52
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-11-01 22:36:12
+ * @LastEditTime: 2021-09-14 18:42:33
  */
 
 import { getConfig } from '@/api/common'
@@ -26,7 +26,7 @@ const config = {
     async getConfig({ commit }) {
       const res = await getConfig()
 
-      if (res.success) {
+      if (res.code === 200) {
         // 计算和服务器时间差
         const timestamp = new Date().getTime()
         const TDOA = timestamp - res.data.serviceTime

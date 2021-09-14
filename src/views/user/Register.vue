@@ -1,3 +1,10 @@
+<!--
+ * @name: 
+ * @author: SunSeekerX
+ * @Date: 2021-09-14 09:56:50
+ * @LastEditors: SunSeekerX
+ * @LastEditTime: 2021-09-14 18:43:41
+-->
 <template>
   <div class="main user-layout-register">
     <h3>
@@ -306,7 +313,7 @@ export default {
       this.state.isCaptchaImgLoading = true
 
       const res = await this.$api.registerCaptcha()
-      if (res.success) {
+      if (res.code === 200) {
         this.imgCaptchaUrl = res.data.img
         this.form.imgCaptchaKey = res.data.uuid
       } else {
@@ -328,7 +335,7 @@ export default {
             }),
           )
 
-          if (res.success) {
+          if (res.code === 200) {
             this.$notification.success({
               message: '成功',
               description: res.message,

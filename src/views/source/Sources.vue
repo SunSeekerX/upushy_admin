@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2021-04-26 00:46:14
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-13 23:44:51
+ * @LastEditTime: 2021-09-14 18:43:04
 -->
 <template>
   <page-header-wrapper>
@@ -1029,7 +1029,7 @@ export default {
                 : '',
             }),
           )
-          if (res.success) {
+          if (res.code === 200) {
             this.$notification.success({
               message: '成功',
               description: res.message,
@@ -1057,7 +1057,7 @@ export default {
         id: record.id,
       })
 
-      if (res.success) {
+      if (res.code === 200) {
         this.$notification.success({
           message: '成功',
           description: res.message,
@@ -1076,7 +1076,7 @@ export default {
         if (valid) {
           this.state.isEditLoading = true
           const res = await this.$api.updateSource(this.editForm)
-          if (res.success) {
+          if (res.code === 200) {
             this.$notification.success({
               message: '成功',
               description: res.message,
@@ -1102,7 +1102,7 @@ export default {
         id: record.id,
         [key]: checked ? 1 : 0,
       })
-      if (res.success) {
+      if (res.code === 200) {
         checked ? (record[key] = 1) : (record[key] = 0)
       } else {
         this.$handleError.handleRequestFail(res)
@@ -1121,7 +1121,7 @@ export default {
         sortKey: this.queryParams.sortKey,
         order: this.queryParams.order,
       })
-      if (res.success) {
+      if (res.code === 200) {
         const records = res.data.records
         for (const item of records) {
           item.isStatusLoading = false
@@ -1141,7 +1141,7 @@ export default {
         projectId: this.form.projectId,
       })
 
-      if (res.success) {
+      if (res.code === 200) {
         const { android, ios } = res.data
         this.latestAndroidVersionCode = android
         this.latestIosVersionCode = ios

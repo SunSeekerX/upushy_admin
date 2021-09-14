@@ -1,9 +1,9 @@
 /**
- * @name Axios request module
+ * Axios request module 
  * @author SunSeekerX
  * @time 2019-08-13 10:29:11
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-11-01 23:34:19
+ * @LastEditTime: 2021-09-14 18:19:35
  */
 
 import axios from 'axios'
@@ -12,7 +12,6 @@ import store from '@/store'
 import router from '@/router'
 import { createSign } from './request-sign'
 import { ACCESS_TOKEN, LOGIN_OUT, RESET_ROUTERS } from '@/store/mutation-types'
-// import { getNewToken } from '@/api/index'
 
 /**
  * @name Create request object
@@ -40,38 +39,6 @@ export default function createRequest(options) {
       error: error,
       type: 'error',
     })
-  // const errorHandler = async error => {
-  //   if (error.response) {
-  //     const { config, data } = error.response
-  //     if (data.statusCode === 401) {
-  //       // Get new token
-  //       const { refreshToken } = store.getters
-  //       const res = await getNewToken({ refreshToken })
-  //       if (res.success) {
-  //         store.commit(ACCESS_TOKEN, res.data)
-  //         const reRes = await instance(config)
-  //         return reRes
-  //       } else if (res.statusCode === 401) {
-  //         store.commit(LOGIN_OUT)
-  //         store.commit(RESET_ROUTERS)
-  //         router.replace('/user/login')
-  //       }
-  //     }
-  //     return Promise.resolve({
-  //       success: false,
-  //       message: data.message,
-  //       error: error,
-  //       type: 'warn',
-  //     })
-  //   } else {
-  //     return Promise.resolve({
-  //       success: false,
-  //       message: error.message,
-  //       error: error,
-  //       type: 'error',
-  //     })
-  //   }
-  // }
 
   // Request interceptor
   instance.interceptors.request.use(config => {
@@ -110,7 +77,6 @@ export default function createRequest(options) {
         router.replace('/user/login')
       }
     }
-
     return res
   }
   return request

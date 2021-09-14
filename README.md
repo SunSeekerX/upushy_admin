@@ -54,14 +54,12 @@ cd uni-pushy-admin/
 
 ```bash
 npm i
-# or
-yarn
 ```
 
 **配置环境变量，根目录下执行**
 
 ```bash
-mv .env.example .env.development
+cp .env.example .env.development
 ```
 
 打开 `.env.development`，填写环境变量
@@ -79,10 +77,14 @@ VUE_APP_REQUEST_TIMEOUT=
 # 请求地址前缀，不带“/”！示例：http://192.192.192.192:3000
 VUE_APP_API_BASE_URL=
 
-# Api 加密 Rsa 公钥（需要和 server 配对） 示例：-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCvXIVLxIsV/+maFOQBKdpFj83af47DB1fhSGDy+FtWX9cC1AW+vrEraAryJSHxjAQwkvsBjoYbww5H5emNW+qquEg217vx16I95cMU9c39e36CPwtsw4Tk92YkwoGgsGkfIwAoEOGYX12QTGQCwt6dgCs0knitX/QqE3MVJAjvQwIDAQAB-----END PUBLIC KEY-----
-VUE_APP_API_RSA_PUBLIC_KEY=
+# Api 加密 Rsa 公钥，需要使用 base64 进行编码一遍
+# 格式：pkcs#8
+# 密钥位数: 1024
+# 需要和 server 配对
+# 示例：LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlHZk1BMEdDU3FHU0liM0RRRUJBUVVBQTRHTkFEQ0JpUUtCZ1FESllNSVBEYWs0aWs3UU1STWJlOXlzeTBHaQp6TEVGMDRBMkFycGZuZTVHcEYvUEwxd3JYNmFyYW10eVMwSFc5c01VajZYV2hickZXNWFnaWNYSlZpQk1TbnFRCmJqNnpFQlFJTkdRVXllZGlWdkhHMWdNVStobEpURW9ZeHVpTG9RbHgrUmFkc1BZbmo5aGJuV3pVT0RlN1MwcEsKY3JxRXRpVkRYb3FZZEV1VUx3SURBUUFCCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=
+VUE_APP_API_SIGN_RSA_PUBLIC_KEY_BASE64=
 
-# 前端 OSS 信息配置，环境变量为未进行判断，上传失败请查看控制台是否有报错
+# 前端 OSS 信息配置，环境变量未进行判断，上传失败请查看控制台是否有报错
 # 是否使用前端配置oss信息 (true|false) default：false
 VUE_APP_WEB_OSS=
 # OSS 地域，示例：oss-cn-hangzhou
@@ -93,15 +95,12 @@ VUE_APP_ALIYUN_OSS_BUCKET=
 VUE_APP_ALIYUN_ACCESS_KEY_ID=
 # 阿里云账号 KEY_SECRET
 VUE_APP_ALIYUN_ACCESS_KEY_SECRET=
-
 ```
 
 **启动**
 
 ```bash
 npm run server
-# or
-yarn serve
 ```
 
 ### 部署
@@ -109,7 +108,7 @@ yarn serve
 **配置环境变量，根目录下执行**
 
 ```bash
-mv .env.example .env.production
+cp .env.example .env.production
 ```
 
 打开 `.env.production`，填写环境变量，环境变量描述同开发。
@@ -127,6 +126,10 @@ npm run build
 ## 📌 uni-app 接入
 
 请查看 **[ uni-pushy-client](https://github.com/SunSeekerX/uni-pushy-client)** 说明。
+
+## 📌 更新日志
+
+[CHANGELOG](./CHANGELOG.md)
 
 ## 📌 FAQ
 
