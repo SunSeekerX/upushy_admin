@@ -77,6 +77,8 @@
 1. 【重要】同步 `uni-pushy-server` `0.2.0` 的修改
 2. 【重要】更新日志文件拆分
 3. 【重要】环境变量配置 `VUE_APP_API_RSA_PUBLIC_KEY` 变更为 `VUE_APP_API_SIGN_RSA_PUBLIC_KEY_BASE64`
+4. 代码结构优化
+5. 注释优化
 
 **Bug 修复 （Bug Fixes）**
 

@@ -1,9 +1,9 @@
 <!--
- * @name: 
+ * 登录日志
  * @author: SunSeekerX
  * @Date: 2021-09-14 09:56:50
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-14 18:43:30
+ * @LastEditTime: 2021-09-14 21:56:20
 -->
 <template>
   <page-header-wrapper>
@@ -126,7 +126,7 @@ export default {
         sortKey: this.queryParams.sortKey,
         order: this.queryParams.order,
       })
-      if (res.code === 200) {
+      if (res.statusCode === 200) {
         this.tableData = res.data.records
         this.pagination.total = res.data.total
       } else {

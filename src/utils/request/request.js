@@ -1,9 +1,9 @@
 /**
- * Axios request module 
+ * Axios request module
  * @author SunSeekerX
  * @time 2019-08-13 10:29:11
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-14 18:19:35
+ * @LastEditTime: 2021-09-14 21:23:44
  */
 
 import axios from 'axios'
@@ -32,13 +32,12 @@ export default function createRequest(options) {
   )
 
   // Error handler
-  const errorHandler = async error =>
-    Promise.resolve({
-      success: false,
+  const errorHandler = error => {
+    return {
+      statusCode: error.response.status,
       message: error.message,
-      error: error,
-      type: 'error',
-    })
+    }
+  }
 
   // Request interceptor
   instance.interceptors.request.use(config => {

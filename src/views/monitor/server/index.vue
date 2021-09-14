@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2020-10-27 18:00:49
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-14 18:42:43
+ * @LastEditTime: 2021-09-14 21:52:06
 -->
 
 <template>
@@ -246,7 +246,7 @@ export default {
       this.isRunningTimer = true
 
       const res = await this.$api.getSystemConfig()
-      if (res.code === 200) {
+      if (res.statusCode === 200) {
         // 处理 Cpu 数据
         const {
           cpus,

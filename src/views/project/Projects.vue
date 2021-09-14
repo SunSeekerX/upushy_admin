@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2021-09-14 09:56:50
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-14 18:42:50
+ * @LastEditTime: 2021-09-14 21:52:10
 -->
 <template>
   <page-header-wrapper>
@@ -327,7 +327,7 @@ export default {
       this.$refs.createForm.validate(async valid => {
         if (valid) {
           const res = await this.$api.createProject(this.createForm)
-          if (res.code === 200) {
+          if (res.statusCode === 200) {
             this.$notification.success({
               message: '成功',
               description: res.message,
@@ -350,7 +350,7 @@ export default {
       const res = await this.$api.deleteProject({
         id: id,
       })
-      if (res.code === 200) {
+      if (res.statusCode === 200) {
         this.$notification.success({
           message: '成功',
           description: res.message,
@@ -368,7 +368,7 @@ export default {
       this.$refs.updateForm.validate(async valid => {
         if (valid) {
           const res = await this.$api.updateProject(this.updateForm)
-          if (res.code === 200) {
+          if (res.statusCode === 200) {
             this.$notification.success({
               message: '成功',
               description: res.message,
@@ -392,7 +392,7 @@ export default {
         pageNum: this.pagination.pageNum,
         pageSize: this.pagination.pageSize,
       })
-      if (res.code === 200) {
+      if (res.statusCode === 200) {
         this.tableData = res.data.records
         this.pagination.total = res.data.total
       } else {
