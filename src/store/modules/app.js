@@ -1,3 +1,11 @@
+/**
+ * @name:
+ * @author: SunSeekerX
+ * @Date: 2021-02-09 13:29:18
+ * @LastEditors: SunSeekerX
+ * @LastEditTime: 2021-09-15 00:12:05
+ */
+
 import storage from 'store'
 import {
   SIDEBAR_TYPE,
@@ -14,7 +22,6 @@ import {
   // i18n
   APP_LANGUAGE,
 } from '@/store/mutation-types'
-import { loadLanguageAsync } from '@/locales'
 
 const app = {
   state: {
@@ -80,20 +87,6 @@ const app = {
     [TOGGLE_MULTI_TAB]: (state, bool) => {
       storage.set(TOGGLE_MULTI_TAB, bool)
       state.multiTab = bool
-    },
-  },
-  actions: {
-    setLang({ commit }, lang) {
-      return new Promise((resolve, reject) => {
-        commit(APP_LANGUAGE, lang)
-        loadLanguageAsync(lang)
-          .then(() => {
-            resolve()
-          })
-          .catch((e) => {
-            reject(e)
-          })
-      })
     },
   },
 }

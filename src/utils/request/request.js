@@ -3,7 +3,7 @@
  * @author SunSeekerX
  * @time 2019-08-13 10:29:11
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-14 21:23:44
+ * @LastEditTime: 2021-09-15 00:21:49
  */
 
 import axios from 'axios'
@@ -34,7 +34,7 @@ export default function createRequest(options) {
   // Error handler
   const errorHandler = (error) => {
     return {
-      statusCode: error.response.status,
+      statusCode: error.response ? error.response.status : 500,
       message: error.message,
     }
   }
@@ -63,13 +63,12 @@ export default function createRequest(options) {
 
   const request = async function(config) {
     const res = await instance(config)
-    if (res.statusCode === 401) {
-      const { refreshToken } = store.getters
+    const { refreshToken } = store.getters
+    if (res.statusCode === 401 && refreshToken) {
       const getNewTokenRes = await getNewToken({ refreshToken })
-      if (getNewTokenRes.success) {
+      if (getNewTokenRes.statusCode === 200) {
         store.commit(ACCESS_TOKEN, getNewTokenRes.data)
-        const reRes = await instance(config)
-        return reRes
+        return await instance(config)
       } else {
         store.commit(LOGIN_OUT)
         store.commit(RESET_ROUTERS)

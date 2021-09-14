@@ -3,11 +3,11 @@
  * @author: SunSeekerX
  * @Date: 2021-02-09 13:29:18
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-04-23 00:06:17
+ * @LastEditTime: 2021-09-15 00:04:23
  */
 
 import antdEnUS from 'ant-design-vue/es/locale-provider/en_US'
-import momentEU from 'moment/locale/eu'
+import momentEU from 'dayjs/locale/eu'
 
 import menu from './en-US/menu'
 import setting from './en-US/setting'

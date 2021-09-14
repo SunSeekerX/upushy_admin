@@ -3,7 +3,7 @@
  * @author: SunSeekerX
  * @Date: 2021-02-09 16:12:15
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-02-09 16:12:20
+ * @LastEditTime: 2021-09-15 00:03:42
 -->
 <template>
   <div class="antv-chart-mini">
@@ -17,13 +17,13 @@
 </template>
 
 <script>
-import moment from 'moment'
+import dayjs from 'dayjs'
 const data = []
 const beginDay = new Date().getTime()
 
 for (let i = 0; i < 10; i++) {
   data.push({
-    x: moment(new Date(beginDay + 1000 * 60 * 60 * 24 * i)).format('YYYY-MM-DD'),
+    x: dayjs(new Date(beginDay + 1000 * 60 * 60 * 24 * i)).format('YYYY-MM-DD'),
     y: Math.round(Math.random() * 10),
   })
 }

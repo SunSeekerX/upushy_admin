@@ -1,19 +1,18 @@
 /**
- * @name:
+ * 程序入口
  * @author: SunSeekerX
  * @Date: 2020-07-26 17:49:41
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-14 16:04:46
+ * @LastEditTime: 2021-09-15 00:06:28
  */
 
 /**
  * @name 引入依赖库
  */
-// with polyfills
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 import Vue from 'vue'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 /**
  * @name 引入文件
@@ -27,12 +26,11 @@ import themePluginConfig from '../config/themePluginConfig'
 import * as api from './api/index'
 import * as util from './utils/index'
 import HandleError from './utils/handle-error/index'
-
 import bootstrap from './utils/bootstrap'
 import './utils/lazy-use'
-import './permission' // permission control
-import './utils/filter' // global filter
-import './global.less'
+import './permission'
+import './utils/filter'
+import './styles/global.less'
 
 /**
  * @name 依赖设置
@@ -51,7 +49,7 @@ Vue.component('page-header-wrapper', PageHeaderWrapper)
  */
 Vue.prototype.$api = api
 Vue.prototype.$util = util
-Vue.prototype.$moment = moment
+Vue.prototype.$dayjs = dayjs
 
 window.umi_plugin_ant_themeVar = themePluginConfig.theme
 

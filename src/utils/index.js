@@ -3,17 +3,17 @@
  * @author: SunSeekerX
  * @Date: 2020-08-10 10:29:06
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-14 15:59:07
+ * @LastEditTime: 2021-09-15 00:02:06
  */
 
-import moment from 'moment'
+import dayjs from 'dayjs'
 import QRCode from 'qrcode'
 
 export * from './core/rsa-encrypt'
 export * from './core/encode'
 
 export function formatTime(timeStr) {
-  return moment(timeStr).format('YYYY-MM-DD HH:mm:ss')
+  return dayjs(timeStr).format('YYYY-MM-DD HH:mm:ss')
 }
 
 export function getUrlParams(url) {

@@ -3,24 +3,21 @@
  * @author: SunSeekerX
  * @Date: 2021-02-09 13:29:18
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-04-23 00:09:28
+ * @LastEditTime: 2021-09-15 00:19:21
 -->
 <template>
   <div :class="wrpCls">
     <avatar-dropdown :menu="showMenu" :current-user="currentUser" :class="prefixCls" />
-    <select-lang :class="prefixCls" />
   </div>
 </template>
 
 <script>
 import AvatarDropdown from './AvatarDropdown'
-import SelectLang from '@/components/SelectLang'
 
 export default {
   name: 'RightContent',
   components: {
     AvatarDropdown,
-    SelectLang,
   },
   props: {
     prefixCls: {

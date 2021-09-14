@@ -3,7 +3,7 @@
  * @author SunSeekerX
  * @time 2019-11-27 15:18:44
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-14 21:50:21
+ * @LastEditTime: 2021-09-15 00:23:02
  */
 
 import { message as Message } from 'ant-design-vue'
@@ -56,7 +56,7 @@ function handleRequestFail(res) {
       message = '访问被禁止'
       break
     case 401:
-      message = '登陆过期'
+      message = '未登录或登陆过期'
       break
     case 400:
       message = '客户端错误'

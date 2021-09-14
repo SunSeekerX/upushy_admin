@@ -3,14 +3,13 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-11-01 20:30:18
+ * @LastEditTime: 2021-09-15 00:17:37
  */
 
 import storage from 'store'
 
 import store from '@/store'
 import {
-  APP_LANGUAGE,
   TOGGLE_CONTENT_WIDTH,
   TOGGLE_FIXED_HEADER,
   TOGGLE_FIXED_SIDEBAR,
@@ -33,6 +32,4 @@ export default function Initializer() {
   store.commit(TOGGLE_WEAK, storage.get(TOGGLE_WEAK, defaultSettings.colorWeak))
   store.commit(TOGGLE_COLOR, storage.get(TOGGLE_COLOR, defaultSettings.primaryColor))
   store.commit(TOGGLE_MULTI_TAB, storage.get(TOGGLE_MULTI_TAB, defaultSettings.multiTab))
-
-  store.dispatch('setLang', storage.get(APP_LANGUAGE, 'zh-CN'))
 }
