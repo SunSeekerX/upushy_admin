@@ -12,9 +12,9 @@
 export default {
   name: 'Exception404',
   methods: {
-    toHome () {
+    toHome() {
       this.$router.push({ path: '/' })
-    }
-  }
+    },
+  },
 }
 </script>

@@ -52,21 +52,12 @@
         <span slot="action" slot-scope="text, record">
           <a-row>
             <a-col :span="8">
-              <a-button
-                @click="onClickViewDesc(record)"
-                type="primary"
-                shape="circle"
-                icon="search"
-              >
+              <a-button @click="onClickViewDesc(record)" type="primary" shape="circle" icon="search">
                 <!-- 查看详情 -->
               </a-button>
             </a-col>
             <a-col :span="8">
-              <a-button
-                @click="onClickUpdate(record)"
-                shape="circle"
-                icon="edit"
-              ></a-button>
+              <a-button @click="onClickUpdate(record)" shape="circle" icon="edit"></a-button>
             </a-col>
             <a-col :span="8">
               <a-popconfirm
@@ -324,7 +315,7 @@ export default {
     async onCreate() {
       this.state.isCreateLoading = true
 
-      this.$refs.createForm.validate(async valid => {
+      this.$refs.createForm.validate(async (valid) => {
         if (valid) {
           const res = await this.$api.createProject(this.createForm)
           if (res.statusCode === 200) {
@@ -365,7 +356,7 @@ export default {
     async onUpdate() {
       this.state.isUpdateLoading = true
 
-      this.$refs.updateForm.validate(async valid => {
+      this.$refs.updateForm.validate(async (valid) => {
         if (valid) {
           const res = await this.$api.updateProject(this.updateForm)
           if (res.statusCode === 200) {

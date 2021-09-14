@@ -9,17 +9,9 @@
 import md5 from 'md5'
 
 import store from '@/store/index'
-import {
-  guid,
-  removeEmptyKey,
-  rsaEncrypted,
-  getUrlParams,
-  base64Decode,
-} from '@/utils/index'
+import { guid, removeEmptyKey, rsaEncrypted, getUrlParams, base64Decode } from '@/utils/index'
 
-const VUE_APP_API_SIGN_RSA_PUBLIC_KEY = base64Decode(
-  process.env.VUE_APP_API_SIGN_RSA_PUBLIC_KEY_BASE64,
-)
+const VUE_APP_API_SIGN_RSA_PUBLIC_KEY = base64Decode(process.env.VUE_APP_API_SIGN_RSA_PUBLIC_KEY_BASE64)
 
 export function createSign(config) {
   const { TDOA } = store.state.config
@@ -71,10 +63,7 @@ export function createSign(config) {
   }
 
   const Sign = md5(signStrArr.sort().toString())
-  const Nonce = rsaEncrypted(
-    VUE_APP_API_SIGN_RSA_PUBLIC_KEY,
-    `${uuidStr},${timestampStr}`,
-  )
+  const Nonce = rsaEncrypted(VUE_APP_API_SIGN_RSA_PUBLIC_KEY, `${uuidStr},${timestampStr}`)
 
   config.headers['Nonce'] = Nonce
   config.headers['Sign'] = Sign
@@ -88,10 +77,7 @@ export function createPureSign() {
   const keys = [uuidStr, timestampStr]
 
   const Sign = md5(keys.sort().toString())
-  const Nonce = rsaEncrypted(
-    VUE_APP_API_SIGN_RSA_PUBLIC_KEY,
-    `${uuidStr},${timestampStr}`,
-  )
+  const Nonce = rsaEncrypted(VUE_APP_API_SIGN_RSA_PUBLIC_KEY, `${uuidStr},${timestampStr}`)
 
   return {
     Sign,

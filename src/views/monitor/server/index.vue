@@ -11,21 +11,13 @@
     <a-row :gutter="[16, 16]">
       <a-col :span="12">
         <a-card title="CPU" :bordered="false" :loading="isLoading">
-          <a-table
-            :columns="cpuColumns"
-            :data-source="cpuData"
-            :pagination="false"
-          ></a-table>
+          <a-table :columns="cpuColumns" :data-source="cpuData" :pagination="false"></a-table>
         </a-card>
       </a-col>
 
       <a-col :span="12">
         <a-card title="内存" :bordered="false" :loading="isLoading">
-          <a-table
-            :columns="memColumns"
-            :data-source="memData"
-            :pagination="false"
-          ></a-table>
+          <a-table :columns="memColumns" :data-source="memData" :pagination="false"></a-table>
         </a-card>
       </a-col>
     </a-row>
@@ -81,12 +73,7 @@
     <a-row :gutter="[0, 16]">
       <a-col :span="24">
         <a-card title="磁盘状态" :bordered="false" :loading="isLoading">
-          <a-table
-            :columns="disksColumns"
-            :data-source="disksData"
-            :pagination="false"
-            rowKey="_mounted"
-          ></a-table>
+          <a-table :columns="disksColumns" :data-source="disksData" :pagination="false" rowKey="_mounted"></a-table>
         </a-card>
       </a-col>
     </a-row>
@@ -248,17 +235,7 @@ export default {
       const res = await this.$api.getSystemConfig()
       if (res.statusCode === 200) {
         // 处理 Cpu 数据
-        const {
-          cpus,
-          totalmem,
-          freemem,
-          hostname,
-          type,
-          ip,
-          arch,
-          publicIpIpv4,
-          internalIpIpv4,
-        } = res.data.os
+        const { cpus, totalmem, freemem, hostname, type, ip, arch, publicIpIpv4, internalIpIpv4 } = res.data.os
         let user = 0
         let sys = 0
         let idle = 0
@@ -316,11 +293,7 @@ export default {
             key: '4',
             name: '使用率',
             mem: `${(((totalmem - freemem) / totalmem) * 100).toFixed(2)}%`,
-            v8: `${(
-              (v8.getHeapStatistics.used_heap_size /
-                v8.getHeapStatistics.heap_size_limit) *
-              100
-            ).toFixed(2)}%`,
+            v8: `${((v8.getHeapStatistics.used_heap_size / v8.getHeapStatistics.heap_size_limit) * 100).toFixed(2)}%`,
           },
         ]
 

@@ -33,7 +33,5 @@ export default {
   title: 'Uni Pushy',
   pwa: false,
   iconfontUrl: '',
-  production:
-    process.env.NODE_ENV === 'production' &&
-    process.env.VUE_APP_PREVIEW !== 'true',
+  production: process.env.NODE_ENV === 'production' && process.env.VUE_APP_PREVIEW !== 'true',
 }

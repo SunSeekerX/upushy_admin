@@ -3,13 +3,10 @@
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-11-01 20:30:08
+ * @LastEditTime: 2021-09-14 23:44:33
 -->
 <template>
-  <a-dropdown
-    v-if="currentUser && currentUser.nickname"
-    placement="bottomRight"
-  >
+  <a-dropdown v-if="currentUser && currentUser.nickname" placement="bottomRight">
     <span class="ant-pro-account-avatar">
       <a-avatar
         size="small"
@@ -50,7 +47,7 @@ export default {
     },
   },
   methods: {
-    handleLogout(e) {
+    handleLogout() {
       Modal.confirm({
         title: '提示',
         content: '确定退出登录吗？',
@@ -71,6 +68,7 @@ export default {
   /deep/ .action {
     margin-right: 8px;
   }
+
   /deep/ .ant-dropdown-menu-item {
     min-width: 160px;
   }

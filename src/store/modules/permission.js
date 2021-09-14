@@ -17,7 +17,7 @@ const permission = {
 
   mutations: {
     // Generate routers
-    [GENERATE_ROUTERS]: state => {
+    [GENERATE_ROUTERS]: (state) => {
       state.addRouters = asyncRouterMap
       state.routers = constantRouterMap.concat(asyncRouterMap)
     },

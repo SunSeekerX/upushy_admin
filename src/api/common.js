@@ -25,7 +25,7 @@ export function getOSSStsConfig() {
 }
 
 // 系统信息
-export function getSystemConfig(){
+export function getSystemConfig() {
   return request({
     url: '/api/basic/config/system',
     method: 'GET',

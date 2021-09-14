@@ -8,12 +8,7 @@
 
 <template>
   <div>
-    <a-upload
-      accept=".wgt, .apk"
-      :file-list="fileList"
-      :remove="handleRemove"
-      :before-upload="beforeUpload"
-    >
+    <a-upload accept=".wgt, .apk" :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload">
       <a-button :disabled="fileList.length > 0">
         <a-icon type="upload" />
         选择文件
@@ -53,14 +48,7 @@ export default {
     async onInitOSSClient() {
       const res = await this.$api.getOSSStsConfig()
       if (res.statusCode === 200) {
-        const {
-          AccessKeyId,
-          AccessKeySecret,
-          SecurityToken,
-          bucket,
-          region,
-          Expiration,
-        } = res.data
+        const { AccessKeyId, AccessKeySecret, SecurityToken, bucket, region, Expiration } = res.data
         this.expiration = Expiration
         this.client = new OSS({
           accessKeyId: AccessKeyId,
@@ -149,18 +137,12 @@ export default {
       await this.handleVerifyExpiration()
       try {
         const date = new Date()
-        const fileName = `${this.$moment(date).format(
-          'YYYY-MM',
-        )}/${date.getTime()}.${fileList[0].name}`
+        const fileName = `${this.$moment(date).format('YYYY-MM')}/${date.getTime()}.${fileList[0].name}`
 
         // object-name可以自定义为文件名（例如file.txt）或目录（例如abc/test/file.txt）的形式，实现将文件上传至当前Bucket或Bucket下的指定目录。
-        const result = await this.client.multipartUpload(
-          fileName,
-          fileList[0],
-          {
-            progress: this.handleProgressDiaplay,
-          },
-        )
+        const result = await this.client.multipartUpload(fileName, fileList[0], {
+          progress: this.handleProgressDiaplay,
+        })
 
         this.$emit('on-upload-complete', result)
       } catch (e) {

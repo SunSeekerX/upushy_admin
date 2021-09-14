@@ -2,11 +2,7 @@
   <div>
     <a-row :gutter="24">
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
-        <chart-card
-          :loading="loading"
-          title="更新数"
-          :total="8846 | NumberFormat"
-        >
+        <chart-card :loading="loading" title="更新数" :total="8846 | NumberFormat">
           <!-- <a-tooltip title="123123123" slot="action">
             <a-icon type="info-circle-o" />
           </a-tooltip> -->
@@ -21,11 +17,7 @@
       </a-col>
 
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
-        <chart-card
-          :loading="loading"
-          title="更新数"
-          :total="8846 | NumberFormat"
-        >
+        <chart-card :loading="loading" title="更新数" :total="8846 | NumberFormat">
           <!-- <a-tooltip title="123123123" slot="action">
             <a-icon type="info-circle-o" />
           </a-tooltip> -->
@@ -40,11 +32,7 @@
       </a-col>
 
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
-        <chart-card
-          :loading="loading"
-          title="设备数"
-          :total="6560 | NumberFormat"
-        >
+        <chart-card :loading="loading" title="设备数" :total="6560 | NumberFormat">
           <!-- <a-tooltip :title="$t('dashboard.analysis.introduce')" slot="action">
             <a-icon type="info-circle-o" />
           </a-tooltip> -->
@@ -58,11 +46,7 @@
         </chart-card>
       </a-col>
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
-        <chart-card
-          :loading="loading"
-          title="更新数"
-          :total="8846 | NumberFormat"
-        >
+        <chart-card :loading="loading" title="更新数" :total="8846 | NumberFormat">
           <!-- <a-tooltip title="123123123" slot="action">
             <a-icon type="info-circle-o" />
           </a-tooltip> -->
@@ -79,11 +63,7 @@
 
     <a-card :loading="loading" :bordered="false" :body-style="{ padding: '0' }">
       <div class="salesCard">
-        <a-tabs
-          default-active-key="1"
-          size="large"
-          :tab-bar-style="{ marginBottom: '24px', paddingLeft: '16px' }"
-        >
+        <a-tabs default-active-key="1" size="large" :tab-bar-style="{ marginBottom: '24px', paddingLeft: '16px' }">
           <div class="extra-wrapper" slot="tabBarExtraContent">
             <div class="extra-item">
               <a>今天</a>

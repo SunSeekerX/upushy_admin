@@ -2,7 +2,7 @@
   <div class="setting-drawer-index-item">
     <h3 class="setting-drawer-index-title">{{ title }}</h3>
     <slot></slot>
-    <a-divider v-if="divider"/>
+    <a-divider v-if="divider" />
   </div>
 </template>
 
@@ -12,27 +12,25 @@ export default {
   props: {
     title: {
       type: String,
-      default: ''
+      default: '',
     },
     divider: {
       type: Boolean,
-      default: false
-    }
-  }
+      default: false,
+    },
+  },
 }
 </script>
 
 <style lang="less" scoped>
+.setting-drawer-index-item {
+  margin-bottom: 24px;
 
-  .setting-drawer-index-item {
-    margin-bottom: 24px;
-
-    .setting-drawer-index-title {
-      font-size: 14px;
-      color: rgba(0, 0, 0, .85);
-      line-height: 22px;
-      margin-bottom: 12px;
-    }
-
+  .setting-drawer-index-title {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.85);
+    line-height: 22px;
+    margin-bottom: 12px;
   }
+}
 </style>

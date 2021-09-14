@@ -1,14 +1,15 @@
 /**
- * @name:
+ * prettier 配置
+ * @url https://prettier.io/docs/en/options.html
  * @author: SunSeekerX
  * @Date: 2020-07-20 16:34:25
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-11-13 12:28:48
+ * @LastEditTime: 2021-09-14 23:32:10
  */
 
 module.exports = {
   // 行宽 default:80
-  printWidth: 100,
+  printWidth: 120,
   // tab 宽度 default:2
   tabWidth: 2,
   // 使用 tab 键 default:false
@@ -38,21 +39,11 @@ module.exports = {
   // default:false
   requirePragma: false,
   // 不包装 markdown text default:"preserve"
-  proseWrap: 'never',
+  proseWrap: 'preserve',
   // HTML空白敏感性 default:"css"
   htmlWhitespaceSensitivity: 'strict',
   // 在 *.vue 文件中 Script 和 Style 标签内的代码是否缩进 default:false
-  vueIndentScriptAndStyle: true,
+  vueIndentScriptAndStyle: false,
   // 末尾换行符 default:"lf"
   endOfLine: 'auto',
-  // default:"auto"
-  embeddedLanguageFormatting: 'auto',
-  overrides: [
-    {
-      files: '*.md',
-      options: {
-        tabWidth: 2,
-      },
-    },
-  ],
 }

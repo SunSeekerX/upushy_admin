@@ -40,9 +40,7 @@ export function getUrlParams(url) {
  * @param { Number } radix 基数
  */
 export function guid(len = 32, radix = 16) {
-  const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(
-    '',
-  )
+  const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
   const uuid = []
   let i = 0
   radix = radix || chars.length
@@ -132,10 +130,7 @@ export function secToTime(second) {
  */
 // 生成base64二维码图片
 export function strToQrcodeBase64(str, options) {
-  options = Object.assign(
-    { width: 200, margin: 0, colorDark: '#000000', colorLight: '#ffffff' },
-    options,
-  )
+  options = Object.assign({ width: 200, margin: 0, colorDark: '#000000', colorLight: '#ffffff' }, options)
   return new Promise((resolve, reject) => {
     QRCode.toDataURL(
       str,
@@ -149,7 +144,7 @@ export function strToQrcodeBase64(str, options) {
       },
       (err, url) => {
         err ? reject(err) : resolve(url)
-      },
+      }
     )
   })
 }

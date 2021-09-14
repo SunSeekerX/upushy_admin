@@ -7,12 +7,7 @@
 -->
 <template>
   <div class="main">
-    <a-form-model
-      class="user-layout-login"
-      ref="loginForm"
-      :model="loginForm"
-      :rules="rules"
-    >
+    <a-form-model class="user-layout-login" ref="loginForm" :model="loginForm" :rules="rules">
       <a-alert
         v-if="isLoginError"
         type="error"
@@ -22,53 +17,26 @@
       />
 
       <a-form-model-item ref="username" prop="username">
-        <a-input
-          size="large"
-          type="text"
-          placeholder="用户名"
-          v-model="loginForm.username"
-        >
-          <a-icon
-            slot="prefix"
-            type="user"
-            :style="{ color: 'rgba(0,0,0,.25)' }"
-          />
+        <a-input size="large" type="text" placeholder="用户名" v-model="loginForm.username">
+          <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }" />
         </a-input>
       </a-form-model-item>
 
       <a-form-model-item ref="password" prop="password">
-        <a-input-password
-          size="large"
-          placeholder="密码"
-          v-model="loginForm.password"
-        >
-          <a-icon
-            slot="prefix"
-            type="lock"
-            :style="{ color: 'rgba(0,0,0,.25)' }"
-          />
+        <a-input-password size="large" placeholder="密码" v-model="loginForm.password">
+          <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }" />
         </a-input-password>
       </a-form-model-item>
 
       <a-form-model-item ref="imgCaptcha" prop="imgCaptcha">
         <a-row>
           <a-col :span="14">
-            <a-input
-              size="large"
-              :maxLength="4"
-              placeholder="图片验证码"
-              type="text"
-              v-model="loginForm.imgCaptcha"
-            />
+            <a-input size="large" :maxLength="4" placeholder="图片验证码" type="text" v-model="loginForm.imgCaptcha" />
           </a-col>
 
           <a-col :span="10">
             <a-spin :spinning="state.isCaptchaImgLoading">
-              <div
-                @click="onGetCaptchaImg"
-                class="captcha-img"
-                v-html="imgCaptchaUrl"
-              ></div>
+              <div @click="onGetCaptchaImg" class="captcha-img" v-html="imgCaptchaUrl"></div>
               <!-- <img
                 class="captcha-img"
                 @click="onGetCaptchaImg"
@@ -81,7 +49,7 @@
         </a-row>
       </a-form-model-item>
 
-      <a-form-model-item style="margin-top:24px">
+      <a-form-model-item style="margin-top: 24px">
         <a-button
           size="large"
           type="primary"
@@ -189,15 +157,15 @@ export default {
     // 点击登录
     onLogin() {
       this.state.isLogginBtnLoading = true
-      this.$refs.loginForm.validate(valid => {
+      this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.Login(
             Object.assign({}, this.loginForm, {
               imgCaptcha: this.loginForm.imgCaptcha.toLowerCase(),
               password: md5(this.loginForm.password),
-            }),
+            })
           )
-            .then(res => {
+            .then((res) => {
               if (res.statusCode === 200) {
                 this.$router.push({ path: '/' })
                 // 延迟 1 秒显示欢迎信息
@@ -213,7 +181,7 @@ export default {
                 this.$handleError.handleRequestFail(res)
               }
             })
-            .catch(err => this.$handleError.handleApiRequestException(err))
+            .catch((err) => this.$handleError.handleApiRequestException(err))
             .finally(() => {
               this.state.isLogginBtnLoading = false
             })
@@ -295,6 +263,7 @@ export default {
     cursor: pointer;
     width: 120px;
     height: 40px;
+
     ::v-deep svg {
       height: 40px;
     }

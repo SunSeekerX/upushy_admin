@@ -1,5 +1,5 @@
 /**
- * @name: 
+ * @name:
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
@@ -41,5 +41,5 @@ export {
   // FooterToolbar,
   // Tree,
   // MultiTab,
-  Dialog
+  Dialog,
 }

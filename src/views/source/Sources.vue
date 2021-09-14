@@ -11,22 +11,14 @@
       <div class="table-operator">
         <a-row align="middle" type="flex">
           <a-col :xs="24" :md="12">
-            <a-button
-              type="primary"
-              icon="plus"
-              @click="onCreateSourceModelOpen"
-            >
+            <a-button type="primary" icon="plus" @click="onCreateSourceModelOpen">
               新建
             </a-button>
           </a-col>
 
           <a-col :xs="24" :md="12">
             <a-tabs v-model="sourcesType" size="small" @change="onTagChange">
-              <a-tab-pane
-                v-for="item of tabs"
-                :key="item.key"
-                :disabled="state.isTableLoading"
-              >
+              <a-tab-pane v-for="item of tabs" :key="item.key" :disabled="state.isTableLoading">
                 <span slot="tab">
                   <a-icon :type="item.type" />
                   {{ item.value }}
@@ -101,7 +93,7 @@
         <template slot="status" slot-scope="text, record">
           <a-switch
             @click="
-              checked =>
+              (checked) =>
                 onUpdateSwitch({
                   checked,
                   record,
@@ -128,21 +120,12 @@
         <template slot="action" slot-scope="text, record, index">
           <a-row>
             <a-col :span="8">
-              <a-button
-                @click="onClickViewDesc(record)"
-                type="primary"
-                shape="circle"
-                icon="search"
-              >
+              <a-button @click="onClickViewDesc(record)" type="primary" shape="circle" icon="search">
                 <!-- 查看详情 -->
               </a-button>
             </a-col>
             <a-col :span="8">
-              <a-button
-                @click="onEdit(record)"
-                shape="circle"
-                icon="edit"
-              ></a-button>
+              <a-button @click="onEdit(record)" shape="circle" icon="edit"></a-button>
             </a-col>
             <a-col :span="8">
               <a-popconfirm
@@ -167,13 +150,7 @@
         @ok="onCreateSource"
         @cancel="state.isCreateShow = false"
       >
-        <a-form-model
-          ref="createForm"
-          :model="form"
-          :rules="rules"
-          :label-col="labelCol"
-          :wrapper-col="wrapperCol"
-        >
+        <a-form-model ref="createForm" :model="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
           <a-form-model-item label="项目ID" ref="projectId" prop="projectId">
             <a-input disabled v-model="form.projectId" prop="projectId" />
           </a-form-model-item>
@@ -182,16 +159,9 @@
             <a-input v-model="form.version" />
           </a-form-model-item>
 
-          <a-form-model-item
-            label="版本号"
-            ref="versionCode"
-            prop="versionCode"
-          >
+          <a-form-model-item label="版本号" ref="versionCode" prop="versionCode">
             <a-input
-              @change="
-                e =>
-                  (form.versionCode = Number(e.target.value.replace(/\D/g, '')))
-              "
+              @change="(e) => (form.versionCode = Number(e.target.value.replace(/\D/g, '')))"
               v-model="form.versionCode"
             />
           </a-form-model-item>
@@ -203,12 +173,7 @@
             prop="nativeVersionCode"
           >
             <a-input
-              @change="
-                e =>
-                  (form.nativeVersionCode = Number(
-                    e.target.value.replace(/\D/g, ''),
-                  ))
-              "
+              @change="(e) => (form.nativeVersionCode = Number(e.target.value.replace(/\D/g, '')))"
               v-model="form.nativeVersionCode"
             />
           </a-form-model-item>
@@ -241,7 +206,7 @@
           <a-form-model-item label="是否启用" prop="status">
             <a-switch
               @click="
-                checked => {
+                (checked) => {
                   checked ? (form.status = 1) : (form.status = 0)
                 }
               "
@@ -259,27 +224,14 @@
           </a-form-model-item>
 
           <a-form-model-item label="更新日志" ref="changelog" prop="changelog">
-            <a-textarea
-              :auto-size="{ minRows: 9, maxRows: 15 }"
-              :maxLength="255"
-              v-model="form.changelog"
-            />
+            <a-textarea :auto-size="{ minRows: 9, maxRows: 15 }" :maxLength="255" v-model="form.changelog" />
           </a-form-model-item>
 
           <a-form-model-item label="备注" ref="remark" prop="remark">
-            <a-textarea
-              :auto-size="{ minRows: 9, maxRows: 15 }"
-              :maxLength="255"
-              v-model="form.remark"
-            />
+            <a-textarea :auto-size="{ minRows: 9, maxRows: 15 }" :maxLength="255" v-model="form.remark" />
           </a-form-model-item>
 
-          <a-form-model-item
-            v-if="form.type === 4"
-            label="资源链接"
-            ref="url"
-            prop="url"
-          >
+          <a-form-model-item v-if="form.type === 4" label="资源链接" ref="url" prop="url">
             <a-input v-model="form.url" />
           </a-form-model-item>
 
@@ -319,12 +271,7 @@
 
           <a-form-model-item label="版本号" prop="versionCode">
             <a-input
-              @change="
-                e =>
-                  (editForm.versionCode = Number(
-                    e.target.value.replace(/\D/g, ''),
-                  ))
-              "
+              @change="(e) => (editForm.versionCode = Number(e.target.value.replace(/\D/g, '')))"
               v-model="editForm.versionCode"
             />
           </a-form-model-item>
@@ -336,12 +283,7 @@
             prop="nativeVersionCode"
           >
             <a-input
-              @change="
-                e =>
-                  (editForm.nativeVersionCode = Number(
-                    e.target.value.replace(/\D/g, ''),
-                  ))
-              "
+              @change="(e) => (editForm.nativeVersionCode = Number(e.target.value.replace(/\D/g, '')))"
               v-model="editForm.nativeVersionCode"
             />
           </a-form-model-item>
@@ -354,10 +296,7 @@
           </a-form-model-item>-->
 
           <a-form-model-item label="更新类型" prop="updateType">
-            <a-select
-              v-model="editForm.updateType"
-              placeholder="请选择更新类型"
-            >
+            <a-select v-model="editForm.updateType" placeholder="请选择更新类型">
               <a-select-option :value="1">
                 用户同意更新（用户感知）
               </a-select-option>
@@ -380,19 +319,11 @@
           </a-form-model-item>
 
           <a-form-model-item label="更新日志" ref="changelog" prop="changelog">
-            <a-textarea
-              :auto-size="{ minRows: 9, maxRows: 15 }"
-              :maxLength="255"
-              v-model="editForm.changelog"
-            />
+            <a-textarea :auto-size="{ minRows: 9, maxRows: 15 }" :maxLength="255" v-model="editForm.changelog" />
           </a-form-model-item>
 
           <a-form-model-item label="备注" ref="remark" prop="remark">
-            <a-textarea
-              :auto-size="{ minRows: 9, maxRows: 15 }"
-              :maxLength="255"
-              v-model="editForm.remark"
-            />
+            <a-textarea :auto-size="{ minRows: 9, maxRows: 15 }" :maxLength="255" v-model="editForm.remark" />
           </a-form-model-item>
 
           <a-form-model-item label="资源包地址" prop="url">
@@ -419,10 +350,7 @@
           <a-descriptions-item label="版本号">
             {{ descRecord.versionCode }}
           </a-descriptions-item>
-          <a-descriptions-item
-            v-if="[1, 2].includes(sourcesType)"
-            label="原生版本号"
-          >
+          <a-descriptions-item v-if="[1, 2].includes(sourcesType)" label="原生版本号">
             {{ descRecord.nativeVersionCode }}
           </a-descriptions-item>
           <!-- <a-descriptions-item label="更新日志">
@@ -517,7 +445,7 @@ export default {
             align: 'center',
             dataIndex: 'updateType',
             scopedSlots: { customRender: 'isForceUpdate' },
-            customRender: text => {
+            customRender: (text) => {
               switch (text) {
                 case 1:
                   return '用户同意更新'
@@ -625,7 +553,7 @@ export default {
             align: 'center',
             dataIndex: 'updateType',
             scopedSlots: { customRender: 'isForceUpdate' },
-            customRender: text => {
+            customRender: (text) => {
               switch (text) {
                 case 1:
                   return '用户同意更新'
@@ -1019,15 +947,13 @@ export default {
   methods: {
     // 创建
     async onCreateSource() {
-      this.$refs.createForm.validate(async valid => {
+      this.$refs.createForm.validate(async (valid) => {
         if (valid) {
           this.state.isCreateLoading = true
           const res = await this.$api.createSource(
             Object.assign({}, this.form, {
-              nativeVersionCode: [1, 2].includes(this.form.type)
-                ? this.form.nativeVersionCode
-                : '',
-            }),
+              nativeVersionCode: [1, 2].includes(this.form.type) ? this.form.nativeVersionCode : '',
+            })
           )
           if (res.statusCode === 200) {
             this.$notification.success({
@@ -1072,7 +998,7 @@ export default {
 
     // 更新
     async onUpdate() {
-      this.$refs.editForm.validate(async valid => {
+      this.$refs.editForm.validate(async (valid) => {
         if (valid) {
           this.state.isEditLoading = true
           const res = await this.$api.updateSource(this.editForm)
@@ -1205,12 +1131,9 @@ export default {
       // 合并项
       this.descRecord = Object.assign({}, record)
       // 创建二维码
-      this.descRecord.qrcodeUrl = await this.$util.strToQrcodeBase64(
-        record.url,
-        {
-          colorDark: '#666666',
-        },
-      )
+      this.descRecord.qrcodeUrl = await this.$util.strToQrcodeBase64(record.url, {
+        colorDark: '#666666',
+      })
       // 显示编辑modal
       this.state.isDescShow = true
     },

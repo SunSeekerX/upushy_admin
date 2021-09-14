@@ -13,7 +13,7 @@ import { UserLayout, BasicLayout } from '@/layouts'
 
 const RouteView = {
   name: 'RouteView',
-  render: h => h('router-view'),
+  render: (h) => h('router-view'),
 }
 
 /**
@@ -122,20 +122,17 @@ export const constantRouterMap = [
       {
         path: 'login',
         name: 'login',
-        component: () =>
-          import(/* webpackChunkName: "user" */ '@/views/user/Login'),
+        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Login'),
       },
       {
         path: 'register',
         name: 'register',
-        component: () =>
-          import(/* webpackChunkName: "user" */ '@/views/user/Register'),
+        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Register'),
       },
       {
         path: 'register-result',
         name: 'registerResult',
-        component: () =>
-          import(/* webpackChunkName: "user" */ '@/views/user/RegisterResult'),
+        component: () => import(/* webpackChunkName: "user" */ '@/views/user/RegisterResult'),
       },
       {
         path: 'recover',
@@ -147,17 +144,15 @@ export const constantRouterMap = [
 
   {
     path: '/404',
-    component: () =>
-      import(/* webpackChunkName: "fail" */ '@/views/exception/404'),
+    component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/404'),
   },
 ]
 
 // hack router push callback
 const originalPush = Router.prototype.push
 Router.prototype.push = function push(location, onResolve, onReject) {
-  if (onResolve || onReject)
-    return originalPush.call(this, location, onResolve, onReject)
-  return originalPush.call(this, location).catch(err => err)
+  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
+  return originalPush.call(this, location).catch((err) => err)
 }
 
 Vue.use(Router)

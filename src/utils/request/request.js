@@ -27,12 +27,12 @@ export default function createRequest(options) {
         withCredentials: false,
         timeout: 15000,
       },
-      options,
-    ),
+      options
+    )
   )
 
   // Error handler
-  const errorHandler = error => {
+  const errorHandler = (error) => {
     return {
       statusCode: error.response.status,
       message: error.message,
@@ -40,7 +40,7 @@ export default function createRequest(options) {
   }
 
   // Request interceptor
-  instance.interceptors.request.use(config => {
+  instance.interceptors.request.use((config) => {
     const { token } = store.getters
     token && (config.headers['Authorization'] = `Bearer ${token}`)
     // You can't return createSign(config) directly
@@ -49,7 +49,7 @@ export default function createRequest(options) {
   }, errorHandler)
 
   // Response interceptor
-  instance.interceptors.response.use(response => response.data, errorHandler)
+  instance.interceptors.response.use((response) => response.data, errorHandler)
 
   // Definition get new token api
   const getNewToken = ({ refreshToken }) =>

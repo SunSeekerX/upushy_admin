@@ -14,11 +14,7 @@
     <setting-drawer :settings="settings" @change="handleSettingChange" />
 
     <template v-slot:rightContentRender>
-      <right-content
-        :top-menu="settings.layout === 'topmenu'"
-        :is-mobile="isMobile"
-        :theme="settings.theme"
-      />
+      <right-content :top-menu="settings.layout === 'topmenu'" :is-mobile="isMobile" :theme="settings.theme" />
     </template>
 
     <template v-slot:footerRender>
@@ -77,11 +73,11 @@ export default {
   computed: {
     ...mapState({
       // 动态主路由
-      mainMenu: state => state.permission.addRouters,
+      mainMenu: (state) => state.permission.addRouters,
     }),
   },
   created() {
-    const routes = this.mainMenu.find(item => item.path === '/')
+    const routes = this.mainMenu.find((item) => item.path === '/')
     this.menus = (routes && routes.children) || []
     // 处理侧栏收起状态
     this.$watch('collapsed', () => {

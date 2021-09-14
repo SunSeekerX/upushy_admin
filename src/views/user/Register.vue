@@ -14,36 +14,21 @@
     <!-- 注册表单 -->
     <a-form-model ref="registerForm" :model="form" :rules="rules">
       <a-form-model-item ref="nickname" prop="nickname">
-        <a-input
-          size="large"
-          type="text"
-          placeholder="昵称"
-          v-model="form.nickname"
-        ></a-input>
+        <a-input size="large" type="text" placeholder="昵称" v-model="form.nickname"></a-input>
       </a-form-model-item>
 
       <a-form-model-item ref="username" prop="username">
-        <a-input
-          size="large"
-          type="text"
-          placeholder="账号"
-          v-model="form.username"
-        ></a-input>
+        <a-input size="large" type="text" placeholder="账号" v-model="form.username"></a-input>
       </a-form-model-item>
 
       <a-form-model-item ref="email" prop="email">
-        <a-input
-          size="large"
-          type="text"
-          placeholder="邮箱"
-          v-model="form.email"
-        ></a-input>
+        <a-input size="large" type="text" placeholder="邮箱" v-model="form.email"></a-input>
       </a-form-model-item>
 
       <a-popover
         placement="rightTop"
         :trigger="['focus']"
-        :getPopupContainer="trigger => trigger.parentElement"
+        :getPopupContainer="(trigger) => trigger.parentElement"
         v-model="state.passwordLevelChecked"
       >
         <template slot="content">
@@ -53,11 +38,7 @@
               <span>{{ passwordLevelName }}</span>
             </div>
 
-            <a-progress
-              :percent="state.percent"
-              :showInfo="false"
-              :strokeColor="passwordLevelColor"
-            />
+            <a-progress :percent="state.percent" :showInfo="false" :strokeColor="passwordLevelColor" />
             <div style="margin-top: 10px;">
               <span>请至少输入 6 个字符。请不要使用容易被猜到的密码。</span>
             </div>
@@ -75,38 +56,24 @@
       </a-popover>
 
       <a-form-model-item ref="password2" prop="password2">
-        <a-input-password
-          size="large"
-          placeholder="确认密码"
-          v-model="form.password2"
-        ></a-input-password>
+        <a-input-password size="large" placeholder="确认密码" v-model="form.password2"></a-input-password>
       </a-form-model-item>
 
       <a-form-model-item ref="imgCaptcha" prop="imgCaptcha">
         <a-row>
           <a-col :span="14">
-            <a-input
-              size="large"
-              :maxLength="4"
-              placeholder="图片验证码"
-              type="text"
-              v-model="form.imgCaptcha"
-            />
+            <a-input size="large" :maxLength="4" placeholder="图片验证码" type="text" v-model="form.imgCaptcha" />
           </a-col>
 
           <a-col :span="10">
             <a-spin :spinning="state.isCaptchaImgLoading">
-              <div
-                @click="onGetCaptchaImg"
-                class="captcha-img"
-                v-html="imgCaptchaUrl"
-              ></div>
+              <div @click="onGetCaptchaImg" class="captcha-img" v-html="imgCaptchaUrl"></div>
             </a-spin>
           </a-col>
         </a-row>
       </a-form-model-item>
 
-      <a-form-model-item style="margin-top:24px">
+      <a-form-model-item style="margin-top: 24px">
         <a-button
           size="large"
           type="primary"
@@ -326,13 +293,13 @@ export default {
     async onRegister() {
       this.state.isRegisterBtnLoading = true
 
-      this.$refs.registerForm.validate(async valid => {
+      this.$refs.registerForm.validate(async (valid) => {
         if (valid) {
           const res = await this.$api.register(
             Object.assign({}, this.form, {
               imgCaptcha: this.form.imgCaptcha.toLowerCase(),
               password: md5(this.form.password),
-            }),
+            })
           )
 
           if (res.statusCode === 200) {
@@ -364,7 +331,7 @@ export default {
 <style lang="less">
 .user-register {
   &.error {
-    color: #ff0000;
+    color: #f00;
   }
 
   &.warning {
@@ -409,6 +376,7 @@ export default {
     cursor: pointer;
     width: 120px;
     height: 40px;
+
     ::v-deep svg {
       height: 40px;
     }

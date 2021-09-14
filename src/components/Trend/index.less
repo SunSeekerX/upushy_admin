@@ -1,6 +1,6 @@
-@import "../index";
+@import '../index';
 
-@trend-prefix-cls: ~"@{ant-pro-prefix}-trend";
+@trend-prefix-cls: ~'@{ant-pro-prefix}-trend';
 
 .@{trend-prefix-cls} {
   display: inline-block;
@@ -22,12 +22,13 @@
   .item-text {
     display: inline-block;
     margin-left: 8px;
-    color: rgba(0,0,0,.85);
+    color: rgba(0, 0, 0, 0.85);
   }
 
   .up {
     color: @red-6;
   }
+
   .down {
     color: @green-6;
     top: -1px;
@@ -36,6 +37,7 @@
   &.reverse-color .up {
     color: @green-6;
   }
+
   &.reverse-color .down {
     color: @red-6;
   }

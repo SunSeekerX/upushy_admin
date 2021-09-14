@@ -60,5 +60,5 @@ new Vue({
   store,
   i18n,
   created: bootstrap,
-  render: h => h(App),
+  render: (h) => h(App),
 }).$mount('#app')

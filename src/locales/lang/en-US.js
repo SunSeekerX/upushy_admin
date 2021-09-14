@@ -1,5 +1,5 @@
 /**
- * @name: 
+ * @name:
  * @author: SunSeekerX
  * @Date: 2021-02-09 13:29:18
  * @LastEditors: SunSeekerX
@@ -15,11 +15,11 @@ import setting from './en-US/setting'
 const components = {
   antLocale: antdEnUS,
   momentName: 'eu',
-  momentLocale: momentEU
+  momentLocale: momentEU,
 }
 
 const locale = {
-  'message': '-',
+  message: '-',
   'menu.home': 'Home',
   'menu.dashboard': 'Dashboard',
   'menu.dashboard.analysis': 'Analysis',

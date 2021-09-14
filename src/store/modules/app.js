@@ -90,7 +90,7 @@ const app = {
           .then(() => {
             resolve()
           })
-          .catch(e => {
+          .catch((e) => {
             reject(e)
           })
       })

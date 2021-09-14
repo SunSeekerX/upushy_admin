@@ -28,9 +28,7 @@ const defaultRoutePath = '/dashboard/workplace'
 router.beforeEach(async (to, from, next) => {
   NProgress.start() // start progress bar
 
-  to.meta &&
-    typeof to.meta.title !== 'undefined' &&
-    setDocumentTitle(`${i18nRender(to.meta.title)} - ${domTitle}`)
+  to.meta && typeof to.meta.title !== 'undefined' && setDocumentTitle(`${i18nRender(to.meta.title)} - ${domTitle}`)
 
   const { config } = store.state
   if (!config.isUpdated) {
@@ -53,7 +51,7 @@ router.beforeEach(async (to, from, next) => {
         // for (const route of store.getters.addRouters) {
         //   router.addRoute(route)
         // }
-        
+
         next({ ...to, replace: true })
       } else {
         next()

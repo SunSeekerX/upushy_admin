@@ -17,14 +17,7 @@ export function registerCaptcha() {
 }
 
 // 注册
-export function register({
-  username,
-  password,
-  email,
-  nickname,
-  imgCaptcha,
-  imgCaptchaKey,
-}) {
+export function register({ username, password, email, nickname, imgCaptcha, imgCaptchaKey }) {
   return request({
     url: '/api/user',
     method: 'POST',

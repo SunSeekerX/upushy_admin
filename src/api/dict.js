@@ -67,15 +67,7 @@ export function getDictDataList({ dictTypeId, pageNum, pageSize }) {
 }
 
 // 新建字典数据
-export function addDictData({
-  dictTypeId,
-  label,
-  value,
-  sort,
-  isDefault,
-  status,
-  remark,
-}) {
+export function addDictData({ dictTypeId, label, value, sort, isDefault, status, remark }) {
   return request({
     url: '/api/dict/data',
     method: 'POST',
@@ -110,15 +102,7 @@ export function removeDictData({ id, ids }) {
 }
 
 // 修改字典数据
-export function editDictData({
-  id,
-  label,
-  value,
-  sort,
-  isDefault,
-  status,
-  remark,
-}) {
+export function editDictData({ id, label, value, sort, isDefault, status, remark }) {
   return request({
     url: '/api/dict/data',
     method: 'PUT',

@@ -89,6 +89,7 @@ export default {
           top: 2px;
         }
       }
+
       .desc {
         font-size: 14px;
         color: rgba(0, 0, 0, 0.45);
@@ -114,14 +115,17 @@ export default {
       .links {
         margin-bottom: 8px;
         font-size: 14px;
+
         a {
           color: rgba(0, 0, 0, 0.45);
           transition: all 0.3s;
+
           &:not(:last-child) {
             margin-right: 40px;
           }
         }
       }
+
       .copyright {
         color: rgba(0, 0, 0, 0.45);
         font-size: 14px;

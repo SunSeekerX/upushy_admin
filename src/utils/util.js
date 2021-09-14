@@ -1,3 +1,11 @@
+/**
+ * @name:
+ * @author: SunSeekerX
+ * @Date: 2021-02-09 13:29:18
+ * @LastEditors: SunSeekerX
+ * @LastEditTime: 2021-09-14 23:44:02
+ */
+
 export function timeFix() {
   const time = new Date()
   const hour = time.getHours()
@@ -21,7 +29,7 @@ export function handleScrollHeader(callback) {
   callback = callback || function() {}
   window.addEventListener(
     'scroll',
-    event => {
+    () => {
       clearTimeout(timer)
       timer = setTimeout(() => {
         let direction = 'up'
@@ -35,13 +43,13 @@ export function handleScrollHeader(callback) {
         beforeScrollTop = afterScrollTop
       }, 50)
     },
-    false,
+    false
   )
 }
 
 export function isIE() {
   const bw = window.navigator.userAgent
-  const compare = s => bw.indexOf(s) >= 0
+  const compare = (s) => bw.indexOf(s) >= 0
   const ie11 = (() => 'ActiveXObject' in window)()
   return compare('MSIE') || ie11
 }
