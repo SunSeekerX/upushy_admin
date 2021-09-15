@@ -1,9 +1,9 @@
 /**
- * @name:
+ * 路由配置
  * @author: SunSeekerX
  * @Date: 2020-07-27 09:56:07
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-04-23 00:30:45
+ * @LastEditTime: 2021-09-15 20:36:45
  */
 
 import Vue from 'vue'
@@ -121,24 +121,24 @@ export const constantRouterMap = [
     children: [
       {
         path: 'login',
-        name: 'login',
-        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Login'),
+        name: 'Login',
+        component: () => import(/* webpackChunkName: "login" */ '@/views/user/Login'),
       },
       {
         path: 'register',
-        name: 'register',
-        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Register'),
+        name: 'Register',
+        component: () => import(/* webpackChunkName: "register" */ '@/views/user/Register'),
       },
       {
         path: 'register-result',
-        name: 'registerResult',
-        component: () => import(/* webpackChunkName: "user" */ '@/views/user/RegisterResult'),
+        name: 'RegisterResult',
+        component: () => import(/* webpackChunkName: "register-result" */ '@/views/user/RegisterResult'),
       },
-      {
-        path: 'recover',
-        name: 'recover',
-        component: undefined,
-      },
+      // {
+      //   path: 'recover',
+      //   name: 'recover',
+      //   component: undefined,
+      // },
     ],
   },
 
