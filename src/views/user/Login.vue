@@ -12,7 +12,7 @@
         v-if="isLoginError"
         type="error"
         showIcon
-        style="margin-bottom: 24px;"
+        style="margin-bottom: 24px"
         message="账户或密码错误（admin/ant.design )"
       />
 
@@ -74,9 +74,7 @@
         <a>
           <a-icon class="item-icon" type="weibo-circle"></a-icon>
         </a>-->
-        <router-link class="register" :to="{ name: 'register' }">
-          注册账户
-        </router-link>
+        <router-link class="register" :to="{ name: 'Register' }"> 注册账户 </router-link>
       </div>
     </a-form-model>
   </div>

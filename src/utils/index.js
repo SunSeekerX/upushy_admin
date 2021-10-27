@@ -1,11 +1,3 @@
-/**
- * @name:
- * @author: SunSeekerX
- * @Date: 2020-08-10 10:29:06
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-15 00:02:06
- */
-
 import dayjs from 'dayjs'
 import QRCode from 'qrcode'
 

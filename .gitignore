@@ -21,8 +21,8 @@ yarn-error.log*
 *.sw*
 
 # Env
-.env.development
-.env.production
+.env.**
+!.env.example
 
 # another files
 package-lock.json

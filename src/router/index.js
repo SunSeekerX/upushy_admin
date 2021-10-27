@@ -168,7 +168,6 @@ const router = createRouter()
 
 export function resetRouter() {
   const newRouter = createRouter()
-  // reset router
   router.matcher = newRouter.matcher
 }
 
