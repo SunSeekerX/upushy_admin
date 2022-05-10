@@ -72,11 +72,7 @@
         >
           确定
         </a-button>
-        <<<<<<< Updated upstream:src/views/user/Register.vue
-        <router-link class="login" :to="{ name: 'login' }"> 使用已有账户登录 </router-link>
-        =======
         <router-link class="login" :to="{ path: '/auth/login' }"> 使用已有账户登录 </router-link>
-        >>>>>>> Stashed changes:src/views/auth/register.vue
       </a-form-model-item>
     </a-form-model>
   </div>
