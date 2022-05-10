@@ -1,11 +1,3 @@
-/**
- * @name:
- * @author: SunSeekerX
- * @Date: 2020-10-28 22:14:14
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-11-03 10:45:39
- */
-
 import { request } from '@/utils/request/index'
 
 // 登录日志列表

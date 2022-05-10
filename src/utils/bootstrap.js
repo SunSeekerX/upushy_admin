@@ -1,11 +1,3 @@
-/**
- * @name:
- * @author: SunSeekerX
- * @Date: 2020-07-27 09:56:07
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-15 00:17:37
- */
-
 import storage from 'store'
 
 import store from '@/store'

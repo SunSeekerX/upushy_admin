@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: 'Exception404',
+  name: 'PageException404',
   methods: {
     toHome() {
       this.$router.push({ path: '/' })

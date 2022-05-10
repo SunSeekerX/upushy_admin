@@ -1,12 +1,4 @@
 /**
- * 程序入口
- * @author: SunSeekerX
- * @Date: 2020-07-26 17:49:41
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-15 00:06:28
- */
-
-/**
  * @name 引入依赖库
  */
 import 'core-js/stable'

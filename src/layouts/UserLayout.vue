@@ -5,12 +5,11 @@
         <div class="header">
           <a href="/">
             <img src="~@/assets/logo.svg" class="logo" alt="logo" />
-            <span class="title">Uni Pushy</span>
+            <span class="title">UPushy</span>
           </a>
         </div>
-        <div class="desc">Uni Pushy 怎么简单怎么来</div>
+        <div class="desc">UPushy - uni-app 热更新管理系统</div>
       </div>
-
       <router-view />
     </div>
   </div>

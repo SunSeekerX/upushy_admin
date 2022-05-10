@@ -6,46 +6,13 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-// const isProd = process.env.NODE_ENV === 'production'
-
-// const assetsCDN = {
-//   // webpack build externals
-//   externals: {
-//     vue: 'Vue',
-//     'vue-router': 'VueRouter',
-//     vuex: 'Vuex',
-//     axios: 'axios',
-//   },
-//   css: [],
-//   js: [
-//     '//cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js',
-//     '//cdn.jsdelivr.net/npm/vue-router@3.4.9/dist/vue-router.min.js',
-//     '//cdn.jsdelivr.net/npm/vuex@3.5.1/dist/vuex.min.js',
-//     '//cdn.jsdelivr.net/npm/axios@0.21.0/dist/axios.min.js',
-//   ],
-// }
-
-// vue.config.js
 const vueConfig = {
   publicPath: './',
   configureWebpack: {
-    // webpack plugins
-    plugins: [
-      // Ignore all locale files of moment.js
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-      // new webpack.DefinePlugin({
-      //   APP_VERSION: `"${require('./package.json').version}"`,
-      //   GIT_HASH: JSON.stringify(getGitHash()),
-      //   BUILD_DATE: buildDate,
-      // }),
-    ],
-    // if prod, add externals
-    // externals: isProd ? assetsCDN.externals : {},
+    plugins: [new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)],
   },
-
-  chainWebpack: config => {
+  chainWebpack: (config) => {
     config.resolve.alias.set('@$', resolve('src'))
-
     const svgRule = config.module.rule('svg')
     svgRule.uses.clear()
     svgRule
@@ -61,17 +28,7 @@ const vueConfig = {
       .options({
         name: 'assets/[name].[hash:8].[ext]',
       })
-
-    // if prod is on
-    // assets require on cdn
-    // if (isProd) {
-    //   config.plugin('html').tap(args => {
-    //     args[0].cdn = assetsCDN
-    //     return args
-    //   })
-    // }
   },
-
   css: {
     loaderOptions: {
       less: {
@@ -87,20 +44,14 @@ const vueConfig = {
       },
     },
   },
-
   devServer: {
     port: 8000,
   },
-
   productionSourceMap: false,
-  lintOnSave: undefined,
-  // babel-loader no-ignore node_modules/*
-  transpileDependencies: [],
+  lintOnSave: true,
 }
 
-// preview.pro.loacg.com only do not use in your production;
 if (process.env.VUE_APP_PREVIEW === 'true') {
-  // add `ThemeColorReplacer` plugin to webpack plugins
   vueConfig.configureWebpack.plugins.push(createThemeColorReplacerPlugin())
 }
 

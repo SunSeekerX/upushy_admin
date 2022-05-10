@@ -1,10 +1,3 @@
-<!--
- * @name: 
- * @author: SunSeekerX
- * @Date: 2021-02-09 16:32:12
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-02-09 16:32:15
--->
 <template>
   <div :style="{ padding: '0 0 32px 32px' }">
     <h4 :style="{ marginBottom: '20px' }">{{ title }}</h4>
@@ -18,7 +11,7 @@
 
 <script>
 export default {
-  name: 'Bar',
+  name: 'ChartBar',
   props: {
     title: {
       type: String,

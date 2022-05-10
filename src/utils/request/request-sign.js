@@ -1,11 +1,3 @@
-/**
- * @name:
- * @author: SunSeekerX
- * @Date: 2020-08-17 09:41:41
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-14 16:05:37
- */
-
 import md5 from 'md5'
 
 import store from '@/store/index'

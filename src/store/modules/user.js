@@ -1,11 +1,3 @@
-/**
- * @name:
- * @author: SunSeekerX
- * @Date: 2020-07-26 17:49:41
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-14 21:52:01
- */
-
 import storage from 'store'
 
 import { login } from '@/api/index'
@@ -52,6 +44,7 @@ const user = {
       return new Promise((resolve, reject) => {
         login(userInfo)
           .then((res) => {
+            console.log(res)
             if (res.statusCode === 200) {
               commit(ACCESS_TOKEN, res.data.token)
               commit(ACCESS_REFRESH_TOKEN, res.data.refreshToken)

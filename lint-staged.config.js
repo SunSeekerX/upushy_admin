@@ -1,9 +1,9 @@
 /**
- * 暂存区检查
+ * 暂存区检查配置
  * @author: SunSeekerX
  * @Date: 2020-11-13 12:46:27
  * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-07-17 16:04:11
+ * @LastEditTime: 2021-01-13 19:08:29
  */
 
 module.exports = {

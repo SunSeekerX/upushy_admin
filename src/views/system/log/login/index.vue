@@ -1,10 +1,3 @@
-<!--
- * 登录日志
- * @author: SunSeekerX
- * @Date: 2021-09-14 09:56:50
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-14 21:56:20
--->
 <template>
   <page-header-wrapper>
     <a-card :bordered="false">

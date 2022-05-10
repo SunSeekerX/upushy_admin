@@ -1,11 +1,4 @@
 /**
- * @name:
- * @author: SunSeekerX
- * @Date: 2020-07-27 09:56:07
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-11-02 17:20:35
- */
-/**
  * 项目默认配置项
  * primaryColor - 默认主题色, 如果修改颜色不生效，请清理 localStorage
  * navTheme - sidebar theme ['dark', 'light'] 两种主题
@@ -30,7 +23,7 @@ export default {
   menu: {
     locale: true,
   },
-  title: 'Uni Pushy',
+  title: 'UPushy',
   pwa: false,
   iconfontUrl: '',
   production: process.env.NODE_ENV === 'production' && process.env.VUE_APP_PREVIEW !== 'true',

@@ -1,11 +1,3 @@
-/**
- * @name:
- * @author: SunSeekerX
- * @Date: 2020-07-26 17:49:41
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-11-01 21:22:52
- */
-
 import Vue from 'vue'
 import Vuex from 'vuex'
 

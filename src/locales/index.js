@@ -1,11 +1,3 @@
-/**
- * i18n
- * @author: SunSeekerX
- * @Date: 2021-02-09 13:29:18
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-15 00:12:20
- */
-
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 

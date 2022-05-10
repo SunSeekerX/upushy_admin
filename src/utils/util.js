@@ -1,11 +1,3 @@
-/**
- * @name:
- * @author: SunSeekerX
- * @Date: 2021-02-09 13:29:18
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-14 23:44:02
- */
-
 export function timeFix() {
   const time = new Date()
   const hour = time.getHours()

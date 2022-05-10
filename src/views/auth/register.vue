@@ -1,10 +1,3 @@
-<!--
- * @name: 
- * @author: SunSeekerX
- * @Date: 2021-09-14 09:56:50
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-14 21:52:47
--->
 <template>
   <div class="main user-layout-register">
     <h3>
@@ -13,18 +6,15 @@
 
     <!-- 注册表单 -->
     <a-form-model ref="registerForm" :model="form" :rules="rules">
-      <a-form-model-item ref="nickname" prop="nickname">
+      <!-- <a-form-model-item ref="nickname" prop="nickname">
         <a-input size="large" type="text" placeholder="昵称" v-model="form.nickname"></a-input>
-      </a-form-model-item>
-
+      </a-form-model-item> -->
       <a-form-model-item ref="username" prop="username">
         <a-input size="large" type="text" placeholder="账号" v-model="form.username"></a-input>
       </a-form-model-item>
-
-      <a-form-model-item ref="email" prop="email">
+      <!-- <a-form-model-item ref="email" prop="email">
         <a-input size="large" type="text" placeholder="邮箱" v-model="form.email"></a-input>
-      </a-form-model-item>
-
+      </a-form-model-item> -->
       <a-popover
         placement="rightTop"
         :trigger="['focus']"
@@ -54,11 +44,9 @@
           ></a-input-password>
         </a-form-model-item>
       </a-popover>
-
       <a-form-model-item ref="password2" prop="password2">
         <a-input-password size="large" placeholder="确认密码" v-model="form.password2"></a-input-password>
       </a-form-model-item>
-
       <a-form-model-item ref="imgCaptcha" prop="imgCaptcha">
         <a-row>
           <a-col :span="14">
@@ -72,7 +60,6 @@
           </a-col>
         </a-row>
       </a-form-model-item>
-
       <a-form-model-item style="margin-top: 24px">
         <a-button
           size="large"
@@ -85,7 +72,11 @@
         >
           确定
         </a-button>
+        <<<<<<< Updated upstream:src/views/user/Register.vue
         <router-link class="login" :to="{ name: 'login' }"> 使用已有账户登录 </router-link>
+        =======
+        <router-link class="login" :to="{ path: '/auth/login' }"> 使用已有账户登录 </router-link>
+        >>>>>>> Stashed changes:src/views/auth/register.vue
       </a-form-model-item>
     </a-form-model>
   </div>
@@ -115,21 +106,29 @@ const levelColor = {
 }
 
 export default {
-  name: 'Register',
-
+  name: 'PageRegister',
   mixins: [deviceMixin],
-
   data() {
     return {
-      // form: this.$form.createForm(this),
+      state: {
+        time: 60,
+        smsSendBtn: false,
+        passwordLevel: 0,
+        passwordLevelChecked: false,
+        percent: 10,
+        progressColor: '#FF0000',
 
+        isRegisterBtnLoading: false,
+        // 图片验证码是否加载
+        isCaptchaImgLoading: true,
+      },
       form: {
         // 昵称
-        nickname: '',
+        // nickname: '',
         // 账号
         username: '',
         // 邮箱
-        email: '',
+        // email: '',
         // 密码
         password: '',
         // 确认密码
@@ -139,10 +138,9 @@ export default {
         // 登录uuidKey
         imgCaptchaKey: '',
       },
-
       rules: {
         // 昵称
-        nickname: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
+        // nickname: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
         // 账号
         // username: [{ required: true, type: 'string', message: '请输入账号' }],
         username: [
@@ -159,12 +157,18 @@ export default {
           },
         ],
         // 邮箱
-        email: [{ required: true, message: '请输入邮箱地址', trigger: 'blur' }],
+        // email: [{ required: true, message: '请输入邮箱地址', trigger: 'blur' }],
         // 密码
         password: [
           {
             required: true,
             message: '至少6位密码，区分大小写',
+            trigger: 'blur',
+          },
+          {
+            min: 6,
+            max: 20,
+            message: '密码长度为 6 - 20 位',
             trigger: 'blur',
           },
           { validator: this.handlePasswordLevel },
@@ -187,29 +191,15 @@ export default {
           },
           {
             len: 4,
-            message: 'Length should 4',
+            message: '验证码长度为 4 位',
             trigger: 'blur',
           },
         ],
-      },
-
-      state: {
-        time: 60,
-        smsSendBtn: false,
-        passwordLevel: 0,
-        passwordLevelChecked: false,
-        percent: 10,
-        progressColor: '#FF0000',
-
-        isRegisterBtnLoading: false,
-        // 图片验证码是否加载
-        isCaptchaImgLoading: true,
       },
       // 图片验证码
       imgCaptchaUrl: '',
     }
   },
-
   computed: {
     passwordLevelClass() {
       return levelClass[this.state.passwordLevel]
@@ -221,7 +211,6 @@ export default {
       return levelColor[this.state.passwordLevel]
     },
   },
-
   methods: {
     handlePasswordLevel(rule, value, callback) {
       let level = 0
@@ -252,7 +241,6 @@ export default {
         callback(new Error('密码强度不够'))
       }
     },
-
     handlePasswordCheck(rule, value, callback) {
       // const password = this.form.getFieldValue('password')
       const { password } = this.form
@@ -264,7 +252,6 @@ export default {
       }
       callback()
     },
-
     handlePasswordInputClick() {
       if (!this.isMobile) {
         this.state.passwordLevelChecked = true
@@ -272,7 +259,6 @@ export default {
       }
       this.state.passwordLevelChecked = false
     },
-
     // 获取验证码
     async onGetCaptchaImg() {
       this.state.isCaptchaImgLoading = true
@@ -286,11 +272,9 @@ export default {
       }
       this.state.isCaptchaImgLoading = false
     },
-
     // 注册
     async onRegister() {
       this.state.isRegisterBtnLoading = true
-
       this.$refs.registerForm.validate(async (valid) => {
         if (valid) {
           const res = await this.$api.register(
@@ -299,18 +283,15 @@ export default {
               password: md5(this.form.password),
             })
           )
-
           if (res.statusCode === 200) {
             this.$notification.success({
               message: '成功',
               description: res.message,
             })
-
-            this.$router.replace('/user/login')
+            this.$router.replace('/auth/login')
           } else {
             this.$handleError.handleRequestFail(res)
           }
-
           this.state.isRegisterBtnLoading = false
         } else {
           this.state.isRegisterBtnLoading = false
@@ -319,7 +300,6 @@ export default {
       })
     },
   },
-
   created() {
     this.onGetCaptchaImg()
   },

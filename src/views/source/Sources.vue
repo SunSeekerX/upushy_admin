@@ -1,10 +1,3 @@
-<!--
- * @name: 
- * @author: SunSeekerX
- * @Date: 2021-04-26 00:46:14
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-14 21:52:20
--->
 <template>
   <page-header-wrapper>
     <a-card :bordered="false">

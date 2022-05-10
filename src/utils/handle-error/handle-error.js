@@ -1,11 +1,3 @@
-/**
- * @name Handle error
- * @author SunSeekerX
- * @time 2019-11-27 15:18:44
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-15 00:23:02
- */
-
 import { message as Message } from 'ant-design-vue'
 // import notification from 'ant-design-vue/es/notification'
 
@@ -49,20 +41,6 @@ function handleRequestFail(res) {
   if (res.statusCode >= 500) {
     type = 'error'
     message = '内部服务错误'
-  }
-
-  switch (res.statusCode) {
-    case 403:
-      message = '访问被禁止'
-      break
-    case 401:
-      message = '未登录或登陆过期'
-      break
-    case 400:
-      message = '客户端错误'
-      break
-    default:
-      break
   }
 
   Message[type](message)

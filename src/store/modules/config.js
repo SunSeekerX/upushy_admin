@@ -1,11 +1,3 @@
-/**
- * @name:
- * @author: SunSeekerX
- * @Date: 2020-08-17 09:50:52
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-14 21:51:57
- */
-
 import { getConfig } from '@/api/common'
 import { SET_TDOA } from '@/store/mutation-types'
 

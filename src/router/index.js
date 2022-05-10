@@ -1,11 +1,3 @@
-/**
- * 路由配置
- * @author: SunSeekerX
- * @Date: 2020-07-27 09:56:07
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-15 20:36:45
- */
-
 import Vue from 'vue'
 import Router from 'vue-router'
 
@@ -22,7 +14,7 @@ const RouteView = {
 export const asyncRouterMap = [
   {
     path: '/',
-    name: 'index',
+    name: 'PathIndex',
     component: BasicLayout,
     meta: { title: 'menu.home' },
     redirect: '/charts',
@@ -30,7 +22,7 @@ export const asyncRouterMap = [
       // 图表
       {
         path: '/charts',
-        name: 'Charts',
+        name: 'PathCharts',
         component: () => import('@/views/dashboard/charts'),
         meta: {
           title: '统计图表',
@@ -43,7 +35,7 @@ export const asyncRouterMap = [
       // 我的项目
       {
         path: '/project',
-        name: 'Project',
+        name: 'PathProject',
         redirect: '/project/projects',
         hideChildrenInMenu: true,
         component: RouteView,
@@ -55,7 +47,7 @@ export const asyncRouterMap = [
         children: [
           {
             path: 'projects',
-            name: 'Projects',
+            name: 'PathProjects',
             component: () => import('@/views/project/Projects'),
             meta: {
               title: '项目列表',
@@ -64,7 +56,7 @@ export const asyncRouterMap = [
           },
           {
             path: 'sources',
-            name: 'ProjectSources',
+            name: 'PathProjectSources',
             component: () => import('@/views/source/Sources'),
             meta: {
               title: '资源列表',
@@ -77,7 +69,7 @@ export const asyncRouterMap = [
       // 系统监控
       {
         path: '/monitor/server',
-        name: 'MonitorServer',
+        name: 'PathMonitorServer',
         component: () => import('@/views/monitor/server'),
         meta: {
           title: '系统监控',
@@ -90,7 +82,7 @@ export const asyncRouterMap = [
       // 登录日志
       {
         path: '/system/log/login',
-        name: 'SystemLogLogin',
+        name: 'PathSystemLogLogin',
         component: () => import('@/views/system/log/login/index'),
         meta: {
           title: '登录日志',
@@ -114,41 +106,37 @@ export const asyncRouterMap = [
  */
 export const constantRouterMap = [
   {
-    path: '/user',
+    path: '/auth',
     component: UserLayout,
-    redirect: '/user/login',
+    redirect: '/auth/login',
     hidden: true,
     children: [
       {
         path: 'login',
-        name: 'Login',
-        component: () => import(/* webpackChunkName: "login" */ '@/views/user/Login'),
+        name: 'PathLogin',
+        component: () => import(/* webpackChunkName: "login" */ '@/views/auth/login'),
       },
       {
         path: 'register',
-        name: 'Register',
-        component: () => import(/* webpackChunkName: "register" */ '@/views/user/Register'),
+        name: 'PathRegister',
+        component: () => import(/* webpackChunkName: "register" */ '@/views/auth/register'),
       },
       {
         path: 'register-result',
-        name: 'RegisterResult',
-        component: () => import(/* webpackChunkName: "register-result" */ '@/views/user/RegisterResult'),
+        name: 'PathRegisterResult',
+        component: () => import(/* webpackChunkName: "register-result" */ '@/views/auth/register-result'),
       },
-      // {
-      //   path: 'recover',
-      //   name: 'recover',
-      //   component: undefined,
-      // },
     ],
   },
 
   {
     path: '/404',
+    name: 'PathException404',
     component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/404'),
   },
 ]
 
-// hack router push callback
+// Hack router push callback
 const originalPush = Router.prototype.push
 Router.prototype.push = function push(location, onResolve, onReject) {
   if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
@@ -160,7 +148,6 @@ Vue.use(Router)
 const createRouter = () =>
   new Router({
     scrollBehavior: () => ({ y: 0 }),
-    // mode: 'history',
     routes: constantRouterMap,
   })
 

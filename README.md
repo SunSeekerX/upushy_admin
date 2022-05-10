@@ -1,24 +1,24 @@
-# uni-pushy-admin
+# upushy-admin
 
 ## 📌 简介
 
-`uni-pushy` uni-app 热更新管理平台。简称  `upushy`。
+`upushy` uni-app 热更新管理平台。简称 `upushy`。
 
-这是  `uni-pushy`  的后台管理界面仓库。Github：[uni-pushy-admin](https://github.com/SunSeekerX/uni-pushy-admin)
+这是 `upushy` 的后台管理界面仓库。Github：[upushy-admin](https://github.com/SunSeekerX/upushy-admin)
 
-基于  `antd-vue-pro`  的 uni-app 热更新后台控制系统
+基于 `antd-vue-pro` 的 uni-app 热更新后台控制系统
 
-**配套客户端 SDK**：**[ uni-pushy-client](https://github.com/SunSeekerX/uni-pushy-client)**
+**配套客户端 SDK**：**[uni-pushy-client](https://github.com/SunSeekerX/uni-app-starter/tree/main/packages/uni-pushy-client)**
 
-**配套后端**：**[uni-pushy-server](https://github.com/SunSeekerX/uni-pushy-server)**
+**配套后端**：**[upushy-server](https://github.com/SunSeekerX/upushy-server)**
 
-**预览地址**：**[https://uni-pushy.yoouu.cn/](https://uni-pushy.yoouu.cn/)**
+**预览地址**：**[https://upushy.yoouu.cn/](https://upushy.yoouu.cn/)**
 
 > 自行注册账号使用即可体验，对后台配置不熟悉的可以先使用我部署的服务做为测试。
 >
 > 只需要简单的配置下客户端就行。
 
-**预览接口文档**：[https://api.uni-pushy.yoouu.cn/docs/](https://api.uni-pushy.yoouu.cn/docs/)
+**预览接口文档**：[https://api-upushy.yoouu.cn/docs/](https://api-upushy.yoouu.cn/docs/)
 
 > **uni-app App 整包升级检测：** https://ask.dcloud.net.cn/article/34972
 >
@@ -39,13 +39,13 @@
 **克隆**
 
 ```bash
-git clone https://github.com/SunSeekerX/uni-pushy-admin.git
+git clone https://github.com/SunSeekerX/upushy-admin.git
 ```
 
 **进入项目目录**
 
 ```bash
-cd uni-pushy-admin/
+cd upushy-admin/
 ```
 
 **安装依赖 ，项目根目录下执行**
@@ -121,11 +121,11 @@ npm run build
 
 打包完成生成的静态文件位于 `dist` 目录下，为标准的 `web` 项目。直接放到服务器路径下即可。
 
-> 需要配合 `jenkins` 集成 `ci&cd` 的可以参考 [Jenkins+vue项目自动化构建部署](https://juejin.cn/post/6844904148291289095)
+> 需要配合 `jenkins` 集成 `ci&cd` 的可以参考 [Jenkins+vue 项目自动化构建部署](https://juejin.cn/post/6844904148291289095)
 
 ## 📌 uni-app 接入
 
-请查看 **[ uni-pushy-client](https://github.com/SunSeekerX/uni-pushy-client)** 说明。
+请查看 **[uni-pushy-client](https://github.com/SunSeekerX/uni-app-starter/tree/main/packages/uni-pushy-client)** 说明。
 
 ## 📌 更新日志
 

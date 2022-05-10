@@ -1,11 +1,3 @@
-<!--
- * @name: 
- * @author: SunSeekerX
- * @Date: 2020-10-27 18:00:49
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-14 21:52:06
--->
-
 <template>
   <page-header-wrapper>
     <a-row :gutter="[16, 16]">

@@ -1,19 +1,8 @@
-<!--
- * @name: 
- * @author: SunSeekerX
- * @Date: 2020-07-27 09:56:07
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-14 23:44:33
--->
 <template>
-  <a-dropdown v-if="currentUser && currentUser.nickname" placement="bottomRight">
+  <a-dropdown v-if="displayName" placement="bottomRight">
     <span class="ant-pro-account-avatar">
-      <a-avatar
-        size="small"
-        src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"
-        class="antd-pro-global-header-index-avatar"
-      />
-      <span>{{ currentUser.nickname }}</span>
+      <a-avatar size="small" :src="avatar" class="antd-pro-global-header-index-avatar" />
+      <span>{{ displayName }}</span>
     </span>
 
     <template v-slot:overlay>
@@ -32,6 +21,8 @@
 
 <script>
 import { Modal } from 'ant-design-vue'
+
+import avatar from '@/assets/avatar.png'
 import { LOGIN_OUT, RESET_ROUTERS } from '@/store/mutation-types'
 
 export default {
@@ -46,6 +37,19 @@ export default {
       default: true,
     },
   },
+  computed: {
+    displayName() {
+      if (this.currentUser) {
+        return this.currentUser?.nickname || this.currentUser?.username
+      }
+      return ''
+    },
+  },
+  data() {
+    return {
+      avatar,
+    }
+  },
   methods: {
     handleLogout() {
       Modal.confirm({
@@ -54,7 +58,7 @@ export default {
         onOk: () => {
           this.$store.commit(LOGIN_OUT)
           this.$store.commit(RESET_ROUTERS)
-          this.$router.push({ name: 'login' })
+          this.$router.push({ path: '/auth/login' })
         },
         onCancel() {},
       })

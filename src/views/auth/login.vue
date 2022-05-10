@@ -1,10 +1,3 @@
-<!--
- * @name: 
- * @author: SunSeekerX
- * @Date: 2021-09-14 09:56:50
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-14 21:52:50
--->
 <template>
   <div class="main">
     <a-form-model class="user-layout-login" ref="loginForm" :model="loginForm" :rules="rules">
@@ -56,25 +49,15 @@
           htmlType="submit"
           class="login-button"
           @click="onLogin"
-          :loading="state.isLogginBtnLoading"
-          :disabled="state.isLogginBtnLoading"
+          :loading="state.isLoginBtnLoading"
+          :disabled="state.isLoginBtnLoading"
         >
           确定
         </a-button>
       </a-form-model-item>
 
       <div class="user-login-other">
-        <!-- <span>其他登录方式</span>
-        <a>
-          <a-icon class="item-icon" type="alipay-circle"></a-icon>
-        </a>
-        <a>
-          <a-icon class="item-icon" type="taobao-circle"></a-icon>
-        </a>
-        <a>
-          <a-icon class="item-icon" type="weibo-circle"></a-icon>
-        </a>-->
-        <router-link class="register" :to="{ name: 'Register' }"> 注册账户 </router-link>
+        <router-link class="register" :to="{ path: '/auth/register' }"> 注册账户 </router-link>
       </div>
     </a-form-model>
   </div>
@@ -86,6 +69,7 @@ import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
 
 export default {
+  name: 'PageLogin',
   data() {
     return {
       // 登录表单
@@ -120,9 +104,9 @@ export default {
             trigger: 'blur',
           },
           {
-            min: 1,
+            min: 6,
             max: 20,
-            message: 'Length should be 6 to 20',
+            message: '密码长度为 6 - 20 位',
             trigger: 'blur',
           },
         ],
@@ -134,7 +118,7 @@ export default {
           },
           {
             len: 4,
-            message: 'Length should 4',
+            message: '验证码长度为 4 位',
             trigger: 'blur',
           },
         ],
@@ -143,18 +127,16 @@ export default {
       // login type: 0 email, 1 username, 2 telephone
       isLoginError: false,
       state: {
-        isLogginBtnLoading: false,
+        isLoginBtnLoading: false,
         isCaptchaImgLoading: true,
       },
     }
   },
-
   methods: {
     ...mapActions(['Login']),
-
     // 点击登录
     onLogin() {
-      this.state.isLogginBtnLoading = true
+      this.state.isLoginBtnLoading = true
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.Login(
@@ -181,19 +163,17 @@ export default {
             })
             .catch((err) => this.$handleError.handleApiRequestException(err))
             .finally(() => {
-              this.state.isLogginBtnLoading = false
+              this.state.isLoginBtnLoading = false
             })
         } else {
-          this.state.isLogginBtnLoading = false
+          this.state.isLoginBtnLoading = false
           return false
         }
       })
     },
-
     // 获取验证码
     async onGetCaptchaImg() {
       this.state.isCaptchaImgLoading = true
-
       const res = await this.$api.loginCaptcha()
       if (res.statusCode === 200) {
         this.imgCaptchaUrl = res.data.img
@@ -204,7 +184,6 @@ export default {
       this.state.isCaptchaImgLoading = false
     },
   },
-
   created() {
     this.onGetCaptchaImg()
   },

@@ -1,11 +1,3 @@
-<!--
- * @name: 
- * @author: SunSeekerX
- * @Date: 2020-08-23 17:33:28
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-15 00:01:23
--->
-
 <template>
   <div>
     <a-upload accept=".wgt, .apk" :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload">
@@ -146,16 +138,7 @@ export default {
 
         this.$emit('on-upload-complete', result)
       } catch (e) {
-        // this.$notification.error({
-        //   message: '失败',
-        //   description: e.message,
-        // })
-        // 捕获超时异常。
-        if (e.code === 'ConnectionTimeoutError') {
-          console.log('TimeoutError')
-          // do ConnectionTimeoutError operation
-        }
-        console.log(e)
+        console.warn(e)
       } finally {
         this.state.isUploading = false
       }

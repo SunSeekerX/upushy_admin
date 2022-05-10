@@ -1,11 +1,3 @@
-/**
- * @name:
- * @author: SunSeekerX
- * @Date: 2020-07-27 09:56:07
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-02-09 16:32:29
- */
-
 // chart
 import Bar from '@/components/Charts/Bar'
 import ChartCard from '@/components/Charts/ChartCard'

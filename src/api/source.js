@@ -1,11 +1,3 @@
-/**
- * @name:
- * @author: SunSeekerX
- * @Date: 2020-07-28 09:52:25
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-02-14 21:04:17
- */
-
 import { request } from '@/utils/request/index'
 
 // 资源列表

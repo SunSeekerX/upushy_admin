@@ -1,11 +1,3 @@
-/**
- * @name:
- * @author: SunSeekerX
- * @Date: 2020-07-27 12:17:08
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-11-01 21:29:40
- */
-
 import { request } from '@/utils/request/index'
 
 // 登录验证码

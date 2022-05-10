@@ -1,10 +1,3 @@
-<!--
- * @name: 
- * @author: SunSeekerX
- * @Date: 2021-09-14 09:56:50
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-14 21:52:10
--->
 <template>
   <page-header-wrapper>
     <a-card :bordered="false">
@@ -31,7 +24,7 @@
 
         <!-- 项目名称 -->
         <template slot="name" slot-scope="text, { id, name }">
-          <router-link :to="{ name: 'ProjectSources', query: { id: id } }">
+          <router-link :to="{ path: '/project/sources', query: { id: id } }">
             {{ name }}
           </router-link>
         </template>

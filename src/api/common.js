@@ -1,11 +1,3 @@
-/**
- * @name:
- * @author: SunSeekerX
- * @Date: 2020-07-28 11:30:36
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-13 23:45:09
- */
-
 import { request } from '@/utils/request/index'
 
 // 系统配置

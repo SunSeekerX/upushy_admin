@@ -1,11 +1,3 @@
-/**
- * @name: 
- * @author: SunSeekerX
- * @Date: 2020-07-27 09:56:07
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-08-03 16:55:55
- */
-
 const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV)
 
 const plugins = []

@@ -1,10 +1,3 @@
-<!--
- * @name: 
- * @author: SunSeekerX
- * @Date: 2021-02-09 16:12:15
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-15 00:03:42
--->
 <template>
   <div class="antv-chart-mini">
     <div class="chart-wrapper" :style="{ height: 46 }">

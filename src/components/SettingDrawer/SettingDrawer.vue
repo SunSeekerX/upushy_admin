@@ -178,14 +178,10 @@
 </template>
 
 <script>
-import SettingItem from './SettingItem'
 import config from '@/config/defaultSettings'
 import { updateTheme, updateColorWeak, colorList } from './settingConfig'
 
 export default {
-  components: {
-    SettingItem,
-  },
   mixins: [],
   data() {
     return {
@@ -235,12 +231,10 @@ export default {
   production: process.env.NODE_ENV === 'production' && process.env.VUE_APP_PREVIEW !== 'true'
 }`
       this.$copyText(text)
-        .then((message) => {
-          console.log('copy', message)
+        .then(() => {
           this.$message.success('复制完毕')
         })
-        .catch((err) => {
-          console.log('copy.err', err)
+        .catch(() => {
           this.$message.error('复制失败')
         })
     },

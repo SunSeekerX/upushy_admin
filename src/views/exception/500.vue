@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: 'Exception500',
+  name: 'PageException500',
   methods: {
     toHome() {
       this.$router.push({ path: '/' })

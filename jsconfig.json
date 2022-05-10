@@ -1,23 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es6",
     "baseUrl": ".",
+    "jsx": "preserve",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"],
+      "#root/*": ["./*"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ],
-  "include": [
-    "src/**/*"
-  ],
+  "exclude": ["node_modules", "dist"],
+  "include": ["src/**/*"],
   "typeAcquisition": {
-    "exclude": [
-      "agent-base"
-    ]
+    "exclude": ["agent-base", "loader-utils"]
   }
 }

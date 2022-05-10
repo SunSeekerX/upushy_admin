@@ -1,11 +1,3 @@
-/**
- * @name:
- * @author: SunSeekerX
- * @Date: 2020-07-26 17:49:41
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2020-11-01 20:28:52
- */
-
 // User
 export const ACCESS_TOKEN = 'Access-Token'
 export const ACCESS_REFRESH_TOKEN = 'Access-Refresh-Token'

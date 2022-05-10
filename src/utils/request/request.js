@@ -1,11 +1,3 @@
-/**
- * Axios request module
- * @author SunSeekerX
- * @time 2019-08-13 10:29:11
- * @LastEditors: SunSeekerX
- * @LastEditTime: 2021-09-15 00:21:49
- */
-
 import axios from 'axios'
 
 import store from '@/store'
@@ -72,7 +64,7 @@ export default function createRequest(options) {
       } else {
         store.commit(LOGIN_OUT)
         store.commit(RESET_ROUTERS)
-        router.replace('/user/login')
+        router.replace('/auth/login')
       }
     }
     return res
