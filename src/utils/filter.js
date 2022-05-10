@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 dayjs.locale('zh-cn')
 
-Vue.filter('NumberFormat', function(value) {
+Vue.filter('NumberFormat', function (value) {
   if (!value) {
     return '0'
   }
@@ -11,10 +11,10 @@ Vue.filter('NumberFormat', function(value) {
   return intPartFormat
 })
 
-Vue.filter('dayjs', function(dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
+Vue.filter('dayjs', function (dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
   return dayjs(dataStr).format(pattern)
 })
 
-Vue.filter('moment', function(dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
+Vue.filter('moment', function (dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
   return dayjs(dataStr).format(pattern)
 })

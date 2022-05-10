@@ -21,7 +21,7 @@ export default (Vue) => {
       document.body.appendChild(dialogDiv)
     }
 
-    const handle = function(checkFunction, afterHandel) {
+    const handle = function (checkFunction, afterHandel) {
       if (checkFunction instanceof Function) {
         const res = checkFunction()
         if (res instanceof Promise) {
@@ -68,7 +68,7 @@ export default (Vue) => {
           })
         },
       },
-      render: function(h) {
+      render: function (h) {
         const that = this
         const modalModel = modalProps && modalProps.model
         if (modalModel) {
@@ -127,7 +127,7 @@ export default (Vue) => {
 
   Object.defineProperty(Vue.prototype, '$dialog', {
     get: () => {
-      return function() {
+      return function () {
         dialog.apply(this, arguments)
       }
     },

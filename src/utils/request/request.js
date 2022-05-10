@@ -61,7 +61,7 @@ export default function createRequest(options) {
       },
     })
 
-  const request = async function(config) {
+  const request = async function (config) {
     const res = await instance(config)
     const { refreshToken } = store.getters
     if (res.statusCode === 401 && refreshToken) {

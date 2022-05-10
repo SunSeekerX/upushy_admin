@@ -9,9 +9,7 @@
   <page-header-wrapper>
     <a-card :bordered="false">
       <div class="table-operator">
-        <a-button type="primary" icon="plus" @click="state.isCreateShow = true">
-          新建
-        </a-button>
+        <a-button type="primary" icon="plus" @click="state.isCreateShow = true"> 新建 </a-button>
       </div>
 
       <!-- 资源表格 -->

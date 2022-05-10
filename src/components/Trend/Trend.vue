@@ -6,7 +6,7 @@
         <slot></slot>
       </span>
     </span>
-    <span :class="[flag]"><a-icon :type="`caret-${flag}`"/></span>
+    <span :class="[flag]"><a-icon :type="`caret-${flag}`" /></span>
   </div>
 </template>
 

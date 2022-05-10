@@ -39,7 +39,7 @@
             </div>
 
             <a-progress :percent="state.percent" :showInfo="false" :strokeColor="passwordLevelColor" />
-            <div style="margin-top: 10px;">
+            <div style="margin-top: 10px">
               <span>请至少输入 6 个字符。请不要使用容易被猜到的密码。</span>
             </div>
           </div>
@@ -85,9 +85,7 @@
         >
           确定
         </a-button>
-        <router-link class="login" :to="{ name: 'login' }">
-          使用已有账户登录
-        </router-link>
+        <router-link class="login" :to="{ name: 'login' }"> 使用已有账户登录 </router-link>
       </a-form-model-item>
     </a-form-model>
   </div>

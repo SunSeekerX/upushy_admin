@@ -11,9 +11,7 @@
       <div class="table-operator">
         <a-row align="middle" type="flex">
           <a-col :xs="24" :md="12">
-            <a-button type="primary" icon="plus" @click="onCreateSourceModelOpen">
-              新建
-            </a-button>
+            <a-button type="primary" icon="plus" @click="onCreateSourceModelOpen"> 新建 </a-button>
           </a-col>
 
           <a-col :xs="24" :md="12">
@@ -191,15 +189,9 @@
 
           <a-form-model-item label="更新类型" prop="updateType">
             <a-select v-model="form.updateType" placeholder="请选择更新类型">
-              <a-select-option :value="1">
-                用户同意更新（用户感知）
-              </a-select-option>
-              <a-select-option :value="2">
-                强制更新（用户感知）
-              </a-select-option>
-              <a-select-option :value="3">
-                静默更新（用户不感知，下次启动生效）
-              </a-select-option>
+              <a-select-option :value="1"> 用户同意更新（用户感知） </a-select-option>
+              <a-select-option :value="2"> 强制更新（用户感知） </a-select-option>
+              <a-select-option :value="3"> 静默更新（用户不感知，下次启动生效） </a-select-option>
             </a-select>
           </a-form-model-item>
 
@@ -297,15 +289,9 @@
 
           <a-form-model-item label="更新类型" prop="updateType">
             <a-select v-model="editForm.updateType" placeholder="请选择更新类型">
-              <a-select-option :value="1">
-                用户同意更新（用户感知）
-              </a-select-option>
-              <a-select-option :value="2">
-                强制更新（用户感知）
-              </a-select-option>
-              <a-select-option :value="3">
-                静默更新（用户不感知，下次启动生效）
-              </a-select-option>
+              <a-select-option :value="1"> 用户同意更新（用户感知） </a-select-option>
+              <a-select-option :value="2"> 强制更新（用户感知） </a-select-option>
+              <a-select-option :value="3"> 静默更新（用户不感知，下次启动生效） </a-select-option>
             </a-select>
           </a-form-model-item>
 
@@ -365,7 +351,7 @@
 
         <a-descriptions title="更新日志">
           <a-descriptions-item>
-            <div style="white-space: pre-line;">
+            <div style="white-space: pre-line">
               {{ descRecord.changelog }}
             </div>
           </a-descriptions-item>
@@ -389,7 +375,7 @@
 
         <a-descriptions title="备注">
           <a-descriptions-item>
-            <div style="white-space: pre-line;">
+            <div style="white-space: pre-line">
               {{ descRecord.remark }}
             </div>
           </a-descriptions-item>

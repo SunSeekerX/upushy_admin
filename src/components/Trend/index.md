@@ -37,7 +37,7 @@ export default {
 
 ## API
 
-| 参数         | 说明                    | 类型    | 默认值 |
-| ------------ | ----------------------- | ------- | ------ |
-| flag         | 上升下降标识：`up|down` | string  | -      |
-| reverseColor | 颜色反转                | Boolean | false  |
+| 参数         | 说明              | 类型    | 默认值 |
+| ------------ | ----------------- | ------- | ------ | --- |
+| flag         | 上升下降标识：`up | down`   | string | -   |
+| reverseColor | 颜色反转          | Boolean | false  |

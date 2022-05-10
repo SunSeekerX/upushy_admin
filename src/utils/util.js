@@ -26,7 +26,7 @@ export function handleScrollHeader(callback) {
   let timer = 0
 
   let beforeScrollTop = window.pageYOffset
-  callback = callback || function() {}
+  callback = callback || function () {}
   window.addEventListener(
     'scroll',
     () => {
