@@ -739,7 +739,7 @@ export default {
             message: '请输入正确的原生应用版本号！',
           },
           {
-            validator: this.handleValideNativeVersionCode,
+            validator: this.handleValidateNativeVersionCode,
           },
         ],
         // 更新日志
@@ -841,7 +841,7 @@ export default {
             message: '请输入正确的原生应用版本号！',
           },
           {
-            validator: this.handleValideEditNativeVersionCode,
+            validator: this.handleValidateEditNativeVersionCode,
           },
         ],
         // 备注
@@ -923,11 +923,12 @@ export default {
             })
             this.state.isCreateShow = false
             this.state.isCreateLoading = false
-
-            if (this.form.type === Number(this.sourcesType)) {
-              // 添加数据
-              this.tableData.push(res.data)
-            }
+            // 获取列表
+            this.onGetList()
+            // if (this.form.type === Number(this.sourcesType)) {
+            //   // 添加数据
+            //   this.tableData.push(res.data)
+            // }
           } else {
             this.$handleError.handleRequestFail(res)
           }
@@ -937,7 +938,6 @@ export default {
         }
       })
     },
-
     // 删除
     async onDelete(record, index) {
       const res = await this.$api.deleteSource({
@@ -956,7 +956,6 @@ export default {
       }
       this.state.isCreateLoading = false
     },
-
     // 更新
     async onUpdate() {
       this.$refs.editForm.validate(async (valid) => {
@@ -981,7 +980,6 @@ export default {
         }
       })
     },
-
     // 根据key更新资源开关信息
     async onUpdateSwitch({ checked, record, key, loadingKey }) {
       record[loadingKey] = true
@@ -996,7 +994,6 @@ export default {
       }
       record[loadingKey] = false
     },
-
     // 查询
     async onGetList() {
       this.state.isTableLoading = true
@@ -1021,7 +1018,6 @@ export default {
       }
       this.state.isTableLoading = false
     },
-
     // 获取最新的原生版本号
     async onGetLatestNativeSource() {
       const res = await this.$api.getLatestNativeSource({
@@ -1039,18 +1035,15 @@ export default {
         this.$handleError.handleRequestFail(res)
       }
     },
-
     // 新建资源 modal 打开
     async onCreateSourceModelOpen() {
       // 新建资源是否显示
       this.state.isCreateShow = true
     },
-
     // 文件上传成功
     onUploadComplete(res) {
       this.form.url = res.name
     },
-
     // 表格分页改变
     onPageChange(pagination, filters, { order, columnKey }) {
       // console.log({ pagination, filters, sorter: { order, columnKey } })
@@ -1067,14 +1060,12 @@ export default {
       }
       this.onGetList()
     },
-
     // tab切换
     onTagChange() {
       this.pagination.pageNum = 1
       this.pagination.current = 1
       this.onGetList()
     },
-
     // 点击编辑
     onEdit(record) {
       // 合并编辑项
@@ -1082,7 +1073,6 @@ export default {
       // 显示编辑modal
       this.state.isEditFormShow = true
     },
-
     // 点击查看详情
     async onClickViewDesc(record) {
       // 合并项
@@ -1094,9 +1084,8 @@ export default {
       // 显示编辑modal
       this.state.isDescShow = true
     },
-
     // 校验新增原生版本号
-    handleValideNativeVersionCode(rule, value, callback) {
+    handleValidateNativeVersionCode(rule, value, callback) {
       const { type } = this.form
       if (type === 1 || type === 2) {
         if (typeof value !== 'number') {
@@ -1110,9 +1099,8 @@ export default {
         callback()
       }
     },
-
     // 校验编辑原生版本号
-    handleValideEditNativeVersionCode(rule, value, callback) {
+    handleValidateEditNativeVersionCode(rule, value, callback) {
       const { type } = this.editForm
       if (type === 1 || type === 2) {
         if (typeof value !== 'number') {
@@ -1126,7 +1114,6 @@ export default {
         callback()
       }
     },
-
     // 格式化表格类型
     handleFormatType(type) {
       if (this.dict.sourcesType[type]) {

@@ -1,6 +1,7 @@
 <template>
   <page-header-wrapper>
-    <a-card :bordered="false">
+    <a-alert show-icon :message="`检查更新链接(updateUrl): ${updateUrl}`" type="info" />
+    <a-card style="margin-top: 24px" :bordered="false">
       <div class="table-operator">
         <a-button type="primary" icon="plus" @click="state.isCreateShow = true"> 新建 </a-button>
       </div>
@@ -164,7 +165,11 @@
 <script>
 export default {
   name: 'BasicProject',
-
+  computed: {
+    updateUrl() {
+      return process.env.VUE_APP_API_BASE_URL
+    },
+  },
   data() {
     return {
       // 状态
@@ -300,12 +305,10 @@ export default {
       },
     }
   },
-
   methods: {
     // 创建
     async onCreate() {
       this.state.isCreateLoading = true
-
       this.$refs.createForm.validate(async (valid) => {
         if (valid) {
           const res = await this.$api.createProject(this.createForm)
@@ -315,8 +318,10 @@ export default {
               description: res.message,
             })
             this.state.isCreateShow = false
+            // 获取列表
+            this.onGetList()
             // 添加数据
-            this.tableData.push(res.data)
+            // this.tableData.push(res.data)
           } else {
             this.$handleError.handleRequestFail(res)
           }
@@ -326,7 +331,6 @@ export default {
         }
       })
     },
-
     // 删除
     async onDelete(id) {
       const res = await this.$api.deleteProject({
@@ -342,7 +346,6 @@ export default {
         this.$handleError.handleRequestFail(res)
       }
     },
-
     // 更新
     async onUpdate() {
       this.state.isUpdateLoading = true
@@ -366,7 +369,6 @@ export default {
         }
       })
     },
-
     // 查询
     async onGetList() {
       this.state.isTableLoading = true
@@ -382,19 +384,16 @@ export default {
       }
       this.state.isTableLoading = false
     },
-
     // 表格分页改变
     onPageChange(e) {
       this.pagination.pageNum = e.current
       this.onGetList()
     },
-
     // 点击编辑
     onClickUpdate(record) {
       Object.assign(this.updateForm, record)
       this.state.isUpdateShow = true
     },
-
     // 点击查看详情
     onClickViewDesc(record) {
       // 合并项
@@ -403,7 +402,6 @@ export default {
       this.state.isDescShow = true
     },
   },
-
   mounted() {
     // 获取项目列表
     this.onGetList()
