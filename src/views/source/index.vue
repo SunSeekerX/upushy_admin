@@ -3,11 +3,12 @@
     <a-card :bordered="false">
       <div class="table-operator">
         <a-row align="middle" type="flex">
-          <a-col :xs="24" :md="12">
+          <a-col :xs="24" :md="4">
             <a-button type="primary" icon="plus" @click="onCreateSourceModelOpen"> 新建 </a-button>
           </a-col>
-
-          <a-col :xs="24" :md="12">
+        </a-row>
+        <a-row style="margin-top: 18px" align="middle" type="flex">
+          <a-col :md="24">
             <a-tabs v-model="sourcesType" size="small" @change="onTagChange">
               <a-tab-pane v-for="item of tabs" :key="item.key" :disabled="state.isTableLoading">
                 <span slot="tab">

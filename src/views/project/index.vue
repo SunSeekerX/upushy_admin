@@ -22,24 +22,20 @@
           <template slot="title">{{ id }}</template>
           {{ id }}
         </a-tooltip>
-
         <!-- 项目名称 -->
         <template slot="name" slot-scope="text, { id, name }">
           <router-link :to="{ path: '/project/sources', query: { id: id } }">
             {{ name }}
           </router-link>
         </template>
-
         <!-- 创建时间 -->
         <template slot="createdTime" slot-scope="createdTime">
           {{ $util.formatTime(createdTime) }}
         </template>
-
         <!-- 更新时间 -->
         <template slot="updatedTime" slot-scope="updatedTime">
           {{ $util.formatTime(updatedTime) }}
         </template>
-
         <!-- 操作 -->
         <span slot="action" slot-scope="text, record">
           <a-row>
