@@ -6,7 +6,7 @@
 
 这是 `upushy` 的后台管理界面仓库。Github：[upushy-admin](https://github.com/SunSeekerX/upushy-admin)
 
-基于 `antd-vue-pro` 的 uni-app 热更新后台控制系统
+基于 [`antd-vue-pro`](https://pro.antdv.com/) 的 uni-app 热更新后台控制系统
 
 **配套客户端 SDK**：**[uni-pushy-client](https://github.com/SunSeekerX/uni-app-starter/tree/main/packages/uni-pushy-client)**
 
@@ -68,7 +68,7 @@ cp .env.example .env.development
 # 运行模式（development | production） 示例：development
 NODE_ENV=
 
-# 保持为 true 示例：true
+# 是否为预览模式(预览模式可以切换主题和布局)，生产环境设置为 false 示例: true
 VUE_APP_PREVIEW=
 
 # 请求超时时间，单位：秒 默认：6s 示例：6000
@@ -157,7 +157,7 @@ npm run build
 
 [NestJs](https://nestjs.com/)
 
-**为什么用 Nestjs ？**
+**为什么用 NestJS ？**
 
 哲学。
 
@@ -175,11 +175,11 @@ npm run build
 
 有一次写 `vue` 尝试了下 `ts`，感觉像 "si" 一样。写 `ts` 还要多些那么多代码，为什么还要确定数据类型，有什么 `interface` ，`type`。
 
-无意中看到了 `nestjs`，写多了 `ts` 感觉 `js` 像 "si" 一样。
+无意中看到了 `NestJS`，写多了 `ts` 感觉 `js` 像 "si" 一样。
 
-**Nestjs 好用吗？**
+**NestJS 好用吗？**
 
-`Node` 后端要是火起来，`nestjs` 应该是碾压 `express`，`koa2`，`egg.js`。。。
+`Node` 后端要是火起来，`NestJS` 应该是碾压 `express`，`koa2`，`egg.js`。。。
 
 **为什么要用你写的？**
 

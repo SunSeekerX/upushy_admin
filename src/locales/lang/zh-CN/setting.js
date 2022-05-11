@@ -16,7 +16,7 @@ export default {
   'app.setting.weakmode': '色弱模式',
   'app.setting.copy': '拷贝设置',
   'app.setting.loading': '加载主题中',
-  'app.setting.copyinfo': '拷贝设置成功 src/config/defaultSettings.js',
+  'app.setting.copyinfo': '拷贝设置成功 src/config/default-settings.js',
   'app.setting.production.hint': '配置栏只在开发环境用于预览，生产环境不会展现，请拷贝后手动修改配置文件',
   'app.setting.themecolor.daybreak': '拂晓蓝',
   'app.setting.themecolor.dust': '薄暮',

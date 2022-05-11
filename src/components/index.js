@@ -13,10 +13,9 @@ import RankList from '@/components/Charts/RankList'
 // pro components
 // import FooterToolbar from '@/components/FooterToolbar'
 // import Tree from '@/components/Tree/Tree'
-import Trend from '@/components/Trend'
 // import MultiTab from '@/components/MultiTab'
 
-import Dialog from '@/components/Dialog'
+import Dialog from '@/components/dialog'
 
 export {
   Bar,
@@ -29,7 +28,6 @@ export {
   // Radar,
   RankList,
   // TransferBar,
-  Trend,
   // FooterToolbar,
   // Tree,
   // MultiTab,

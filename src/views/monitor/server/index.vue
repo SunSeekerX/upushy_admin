@@ -40,7 +40,7 @@
 
     <a-row :gutter="[0, 16]">
       <a-col :span="24">
-        <a-card title="V8虚拟机信息" :bordered="false" :loading="isLoading">
+        <a-card title="服务端信息" :bordered="false" :loading="isLoading">
           <a-descriptions :column="2">
             <a-descriptions-item label="NodeJS版本">
               {{ v8Info.version }}

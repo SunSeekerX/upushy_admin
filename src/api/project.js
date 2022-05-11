@@ -1,4 +1,4 @@
-import { request } from '@/utils/request/index'
+import { request } from '@/utils/request'
 
 // 项目列表
 export function projects({ pageNum, pageSize }) {

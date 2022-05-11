@@ -1,4 +1,4 @@
-import { request } from '@/utils/request/index'
+import { request } from '@/utils/request'
 
 // 系统配置
 export function getConfig() {

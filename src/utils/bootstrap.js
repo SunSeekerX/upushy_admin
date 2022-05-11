@@ -12,7 +12,7 @@ import {
   TOGGLE_COLOR,
   TOGGLE_MULTI_TAB,
 } from '@/store/mutation-types'
-import defaultSettings from '@/config/defaultSettings'
+import defaultSettings from '@/config/default-settings'
 
 export default function Initializer() {
   store.commit(TOGGLE_LAYOUT, storage.get(TOGGLE_LAYOUT, defaultSettings.layout))

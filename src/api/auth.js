@@ -1,4 +1,4 @@
-import { request } from '@/utils/request/index'
+import { request } from '@/utils/request'
 
 // 登录验证码
 export function registerCaptcha() {

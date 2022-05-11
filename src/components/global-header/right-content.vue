@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import AvatarDropdown from './AvatarDropdown'
+import AvatarDropdown from './avatar-dropdown'
 
 export default {
   name: 'RightContent',

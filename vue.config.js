@@ -1,6 +1,6 @@
 const createThemeColorReplacerPlugin = require('./config/plugin.config')
 
-module.exports = {
+const vueConfig = {
   publicPath: './',
   configureWebpack: {
     plugins: [createThemeColorReplacerPlugin()],
@@ -38,10 +38,6 @@ module.exports = {
     loaderOptions: {
       less: {
         modifyVars: {
-          // less vars，customize ant design theme
-
-          // 'primary-color': '#F5222D',
-          // 'link-color': '#F5222D',
           'border-radius-base': '2px',
         },
         // DO NOT REMOVE THIS LINE
@@ -55,3 +51,9 @@ module.exports = {
   productionSourceMap: false,
   lintOnSave: true,
 }
+
+if (process.env.VUE_APP_PREVIEW === 'true') {
+  vueConfig.configureWebpack.plugins.push(createThemeColorReplacerPlugin())
+}
+
+module.exports = vueConfig

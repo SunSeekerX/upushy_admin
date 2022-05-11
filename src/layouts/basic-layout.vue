@@ -11,14 +11,10 @@
     :i18nRender="i18nRender"
     v-bind="settings"
   >
-    <setting-drawer :settings="settings" @change="handleSettingChange" />
+    <setting-drawer v-if="isDev" :settings="settings" @change="handleSettingChange" />
 
     <template v-slot:rightContentRender>
       <right-content :top-menu="settings.layout === 'topmenu'" :is-mobile="isMobile" :theme="settings.theme" />
-    </template>
-
-    <template v-slot:footerRender>
-      <div></div>
     </template>
     <router-view />
   </pro-layout>
@@ -30,8 +26,8 @@ import { i18nRender } from '@/locales'
 import { mapState } from 'vuex'
 import { CONTENT_WIDTH_TYPE, SIDEBAR_TYPE, TOGGLE_MOBILE_TYPE } from '@/store/mutation-types'
 
-import defaultSettings from '@/config/defaultSettings'
-import RightContent from '@/components/GlobalHeader/RightContent'
+import defaultSettings from '@/config/default-settings'
+import RightContent from '@/components/global-header/right-content'
 import LogoSvg from '../assets/logo.svg?inline'
 
 export default {
@@ -42,6 +38,8 @@ export default {
   },
   data() {
     return {
+      // end
+      isDev: process.env.NODE_ENV === 'development' || process.env.VUE_APP_PREVIEW === 'true',
       // base
       menus: [],
       // 侧栏收起状态

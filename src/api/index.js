@@ -1,6 +1,5 @@
 export * from './auth'
 export * from './common'
-export * from './dict'
 export * from './project'
 export * from './source'
 export * from './system'

@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import { UserLayout, BasicLayout } from '@/layouts'
+import BasicLayout from '@/layouts/basic-layout'
+import UserLayout from '@/layouts/user-layout'
 
 const RouteView = {
   name: 'RouteView',
@@ -48,7 +49,7 @@ export const asyncRouterMap = [
           {
             path: 'projects',
             name: 'PathProjects',
-            component: () => import('@/views/project/Projects'),
+            component: () => import('@/views/project'),
             meta: {
               title: '项目列表',
               permission: ['project'],
@@ -57,7 +58,7 @@ export const asyncRouterMap = [
           {
             path: 'sources',
             name: 'PathProjectSources',
-            component: () => import('@/views/source/Sources'),
+            component: () => import('@/views/source'),
             meta: {
               title: '资源列表',
               permission: ['project'],
@@ -83,7 +84,7 @@ export const asyncRouterMap = [
       {
         path: '/system/log/login',
         name: 'PathSystemLogLogin',
-        component: () => import('@/views/system/log/login/index'),
+        component: () => import('@/views/system/log/login'),
         meta: {
           title: '登录日志',
           icon: 'file-done',

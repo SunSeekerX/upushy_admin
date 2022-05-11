@@ -1,4 +1,4 @@
-import { request } from '@/utils/request/index'
+import { request } from '@/utils/request'
 
 // 资源列表
 export function sources({ id, type, pageNum, pageSize, sortKey, order }) {

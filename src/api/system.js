@@ -1,4 +1,4 @@
-import { request } from '@/utils/request/index'
+import { request } from '@/utils/request'
 
 // 登录日志列表
 export function logginLogs({ pageNum, pageSize, sortKey, order }) {

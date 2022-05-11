@@ -1,4 +1,5 @@
 import Modal from 'ant-design-vue/es/modal'
+
 export default (Vue) => {
   function dialog(component, componentProps, modalProps) {
     const _vm = this

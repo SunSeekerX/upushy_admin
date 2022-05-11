@@ -2,7 +2,7 @@ import router from './router'
 import store from './store'
 import storage from 'store'
 import NProgress from 'nprogress'
-import '@/components/NProgress/nprogress.less'
+import '@/styles/nprogress.less'
 
 import { handleRequestFail } from '@/utils/handle-error/handle-error'
 import { setDocumentTitle, domTitle } from '@/utils/domUtil'

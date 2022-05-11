@@ -48,7 +48,7 @@ import {
 } from 'ant-design-vue'
 import Viser from 'viser-vue'
 
-import Dialog from '@/components/Dialog'
+import Dialog from '@/components/dialog'
 
 Vue.use(ConfigProvider)
 Vue.use(Layout)

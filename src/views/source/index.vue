@@ -221,11 +221,7 @@
           </a-form-model-item>
 
           <a-form-model-item v-else label="资源包" prop="url">
-            <oss-part-upload
-              ref="OSSPartUpload"
-              @on-upload-complete="onUploadComplete"
-              @on-remove="form.url = ''"
-            ></oss-part-upload>
+            <OSSPartUpload ref="OSSPartUpload" @on-upload-complete="onUploadComplete" @on-remove="form.url = ''" />
           </a-form-model-item>
         </a-form-model>
       </a-modal>
@@ -382,15 +378,13 @@
 import storage from 'store'
 
 import { ACCESS_TOKEN } from '@/store/mutation-types'
-import OssPartUpload from '@/components/OSSPartUpload/OSSPartUpload'
+import OSSPartUpload from './components/oss-part-upload/oss-part-upload'
 
 export default {
   name: 'BasicSource',
-
   components: {
-    OssPartUpload,
+    OSSPartUpload,
   },
-
   computed: {
     // 表头
     tableColumns() {
@@ -610,7 +604,6 @@ export default {
       }
     },
   },
-
   data() {
     return {
       // 状态
@@ -885,21 +878,11 @@ export default {
       },
     }
   },
-
   watch: {
     'form.type'(newVal, oldVal) {
       if ((oldVal !== 4 && newVal === 4) || oldVal === 4) {
         this.form.url = ''
         this.fileList = []
-
-        // this.$nextTick(() => {
-        //   this.$refs?.OSSPartUpload.onClearFile()
-        // })
-
-        // this.$nextTick(() => {
-        //   this.$refs?.OSSPartUpload.onClearFile()
-        // })
-        // this.$refs.OSSPartUpload.onCleanFile()
       }
 
       switch (newVal) {
@@ -922,7 +905,6 @@ export default {
       this.pagination.pageNum = 1
     },
   },
-
   methods: {
     // 创建
     async onCreateSource() {
@@ -1062,10 +1044,6 @@ export default {
     async onCreateSourceModelOpen() {
       // 新建资源是否显示
       this.state.isCreateShow = true
-      // 验证过期时间
-      // this.$nextTick(() => {
-      //   this.$refs.OSSPartUpload.handleVerifyExpiration()
-      // })
     },
 
     // 文件上传成功
@@ -1158,7 +1136,6 @@ export default {
       }
     },
   },
-
   mounted() {
     // 获取项目id
     this.form.projectId = this.$route.query.id
