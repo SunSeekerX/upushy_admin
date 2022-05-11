@@ -1,9 +1,11 @@
 import md5 from 'md5'
 
 import store from '@/store/index'
-import { guid, removeEmptyKey, rsaEncrypted, getUrlParams, base64Decode } from '@/utils/index'
+import { guid, removeEmptyKey, rsaEncrypted, getUrlParams, base64Decode } from '@/utils'
 
-const VUE_APP_API_SIGN_RSA_PUBLIC_KEY = base64Decode(process.env.VUE_APP_API_SIGN_RSA_PUBLIC_KEY_BASE64)
+const RSA_PUBLIC_KEY_BASE64 = process.env.VUE_APP_API_SIGN_RSA_PUBLIC_KEY_BASE64
+
+const VUE_APP_API_SIGN_RSA_PUBLIC_KEY = RSA_PUBLIC_KEY_BASE64 ? base64Decode(RSA_PUBLIC_KEY_BASE64) : null
 
 export function createSign(config) {
   const { TDOA } = store.state.config
