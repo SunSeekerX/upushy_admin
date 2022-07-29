@@ -897,9 +897,6 @@ export default {
             this.form.nativeVersionCode = this.latestIosVersionCode
           }
       }
-      // console.log({ newVal })
-      // this.form.url = ''
-      // this.fileList = []
     },
 
     sourcesType() {
@@ -1047,7 +1044,6 @@ export default {
     },
     // 表格分页改变
     onPageChange(pagination, filters, { order, columnKey }) {
-      // console.log({ pagination, filters, sorter: { order, columnKey } })
       // 分页
       this.pagination.pageNum = pagination.current
       this.pagination.current = pagination.current

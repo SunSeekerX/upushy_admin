@@ -44,7 +44,6 @@ const user = {
       return new Promise((resolve, reject) => {
         login(userInfo)
           .then((res) => {
-            console.log(res)
             if (res.statusCode === 200) {
               commit(ACCESS_TOKEN, res.data.token)
               commit(ACCESS_REFRESH_TOKEN, res.data.refreshToken)
