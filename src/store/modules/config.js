@@ -1,5 +1,5 @@
 import { getConfig } from '@/api/common'
-import { SET_TDOA } from '@/store/mutation-types'
+import { SET_TDOA, SET_SYSTEM_CONFIG } from '@/store/mutation-types'
 
 const config = {
   state: {
@@ -7,11 +7,16 @@ const config = {
     isUpdated: false,
     // 时间差
     TDOA: 0,
+    // 后台配置
+    systemConfig: {},
   },
   mutations: {
     [SET_TDOA](state, tdoa) {
       state.TDOA = tdoa
       state.isUpdated = true
+    },
+    [SET_SYSTEM_CONFIG](state, systemConfig) {
+      Object.assign(state.systemConfig, systemConfig)
     },
   },
   actions: {
@@ -23,6 +28,7 @@ const config = {
         const timestamp = new Date().getTime()
         const TDOA = timestamp - res.data.serviceTime
         commit(SET_TDOA, TDOA)
+        commit(SET_SYSTEM_CONFIG, res.data)
       } else {
         return Promise.reject(res)
       }

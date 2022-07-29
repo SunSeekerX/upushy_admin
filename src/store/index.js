@@ -24,5 +24,6 @@ export default new Vuex.Store({
     refreshToken: (state) => state.user.refreshToken,
     userInfo: (state) => state.user.info,
     addRouters: (state) => state.permission.addRouters,
+    systemConfig: (state) => state.config.systemConfig,
   },
 })

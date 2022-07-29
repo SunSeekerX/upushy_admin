@@ -1,6 +1,6 @@
 <template>
   <page-header-wrapper>
-    <a-alert show-icon :message="`检查更新链接(updateUrl): ${updateUrl}`" type="info" />
+    <a-alert show-icon :message="`检查更新链接(updateUrl): ${updateUrl}${systemConfig.updateUrlSuffix}`" type="info" />
     <a-card style="margin-top: 24px" :bordered="false">
       <div class="table-operator">
         <a-button type="primary" icon="plus" @click="state.isCreateShow = true"> 新建 </a-button>
@@ -159,9 +159,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'BasicProject',
   computed: {
+    ...mapGetters(['systemConfig']),
     updateUrl() {
       return process.env.VUE_APP_API_BASE_URL
     },
