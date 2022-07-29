@@ -241,7 +241,7 @@ export default {
     width: 120px;
     height: 40px;
 
-    ::v-deep svg {
+    :deep(svg) {
       height: 40px;
     }
   }
