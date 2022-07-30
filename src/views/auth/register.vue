@@ -55,7 +55,14 @@
 
           <a-col :span="10">
             <a-spin :spinning="state.isCaptchaImgLoading">
-              <div @click="onGetCaptchaImg" class="captcha-img" v-html="imgCaptchaUrl"></div>
+              <!-- <div @click="onGetCaptchaImg" class="captcha-img" v-html="imgCaptchaUrl"></div> -->
+              <img
+                class="captcha-img"
+                @click="onGetCaptchaImg"
+                :src="imgCaptchaUrl"
+                height="40"
+                @load="state.isCaptchaImgLoading = false"
+              />
             </a-spin>
           </a-col>
         </a-row>
@@ -276,7 +283,7 @@ export default {
           const res = await this.$api.register(
             Object.assign({}, this.form, {
               imgCaptcha: this.form.imgCaptcha.toLowerCase(),
-              password: md5(this.form.password),
+              password: md5(`${this.form.password}${process.env.VUE_APP_PASSWORD_SALT}`),
             })
           )
           if (res.statusCode === 200) {

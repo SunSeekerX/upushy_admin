@@ -54,28 +54,6 @@
           {{ text }}
         </a-tag>
 
-        <!-- 版本号 -->
-        <!-- <a-tag slot="versionCode" slot-scope="versionCode" color="green">{{ versionCode }}</a-tag> -->
-
-        <!-- 强制更新 -->
-        <!-- <span slot="isForceUpdate" slot-scope="isForceUpdate">{{ isForceUpdate === 0 ? '否' : '是' }}</span> -->
-
-        <!-- <template slot="isForceUpdate" slot-scope="text, record">
-          <a-switch
-            @click="
-              checked =>
-                onUpdateSwitch({
-                  checked,
-                  record,
-                  key: 'isForceUpdate',
-                  loadingKey: 'isForceUpdateLoading',
-                })
-            "
-            :checked="text === 1"
-            :loading="record.isForceUpdateLoading"
-          />
-        </template> -->
-
         <!-- 类型 -->
         <span slot="sourcesType" slot-scope="text, record">
           {{ handleFormatType(record.type) }}
@@ -93,7 +71,7 @@
                   loadingKey: 'isStatusLoading',
                 })
             "
-            :checked="text === 1"
+            :checked="text === '0'"
             :loading="record.isStatusLoading"
           />
         </template>
@@ -170,17 +148,6 @@
             />
           </a-form-model-item>
 
-          <!-- <a-form-model-item label="是否强制更新" prop="isForceUpdate">
-            <a-switch
-              @click="
-                checked => {
-                  checked ? (form.isForceUpdate = 1) : (form.isForceUpdate = 0)
-                }
-              "
-              :checked="form.isForceUpdate === 1"
-            />
-          </a-form-model-item> -->
-
           <a-form-model-item label="更新类型" prop="updateType">
             <a-select v-model="form.updateType" placeholder="请选择更新类型">
               <a-select-option :value="1"> 用户同意更新（用户感知） </a-select-option>
@@ -193,10 +160,10 @@
             <a-switch
               @click="
                 (checked) => {
-                  checked ? (form.status = 1) : (form.status = 0)
+                  checked ? (form.status = 0) : (form.status = 1)
                 }
               "
-              :checked="form.status === 1"
+              :checked="form.status === 0"
             />
           </a-form-model-item>
 
@@ -269,13 +236,6 @@
               v-model="editForm.nativeVersionCode"
             />
           </a-form-model-item>
-
-          <!-- <a-form-model-item label="是否强制更新" prop="isForceUpdate">
-            <a-radio-group v-model="editForm.isForceUpdate">
-              <a-radio :value="0">否</a-radio>
-              <a-radio :value="1">是</a-radio>
-            </a-radio-group>
-          </a-form-model-item>-->
 
           <a-form-model-item label="更新类型" prop="updateType">
             <a-select v-model="editForm.updateType" placeholder="请选择更新类型">
@@ -672,6 +632,7 @@ export default {
         current: 1,
         // defaultCurrent: 1,
         pageNum: 1,
+        'show-size-changer': true,
       },
       // 查询参数
       queryParams: {
@@ -689,11 +650,10 @@ export default {
         // 原生版本号
         nativeVersionCode: 0,
         // 是否强制更新
-        // isForceUpdate: 0,
         // 更新类型（1：用户同意更新，2：强制更新，3：静默更新）
         updateType: 1,
-        // 资源状态（0：禁用 1：启用）
-        status: 1,
+        // 资源状态（0：启用 1：禁用）
+        status: 0,
         // 资源类型（1：wgt-android 2：wgt-ios  3：android，4：ios）
         type: 1,
         // 更新日志
@@ -763,13 +723,6 @@ export default {
             trigger: 'blur',
           },
         ],
-        // 是否强制更新（0：否 1：是）
-        // isForceUpdate: [
-        //   {
-        //     required: true,
-        //     message: '请选择是否强制更新！',
-        //   },
-        // ],
         // 更新类型（1：用户同意更新，2：强制更新，3：静默更新）
         updateType: [
           {
@@ -847,13 +800,6 @@ export default {
         ],
         // 备注
         remark: [{ required: false, type: 'string', message: '请输入备注！' }],
-        // 是否强制更新（0：否 1：是）
-        // isForceUpdate: [
-        //   {
-        //     required: true,
-        //     message: '请选择是否强制更新！',
-        //   },
-        // ],
         // 更新类型（1：用户同意更新，2：强制更新，3：静默更新）
         updateType: [
           {
@@ -983,7 +929,7 @@ export default {
       record[loadingKey] = true
       const res = await this.$api.updateSource({
         id: record.id,
-        [key]: checked ? 1 : 0,
+        [key]: checked ? 0 : 1,
       })
       if (res.statusCode === 200) {
         checked ? (record[key] = 1) : (record[key] = 0)
@@ -1046,6 +992,7 @@ export default {
     onPageChange(pagination, filters, { order, columnKey }) {
       // 分页
       this.pagination.pageNum = pagination.current
+      this.pagination.pageSize = pagination.pageSize
       this.pagination.current = pagination.current
       // 排序
       if (order) {

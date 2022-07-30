@@ -11,7 +11,7 @@ import { i18nRender } from '@/locales'
 
 NProgress.configure({ showSpinner: false })
 
-const whiteList = ['/auth/login', '/auth/register', '/auth/register-result']
+const whiteList = ['/auth/login', '/auth/register']
 const loginRoutePath = '/auth/login'
 const defaultRoutePath = '/dashboard/workplace'
 

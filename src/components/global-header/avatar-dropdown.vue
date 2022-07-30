@@ -7,6 +7,11 @@
 
     <template v-slot:overlay>
       <a-menu class="ant-pro-drop-down menu" :selected-keys="[]">
+        <a-menu-item v-if="menu" key="settings" @click="handleToSettings">
+          <a-icon type="setting" />
+          账号设置
+        </a-menu-item>
+        <a-menu-divider v-if="menu" />
         <a-menu-item key="logout" @click="handleLogout">
           <a-icon type="logout" />
           退出登录
@@ -62,6 +67,9 @@ export default {
         },
         onCancel() {},
       })
+    },
+    handleToSettings () {
+      this.$router.push({ path: '/account/settings' })
     },
   },
 }

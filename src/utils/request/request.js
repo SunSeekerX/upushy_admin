@@ -46,7 +46,7 @@ export default function createRequest(options) {
   // Definition get new token api
   const getNewToken = ({ refreshToken }) =>
     instance({
-      url: '/api/user/token',
+      url: '/api/app-system/app-auth/token',
       method: 'POST',
       data: {
         refreshToken,

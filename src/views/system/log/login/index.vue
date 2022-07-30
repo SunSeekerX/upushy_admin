@@ -12,8 +12,8 @@
         :bordered="true"
       >
         <!-- 登录日期 -->
-        <template slot="loginTime" slot-scope="loginTime">
-          {{ $util.formatTime(loginTime) }}
+        <template slot="createdTime" slot-scope="createdTime">
+          {{ $util.formatTime(createdTime) }}
         </template>
       </a-table>
     </a-card>
@@ -83,8 +83,8 @@ export default {
         // 登录日期
         {
           title: '登录日期',
-          dataIndex: 'loginTime',
-          scopedSlots: { customRender: 'loginTime' },
+          dataIndex: 'createdTime',
+          scopedSlots: { customRender: 'createdTime' },
           defaultSortOrder: 'descend',
           sorter: true,
         },
@@ -103,7 +103,7 @@ export default {
       },
       // 查询参数
       queryParams: {
-        sortKey: 'loginTime',
+        sortKey: 'createdTime',
         order: 'DESC',
       },
     }

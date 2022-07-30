@@ -33,6 +33,43 @@ export const asyncRouterMap = [
         },
       },
 
+      // 账户设置
+      {
+        path: '/account/settings',
+        name: 'PageAccountSettingsIndex',
+        hidden: true,
+        component: () => import('@/views/account/settings/index'),
+        redirect: '/account/settings/basic',
+        meta: {
+          title: '账户设置',
+          keepAlive: false,
+          permission: ['account.settings'],
+        },
+        children: [
+          {
+            title: '基础设置',
+            path: 'basic',
+            name: 'PageAccountSettingsBasic',
+            component: () =>
+              import(/* webpackChunkName: "PageAccountSettingsBasic" */ '@/views/account/settings/basic-setting'),
+          },
+          {
+            title: '安全设置',
+            path: 'security',
+            name: 'PageAccountSettingsSecurity',
+            component: () =>
+              import(/* webpackChunkName: "PageAccountSettingsSecurity" */ '@/views/account/settings/security-setting'),
+          },
+          {
+            title: '系统设置',
+            path: 'system',
+            name: 'PageAccountSettingsSystem',
+            component: () =>
+              import(/* webpackChunkName: "PageAccountSettingsSystem" */ '@/views/account/settings/system-setting'),
+          },
+        ],
+      },
+
       // 我的项目
       {
         path: '/project',
@@ -121,11 +158,6 @@ export const constantRouterMap = [
         path: 'register',
         name: 'PathRegister',
         component: () => import(/* webpackChunkName: "register" */ '@/views/auth/register'),
-      },
-      {
-        path: 'register-result',
-        name: 'PathRegisterResult',
-        component: () => import(/* webpackChunkName: "register-result" */ '@/views/auth/register-result'),
       },
     ],
   },

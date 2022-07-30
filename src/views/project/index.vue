@@ -14,14 +14,13 @@
         rowKey="id"
         :pagination="pagination"
         @change="onPageChange"
-        :scroll="{ x: 1500 }"
         :bordered="true"
       >
         <!-- id -->
-        <a-tooltip slot="id" slot-scope="id">
+        <!-- <a-tooltip slot="id" slot-scope="id">
           <template slot="title">{{ id }}</template>
           {{ id }}
-        </a-tooltip>
+        </a-tooltip> -->
         <!-- 项目名称 -->
         <template slot="name" slot-scope="text, { id, name }">
           <router-link :to="{ path: '/project/sources', query: { id: id } }">
@@ -34,7 +33,7 @@
         </template>
         <!-- 更新时间 -->
         <template slot="updatedTime" slot-scope="updatedTime">
-          {{ $util.formatTime(updatedTime) }}
+          {{ updatedTime ? $util.formatTime(updatedTime) : '~' }}
         </template>
         <!-- 操作 -->
         <span slot="action" slot-scope="text, record">
@@ -195,9 +194,9 @@ export default {
         {
           title: 'ID',
           dataIndex: 'id',
-          scopedSlots: { customRender: 'id' },
-          ellipsis: false,
-          width: 280,
+          // scopedSlots: { customRender: 'id' },
+          // ellipsis: false,
+          // width: 280,
         },
         // 项目名称
         {
@@ -205,14 +204,14 @@ export default {
           dataIndex: 'name',
           scopedSlots: { customRender: 'name' },
           ellipsis: true,
-          width: 200,
+          // width: 200,
         },
         // 项目描述
         {
           title: '项目描述',
           dataIndex: 'describe',
           ellipsis: true,
-          width: 200,
+          // width: 200,
         },
         // 创建时间
         {
@@ -220,8 +219,8 @@ export default {
           dataIndex: 'createdTime',
           align: 'center',
           scopedSlots: { customRender: 'createdTime' },
-          ellipsis: false,
-          width: 200,
+          // ellipsis: false,
+          // width: 200,
         },
         // 更新时间
         {
@@ -230,18 +229,18 @@ export default {
           dataIndex: 'updatedTime',
           align: 'center',
           scopedSlots: { customRender: 'updatedTime' },
-          ellipsis: false,
-          width: 200,
+          // ellipsis: false,
+          // width: 200,
         },
         // 操作
         {
           title: '操作',
           align: 'center',
-          fixed: 'right',
+          // fixed: 'right',
           scopedSlots: { customRender: 'action' },
           ellipsis: false,
+          // width: 150,
           width: 150,
-          // width: 200,s
         },
       ],
       // 表单校验规则
@@ -301,6 +300,7 @@ export default {
         pageSize: 10,
         defaultCurrent: 1,
         pageNum: 1,
+        'show-size-changer': true,
       },
     }
   },
@@ -384,8 +384,9 @@ export default {
       this.state.isTableLoading = false
     },
     // 表格分页改变
-    onPageChange(e) {
-      this.pagination.pageNum = e.current
+    onPageChange(pagination) {
+      this.pagination.pageNum = pagination.current
+      this.pagination.pageSize = pagination.pageSize
       this.onGetList()
     },
     // 点击编辑

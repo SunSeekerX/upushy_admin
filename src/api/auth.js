@@ -1,9 +1,9 @@
 import { request } from '@/utils/request'
 
-// 登录验证码
+// 注册验证码
 export function registerCaptcha() {
   return request({
-    url: `/api/user/register/captcha?t=${Date.now()}`,
+    url: `/api/app-system/app-auth/register/captcha?t=${Date.now()}`,
     method: 'GET',
   })
 }
@@ -11,7 +11,7 @@ export function registerCaptcha() {
 // 注册
 export function register({ username, password, email, nickname, imgCaptcha, imgCaptchaKey }) {
   return request({
-    url: '/api/user',
+    url: '/api/app-system/app-auth/register',
     method: 'POST',
     data: { username, password, email, nickname, imgCaptcha, imgCaptchaKey },
   })
@@ -20,7 +20,7 @@ export function register({ username, password, email, nickname, imgCaptcha, imgC
 // 登录
 export function login({ username, password, imgCaptcha, loginCaptchaKey }) {
   return request({
-    url: '/api/user/login',
+    url: '/api/app-system/app-auth/login',
     method: 'POST',
     data: { username, password, imgCaptcha, loginCaptchaKey },
   })
@@ -29,7 +29,7 @@ export function login({ username, password, imgCaptcha, loginCaptchaKey }) {
 // 登录验证码
 export function loginCaptcha() {
   return request({
-    url: `/api/user/login/captcha?t=${Date.now()}`,
+    url: `/api/app-system/app-auth/login/captcha?t=${Date.now()}`,
     method: 'GET',
   })
 }
@@ -37,7 +37,7 @@ export function loginCaptcha() {
 // 刷新token
 export function getNewToken({ refreshToken }) {
   return request({
-    url: '/api/user/token',
+    url: '/api/app-system/app-auth/token',
     method: 'POST',
     data: {
       refreshToken,
