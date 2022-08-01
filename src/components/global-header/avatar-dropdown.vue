@@ -68,7 +68,7 @@ export default {
         onCancel() {},
       })
     },
-    handleToSettings () {
+    handleToSettings() {
       this.$router.push({ path: '/account/settings' })
     },
   },
