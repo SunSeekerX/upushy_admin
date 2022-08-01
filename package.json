@@ -14,7 +14,8 @@
     "gc": "git add -A && git-cz && git pull && git push",
     "up": "yarn upgrade-interactive",
     "sort-package-json": "npx sort-package-json",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "husky install"
   },
   "browserslist": [
     "> 1%",
@@ -54,7 +55,7 @@
     "eslint": "^8.21.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.3.0",
-    "husky": "^8.0.1",
+    "husky": "^8.0.0",
     "less": "^3.13.1",
     "less-loader": "^5.0.0",
     "lint-staged": "^12.4.1",
