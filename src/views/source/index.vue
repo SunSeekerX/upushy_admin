@@ -71,7 +71,7 @@
                   loadingKey: 'isStatusLoading',
                 })
             "
-            :checked="text === '0'"
+            :checked="text === '1'"
             :loading="record.isStatusLoading"
           />
         </template>
@@ -160,10 +160,10 @@
             <a-switch
               @click="
                 (checked) => {
-                  checked ? (form.status = 0) : (form.status = 1)
+                  checked ? (form.status = 1) : (form.status = 0)
                 }
               "
-              :checked="form.status === 0"
+              :checked="form.status === 1"
             />
           </a-form-model-item>
 
@@ -650,11 +650,11 @@ export default {
         // 原生版本号
         nativeVersionCode: 0,
         // 是否强制更新
-        // 更新类型（1：用户同意更新，2：强制更新，3：静默更新）
+        // 更新类型（1 用户同意更新 2 强制更新，3 静默更新）
         updateType: 1,
-        // 资源状态（0：启用 1：禁用）
-        status: 0,
-        // 资源类型（1：wgt-android 2：wgt-ios  3：android，4：ios）
+        // 资源状态（0 禁用 1 启用）
+        status: 1,
+        // 资源类型（1 wgt-android 2 wgt-ios  3 android，4 ios）
         type: 1,
         // 更新日志
         changelog: '',
@@ -730,7 +730,7 @@ export default {
             message: '请选择更新类型！',
           },
         ],
-        // 资源类型（1：wgt-android 2：wgt-ios  3：android，4：ios）
+        // 资源类型 1：wgt-android 2：wgt-ios  3：android，4：ios
         type: [
           {
             required: true,
@@ -738,7 +738,7 @@ export default {
             trigger: 'change',
           },
         ],
-        // 资源状态（0：禁用 1：启用）
+        // 资源状态 0 禁用 1 启用
         status: [
           {
             required: true,

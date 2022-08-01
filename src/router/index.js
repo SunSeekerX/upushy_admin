@@ -18,13 +18,13 @@ export const asyncRouterMap = [
     name: 'PathIndex',
     component: BasicLayout,
     meta: { title: 'menu.home' },
-    redirect: '/charts',
+    redirect: '/dashboard',
     children: [
       // 图表
       {
-        path: '/charts',
+        path: '/dashboard',
         name: 'PathCharts',
-        component: () => import('@/views/dashboard/charts'),
+        component: () => import('@/views/dashboard/index'),
         meta: {
           title: '统计图表',
           icon: 'pie-chart',

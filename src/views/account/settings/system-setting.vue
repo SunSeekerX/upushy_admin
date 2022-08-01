@@ -21,16 +21,16 @@
     <a-list-item>
       <a-list-item-meta>
         <template v-slot:title>
-          <a>风格配色</a>
+          <a>登录日志</a>
         </template>
         <template v-slot:description>
-          <span> 整体风格配色设置 </span>
+          <span> 非管理员是否可以查看登录日志 </span>
         </template>
       </a-list-item-meta>
       <template v-slot:actions>
         <a-switch
-          checkedChildren="暗色"
-          unCheckedChildren="白色"
+          checkedChildren="开"
+          unCheckedChildren="关"
           :defaultChecked="(navTheme === 'dark' && true) || false"
         />
       </template>
