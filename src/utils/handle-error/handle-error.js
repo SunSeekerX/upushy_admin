@@ -36,15 +36,15 @@ function handleApplicationException(e) {
  * @param { String } msg tips message
  */
 function handleRequestFail(res) {
+  const originMsg = res?.response?.data?.message
   let type = 'warn'
-  let message = res.message
+  let message = originMsg ? originMsg : res.message
   if (res.statusCode >= 500) {
     type = 'error'
     message = '内部服务错误'
   } else if (res.statusCode === 401) {
     message = '登录信息已失效, 请重新登录'
   }
-
   Message[type](message)
 }
 

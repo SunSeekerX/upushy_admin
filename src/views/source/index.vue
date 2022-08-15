@@ -855,7 +855,7 @@ export default {
       this.$refs.createForm.validate(async (valid) => {
         if (valid) {
           this.state.isCreateLoading = true
-          const res = await this.$api.createSource(
+          const res = await this.$api.createSourceApi(
             Object.assign({}, this.form, {
               nativeVersionCode: [1, 2].includes(this.form.type) ? this.form.nativeVersionCode : '',
             })
@@ -884,7 +884,7 @@ export default {
     },
     // 删除
     async onDelete(record, index) {
-      const res = await this.$api.deleteSource({
+      const res = await this.$api.deleteSourceApi({
         id: record.id,
       })
 
@@ -905,7 +905,7 @@ export default {
       this.$refs.editForm.validate(async (valid) => {
         if (valid) {
           this.state.isEditLoading = true
-          const res = await this.$api.updateSource(this.editForm)
+          const res = await this.$api.updateSourceApi(this.editForm)
           if (res.statusCode === 200) {
             this.$notification.success({
               message: '成功',
@@ -927,7 +927,7 @@ export default {
     // 根据key更新资源开关信息
     async onUpdateSwitch({ checked, record, key, loadingKey }) {
       record[loadingKey] = true
-      const res = await this.$api.updateSource({
+      const res = await this.$api.updateSourceApi({
         id: record.id,
         [key]: checked ? 0 : 1,
       })
@@ -941,7 +941,7 @@ export default {
     // 查询
     async onGetList() {
       this.state.isTableLoading = true
-      const res = await this.$api.sources({
+      const res = await this.$api.getSourcesApi({
         id: this.form.projectId,
         type: this.sourcesType,
         pageNum: this.pagination.pageNum,
@@ -964,7 +964,7 @@ export default {
     },
     // 获取最新的原生版本号
     async onGetLatestNativeSource() {
-      const res = await this.$api.getLatestNativeSource({
+      const res = await this.$api.getLatestNativeSourceApi({
         projectId: this.form.projectId,
       })
 

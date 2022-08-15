@@ -1,4 +1,4 @@
-import { getConfig } from '@/api/common'
+import { getConfigApi } from '@/api/common'
 import { SET_TDOA, SET_SYSTEM_CONFIG } from '@/store/mutation-types'
 
 const config = {
@@ -21,7 +21,7 @@ const config = {
   },
   actions: {
     async getConfig({ commit }) {
-      const res = await getConfig()
+      const res = await getConfigApi()
 
       if (res.statusCode === 200) {
         // 计算和服务器时间差

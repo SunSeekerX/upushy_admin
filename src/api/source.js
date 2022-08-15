@@ -1,9 +1,9 @@
 import { request } from '@/utils/request'
 
 // 资源列表
-export function sources({ id, type, pageNum, pageSize, sortKey, order }) {
+export function getSourcesApi({ id, type, pageNum, pageSize, sortKey, order }) {
   return request({
-    url: '/api/source',
+    url: '/api/upushy/sources',
     method: 'GET',
     params: {
       projectId: id,
@@ -17,7 +17,7 @@ export function sources({ id, type, pageNum, pageSize, sortKey, order }) {
 }
 
 // 新建资源
-export function createSource({
+export function createSourceApi({
   projectId,
   version,
   versionCode,
@@ -30,7 +30,7 @@ export function createSource({
   remark,
 }) {
   return request({
-    url: '/api/source',
+    url: '/api/upushy/sources',
     method: 'POST',
     data: {
       projectId,
@@ -48,7 +48,7 @@ export function createSource({
 }
 
 // 修改资源
-export function updateSource({
+export function updateSourceApi({
   id,
   version,
   versionCode,
@@ -61,8 +61,8 @@ export function updateSource({
   status,
 }) {
   return request({
-    url: '/api/source',
-    method: 'PUT',
+    url: `/api/upushy/sources/${id}`,
+    method: 'PATCH',
     data: {
       id,
       version,
@@ -79,21 +79,17 @@ export function updateSource({
 }
 
 // 删除资源
-export function deleteSource({ id }) {
+export function deleteSourceApi({ id }) {
   return request({
-    url: '/api/source',
+    url: `/api/upushy/sources/${id}`,
     method: 'DELETE',
-    data: {
-      // 资源id
-      id,
-    },
   })
 }
 
 // 查询最新的原生版本
-export function getLatestNativeSource({ projectId }) {
+export function getLatestNativeSourceApi({ projectId }) {
   return request({
-    url: '/api/source/native/latest',
+    url: '/api/upushy/sources/native/latest',
     method: 'GET',
     params: {
       // 项目id

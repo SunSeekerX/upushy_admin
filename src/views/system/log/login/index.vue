@@ -113,7 +113,7 @@ export default {
     // 查询
     async onGetList() {
       this.state.isTableLoading = true
-      const res = await this.$api.logginLogs({
+      const res = await this.$api.loginLogsApi({
         pageNum: this.pagination.pageNum,
         pageSize: this.pagination.pageSize,
         sortKey: this.queryParams.sortKey,

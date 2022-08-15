@@ -224,7 +224,7 @@ export default {
     async onGetSystemConfig() {
       this.isRunningTimer = true
 
-      const res = await this.$api.getSystemConfig()
+      const res = await this.$api.getSystemConfigApi()
       if (res.statusCode === 200) {
         // 处理 Cpu 数据
         const { cpus, totalmem, freemem, hostname, type, ip, arch, publicIpIpv4, internalIpIpv4 } = res.data.os

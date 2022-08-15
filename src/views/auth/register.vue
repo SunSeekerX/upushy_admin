@@ -266,7 +266,7 @@ export default {
     async onGetCaptchaImg() {
       this.state.isCaptchaImgLoading = true
 
-      const res = await this.$api.registerCaptcha()
+      const res = await this.$api.registerCaptchaApi()
       if (res.statusCode === 200) {
         this.imgCaptchaUrl = res.data.img
         this.form.imgCaptchaKey = res.data.uuid
@@ -280,7 +280,7 @@ export default {
       this.state.isRegisterBtnLoading = true
       this.$refs.registerForm.validate(async (valid) => {
         if (valid) {
-          const res = await this.$api.register(
+          const res = await this.$api.registerApi(
             Object.assign({}, this.form, {
               imgCaptcha: this.form.imgCaptcha.toLowerCase(),
               password: md5(`${this.form.password}${process.env.VUE_APP_PASSWORD_SALT}`),

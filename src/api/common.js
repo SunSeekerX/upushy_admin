@@ -1,25 +1,25 @@
 import { request } from '@/utils/request'
 
 // 系统配置
-export function getConfig() {
+export function getConfigApi() {
   return request({
-    url: '/api/basic/config',
+    url: '/api/system/config',
     method: 'GET',
   })
 }
 
 // OSS临时访问
-export function getOSSStsConfig() {
+export function getOSSStsConfigApi() {
   return request({
-    url: '/api/basic/oss-sts',
+    url: '/api/upushy/basic/oss-sts',
     method: 'GET',
   })
 }
 
 // 系统信息
-export function getSystemConfig() {
+export function getSystemConfigApi() {
   return request({
-    url: '/api/basic/config/system',
+    url: '/api/system/info',
     method: 'GET',
   })
 }

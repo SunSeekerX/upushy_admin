@@ -18,6 +18,7 @@ export function createSign(config) {
     case 'POST':
     case 'DELETE':
     case 'PUT':
+    case 'PATCH':
       // 处理参数为undefined情况
       removeEmptyKey(config.data, [undefined, null])
       const entries = Object.entries(config.data || {})

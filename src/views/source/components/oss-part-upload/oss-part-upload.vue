@@ -38,7 +38,7 @@ export default {
   methods: {
     // 使用临时凭据初始化OSS客户端
     async onInitOSSClient() {
-      const res = await this.$api.getOSSStsConfig()
+      const res = await this.$api.getOSSStsConfigApi()
       if (res.statusCode === 200) {
         const { AccessKeyId, AccessKeySecret, SecurityToken, bucket, region, Expiration } = res.data
         this.expiration = Expiration

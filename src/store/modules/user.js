@@ -1,6 +1,6 @@
 import storage from 'store'
 
-import { login } from '@/api/index'
+import { loginApi } from '@/api/index'
 import { ACCESS_TOKEN, ACCESS_REFRESH_TOKEN, USER_INFO, LOGIN_OUT } from '@/store/mutation-types'
 import { resetRouter } from '@/router/index'
 
@@ -42,7 +42,7 @@ const user = {
     // Login
     Login({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
-        login(userInfo)
+        loginApi(userInfo)
           .then((res) => {
             if (res.statusCode === 200) {
               commit(ACCESS_TOKEN, res.data.token)

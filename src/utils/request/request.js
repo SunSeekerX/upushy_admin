@@ -28,6 +28,7 @@ export default function createRequest(options) {
     return {
       statusCode: error.response ? error.response.status : 500,
       message: error.message,
+      response: error.response,
     }
   }
 
@@ -44,9 +45,9 @@ export default function createRequest(options) {
   instance.interceptors.response.use((response) => response.data, errorHandler)
 
   // Definition get new token api
-  const getNewToken = ({ refreshToken }) =>
+  const getNewTokenApi = ({ refreshToken }) =>
     instance({
-      url: '/api/app-system/app-auth/token',
+      url: '/api/system/auth/token',
       method: 'POST',
       data: {
         refreshToken,
@@ -57,7 +58,7 @@ export default function createRequest(options) {
     const res = await instance(config)
     const { refreshToken } = store.getters
     if (res.statusCode === 401 && refreshToken) {
-      const getNewTokenRes = await getNewToken({ refreshToken })
+      const getNewTokenRes = await getNewTokenApi({ refreshToken })
       if (getNewTokenRes.statusCode === 200) {
         store.commit(ACCESS_TOKEN, getNewTokenRes.data)
         return await instance(config)

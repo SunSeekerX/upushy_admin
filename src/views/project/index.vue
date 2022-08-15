@@ -310,7 +310,7 @@ export default {
       this.state.isCreateLoading = true
       this.$refs.createForm.validate(async (valid) => {
         if (valid) {
-          const res = await this.$api.createProject(this.createForm)
+          const res = await this.$api.createProjectApi(this.createForm)
           if (res.statusCode === 200) {
             this.$notification.success({
               message: '成功',
@@ -332,7 +332,7 @@ export default {
     },
     // 删除
     async onDelete(id) {
-      const res = await this.$api.deleteProject({
+      const res = await this.$api.deleteProjectApi({
         id: id,
       })
       if (res.statusCode === 200) {
@@ -351,7 +351,7 @@ export default {
 
       this.$refs.updateForm.validate(async (valid) => {
         if (valid) {
-          const res = await this.$api.updateProject(this.updateForm)
+          const res = await this.$api.updateProjectApi(this.updateForm)
           if (res.statusCode === 200) {
             this.$notification.success({
               message: '成功',
@@ -371,7 +371,7 @@ export default {
     // 查询
     async onGetList() {
       this.state.isTableLoading = true
-      const res = await this.$api.projects({
+      const res = await this.$api.getProjectsApi({
         pageNum: this.pagination.pageNum,
         pageSize: this.pagination.pageSize,
       })

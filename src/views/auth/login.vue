@@ -161,7 +161,7 @@ export default {
                 this.$handleError.handleRequestFail(res)
               }
             })
-            .catch((err) => this.$handleError.handleApiRequestException(err))
+            .catch((err) => this.$handleError.handleRequestFail(err))
             .finally(() => {
               this.state.isLoginBtnLoading = false
             })
@@ -174,7 +174,7 @@ export default {
     // 获取验证码
     async onGetCaptchaImg() {
       this.state.isCaptchaImgLoading = true
-      const res = await this.$api.loginCaptcha()
+      const res = await this.$api.loginCaptchaApi()
       if (res.statusCode === 200) {
         this.imgCaptchaUrl = res.data.img
         this.loginForm.loginCaptchaKey = res.data.uuid

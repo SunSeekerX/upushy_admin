@@ -1,9 +1,9 @@
 import { request } from '@/utils/request'
 
 // 项目列表
-export function projects({ pageNum, pageSize }) {
+export function getProjectsApi({ pageNum, pageSize }) {
   return request({
-    url: '/api/projects',
+    url: '/api/upushy/projects',
     method: 'GET',
     params: {
       pageNum,
@@ -13,9 +13,9 @@ export function projects({ pageNum, pageSize }) {
 }
 
 // 新建项目
-export function createProject({ appid, describe, name }) {
+export function createProjectApi({ appid, describe, name }) {
   return request({
-    url: '/api/project',
+    url: '/api/upushy/projects',
     method: 'POST',
     data: {
       appid,
@@ -26,23 +26,19 @@ export function createProject({ appid, describe, name }) {
 }
 
 // 删除项目
-export function deleteProject({ id }) {
+export function deleteProjectApi({ id }) {
   return request({
-    url: '/api/project',
+    url: `/api/upushy/projects/${id}`,
     method: 'DELETE',
-    data: {
-      id,
-    },
   })
 }
 
 // 更新项目
-export function updateProject({ id, appid, name, describe }) {
+export function updateProjectApi({ id, appid, name, describe }) {
   return request({
-    url: '/api/project',
-    method: 'PUT',
+    url: `/api/upushy/projects/${id}`,
+    method: 'PATCH',
     data: {
-      id,
       appid,
       name,
       describe,
