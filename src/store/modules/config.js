@@ -1,4 +1,4 @@
-import { getConfigApi } from '@/api/common'
+import { getConfigApi } from '@/api'
 import { SET_TDOA, SET_SYSTEM_CONFIG } from '@/store/mutation-types'
 
 const config = {
